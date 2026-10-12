@@ -29,6 +29,15 @@ def make_qr():
     return links
 
 
+def make_ai_jpg():
+    """AI 원본 PNG(assets/ai/*.png)를 지면용 JPG로 줄여 PDF 용량을 낮춥니다."""
+    from PIL import Image
+    for png in (ROOT / "assets" / "ai").glob("*.png"):
+        jpg = png.with_suffix(".jpg")
+        if not jpg.exists() or jpg.stat().st_mtime < png.stat().st_mtime:
+            Image.open(png).convert("RGB").save(jpg, quality=88, optimize=True)
+
+
 def render():
     out = ROOT / "output"
     out.mkdir(exist_ok=True)
@@ -51,5 +60,6 @@ def render():
 
 if __name__ == "__main__":
     make_qr()
+    make_ai_jpg()
     render()
     print("done")
