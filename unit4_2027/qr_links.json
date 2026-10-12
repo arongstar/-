@@ -1,14 +1,12 @@
 [
-  {"id": "qr_dansimjul", "page": 49, "label": "단심줄놀이 영상", "url": "https://m.site.naver.com/1Tytl", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_kite", "page": 50, "label": "연날리기", "url": "https://m.site.naver.com/1SQQ4", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_ssireum", "page": 50, "label": "씨름", "url": "https://m.site.naver.com/1Vi5R", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_gama", "page": 50, "label": "의성가마싸움", "url": "https://m.site.naver.com/1v2cG", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_museum_vr", "page": 51, "label": "민속유물 전시관 2전시실 VR", "url": "https://m.site.naver.com/1x5mz", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_bus_route", "page": 57, "label": "농어촌버스 노선도", "url": "https://m.site.naver.com/1uDiT", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_happybus", "page": 58, "label": "행복버스 노선도", "url": "https://m.site.naver.com/1yUqV", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_airport", "page": 59, "label": "대구경북신공항 홍보 영상", "url": "https://m.site.naver.com/1uIvg", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_jangnal", "page": 61, "label": "의성장날 누리집", "url": "https://m.site.naver.com/1xfB4", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_blog", "page": 61, "label": "의성군 공식 블로그", "url": "https://m.site.naver.com/1uK1U", "status": "2026년판 링크 · 2027년판 지면에서는 '재난 문자'로 바꿔 사용하지 않음"},
-  {"id": "qr_tv", "page": 61, "label": "의성TV", "url": "https://m.site.naver.com/1uK2W", "status": "2026년판 링크 유지 · 접속 확인 대기"},
-  {"id": "qr_english", "page": 61, "label": "화상영어", "url": "https://m.site.naver.com/1uKaI", "status": "2026년판 링크 유지 · 접속 확인 대기"}
+  {"id": "qr_dansimjul", "page": 49, "label": "단심줄놀이 영상", "url": "https://www.youtube.com/watch?v=dDcAjFTdWhI", "status": "교체 — 2026년판 m.site.naver.com/1Tytl은 '비활성 QR'. 놀자학교_PlaySchool 「5분만에 배우는 단심줄놀이」(2026.10.12 접속 확인)"},
+  {"id": "qr_kite", "page": 50, "label": "연날리기", "url": "https://www.youtube.com/watch?v=J6ZrdDptpzo", "status": "유지(직접 주소로 변환) — 2026년판 단축 주소가 연결하던 의성TV 「제11회 의성세계하늘축제 전설의 기억」(2026.10.12 접속 확인)"},
+  {"id": "qr_ssireum", "page": 50, "label": "씨름", "url": "https://www.youtube.com/watch?v=CR1tyhmNrb8", "status": "교체 — 2026년판 m.site.naver.com/1Vi5R은 '비활성 QR'. 이비컴퍼니 「인류 무형문화유산이랑 인사해! 5.씨름」(2026.10.12 접속 확인)"},
+  {"id": "qr_gama", "page": 50, "label": "의성가마싸움", "url": "https://www.youtube.com/watch?v=zrs9zzJEECw", "status": "유지(직접 주소로 변환) — kculturechannel 「가마 싸움」(2026.10.12 접속 확인)"},
+  {"id": "qr_museum_vr", "page": 51, "label": "의성조문국박물관 사이버박물관 민속유물 전시관", "url": "https://usc.go.kr/jmgmuseum/user/cyber/folk/depth2.do", "status": "유지(직접 주소로 변환) — 의성조문국박물관 > 사이버박물관 > 민속유물 전시관(2026.10.12 접속 확인)"},
+  {"id": "qr_bus_route", "page": 57, "label": "의성군 버스 노선도", "url": "https://www.usc.go.kr/ko/page.do?mnu_uid=604", "status": "유지(직접 주소로 변환) — 의성군청 '의성군 버스노선도'(2026.10.12 접속 확인)"},
+  {"id": "qr_happybus", "page": 58, "label": "행복버스 운행 안내", "url": "https://www.usc.go.kr/ko/page.do?mnu_uid=548", "status": "교체 — 2026년판 m.site.naver.com/1yUqV는 '비활성 QR'. 의성군청 '행복버스'(사곡·비안·안평 운행 안내, 2026.10.12 접속 확인)"},
+  {"id": "qr_airport", "page": 59, "label": "대구경북신공항 홍보 영상", "url": "https://www.youtube.com/watch?v=iiV5n5gDZQ4", "status": "교체 — 2026년판 m.site.naver.com/1uIvg는 '비활성 QR'. 대구광역시 공식 유튜브(대구TV) 「대구경북 통합 신공항 건설 홍보 영상」(2026.10.12 접속 확인)"},
+  {"id": "qr_jangnal", "page": 61, "label": "의성장날 누리집", "url": "https://esmall.cyso.co.kr/", "status": "교체 — 2026년판 단축 주소가 의성군 문화관광 첫 화면으로 잘못 연결됨. 의성장날(경북 통합 쇼핑몰 '사이소' 안, 2026.10.12 접속 확인)"},
+  {"id": "qr_tv", "page": 61, "label": "의성TV", "url": "https://www.youtube.com/@uiseongTV", "status": "교체 — 2026년판 m.site.naver.com/1uK2W는 '비활성 QR'. 의성군 공식 유튜브 채널(2026.10.12 접속 확인)"}
 ]

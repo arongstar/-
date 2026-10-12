@@ -1,19 +1,61 @@
 {
   "style": "Warm, friendly illustration for a Korean elementary school (grade 3) social studies textbook. Soft pastel colors, clean outlines, simple background, gentle lighting. No text, no letters, no logos, no watermark. People drawn as simple friendly characters without realistic faces.",
   "items": [
-    {"id": "AI-01", "page": 48, "use": "부럼", "size": "1536x1024",
-     "prompt": "Bureom nuts for Jeongwol Daeboreum: walnuts, peanuts, chestnuts and ginkgo nuts arranged in a round bamboo basket on a plain light background, top-down three-quarter view."},
-    {"id": "AI-02", "page": 48, "use": "달집태우기(오늘날, 안전하게)", "size": "1536x1024",
-     "prompt": "Present-day Korean village festival on the first full moon night: a tall cone-shaped straw 'daljip' bonfire burning in an open riverside field, a large full moon in the sky, families watching from behind a rope barrier at a safe distance, a firefighter and a small fire truck standing by."},
-    {"id": "AI-03", "page": 48, "use": "쥐불놀이(옛날 모습)", "size": "1536x1024",
-     "prompt": "Old-days Korean countryside at night in the 1960s: children in simple winter hanbok-style clothes swinging small tin cans with glowing embers on strings in empty winter rice paddies, making circles of light, full moon above, low thatched-roof houses in the distance. Nostalgic, past-time mood."},
-    {"id": "AI-04", "page": 49, "use": "단오 그네뛰기", "size": "1536x1024",
-     "prompt": "Dano festival in the Joseon era: a young woman in a colorful hanbok swinging high on a tall traditional Korean swing (geune) hung from two tall wooden poles, villagers cheering below, early summer green trees."},
-    {"id": "AI-05", "page": 49, "use": "창포물에 머리 감기", "size": "1536x1024",
-     "prompt": "Dano festival custom: two Korean children in hanbok washing their hair in a wooden basin filled with water and long green iris (changpo) leaves, smiling, outdoor courtyard of a traditional house."},
-    {"id": "AI-06", "page": 60, "use": "봉수대(고증)", "size": "1024x1536",
-     "prompt": "Historically accurate Joseon-dynasty Korean beacon station (bongsudae) on a mountaintop: a raised stone platform with five round stone chimneys (yeonjo) in a straight row; white smoke rising from one chimney in daytime; a beacon guard (bongsugun) in Joseon soldier clothing with a felt hat standing beside it; distant mountain ridges. Educational, accurate, not fantasy."},
-    {"id": "AI-07", "page": 58, "use": "행복택시를 이용하는 주민들", "size": "1536x1024",
-     "prompt": "Rural Korean village in present day: an elderly grandmother and grandfather getting into a white village taxi in front of a small village hall, carrying a shopping bag, the friendly taxi driver holding the door. Faces simplified, seen from the side."}
+    {
+      "id": "AI-01",
+      "page": 48,
+      "use": "부럼",
+      "size": "1536x1024",
+      "prompt": "Bureom nuts for Jeongwol Daeboreum: walnuts, peanuts, chestnuts and ginkgo nuts arranged in a round bamboo basket on a plain light background, top-down three-quarter view."
+    },
+    {
+      "id": "AI-02",
+      "page": 48,
+      "use": "달집태우기(오늘날, 안전하게)",
+      "size": "1536x1024",
+      "prompt": "Present-day Korean village festival on the first full moon night: a tall cone-shaped straw 'daljip' bonfire burning in an open riverside field, a large full moon in the sky, families watching from behind a rope barrier at a safe distance, a firefighter and a small fire truck standing by."
+    },
+    {
+      "id": "AI-03",
+      "page": 48,
+      "use": "쥐불놀이(옛날 모습)",
+      "size": "1536x1024",
+      "prompt": "Old-days Korean countryside at night in the 1960s: children in simple winter hanbok-style clothes swinging small tin cans with glowing embers on strings in empty winter rice paddies, making circles of light, full moon above, low thatched-roof houses in the distance. Nostalgic, past-time mood."
+    },
+    {
+      "id": "AI-04",
+      "page": 49,
+      "use": "단오 그네뛰기",
+      "size": "1536x1024",
+      "prompt": "Dano festival in the Joseon era: a young woman in a colorful hanbok swinging high on a tall traditional Korean swing (geune) hung from two tall wooden poles, villagers cheering below, early summer green trees."
+    },
+    {
+      "id": "AI-05",
+      "page": 49,
+      "use": "창포물에 머리 감기",
+      "size": "1536x1024",
+      "prompt": "Dano festival custom: two Korean children in hanbok washing their hair in a wooden basin filled with water and long green iris (changpo) leaves, smiling, outdoor courtyard of a traditional house."
+    },
+    {
+      "id": "AI-06",
+      "page": 60,
+      "use": "봉수대(고증)",
+      "size": "1024x1536",
+      "prompt": "Historically accurate Joseon-dynasty Korean beacon station (bongsudae) on a mountaintop: a raised stone platform with five round stone chimneys (yeonjo) in a straight row; white smoke rising from one chimney in daytime; a beacon guard (bongsugun) in Joseon soldier clothing with a felt hat standing beside it; distant mountain ridges. Educational, accurate, not fantasy."
+    },
+    {
+      "id": "AI-07",
+      "page": 58,
+      "use": "행복택시를 이용하는 주민들",
+      "size": "1536x1024",
+      "prompt": "Rural Korean village in present day: an elderly grandmother and grandfather getting into a white village taxi in front of a small village hall, carrying a shopping bag, the friendly taxi driver holding the door. Faces simplified, seen from the side."
+    },
+    {
+      "id": "AI-08",
+      "page": 61,
+      "use": "화상 수업으로 배우기",
+      "size": "1536x1024",
+      "prompt": "A Korean elementary school student at a desk at home talking happily with a friendly foreign English teacher shown on a laptop screen during a live video class, headset on, bright cozy room."
+    }
   ]
 }
