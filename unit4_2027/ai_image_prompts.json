@@ -56,6 +56,13 @@
       "use": "화상 수업으로 배우기",
       "size": "1536x1024",
       "prompt": "A Korean elementary school student at a desk at home talking happily with a friendly foreign English teacher shown on a laptop screen during a live video class, headset on, bright cozy room."
+    },
+    {
+      "id": "AI-09",
+      "page": 52,
+      "use": "옛날의 낙정나루 모습(재현 그림)",
+      "size": "1536x1024",
+      "prompt": "Reconstruction illustration of the old Nakjeong ferry crossing on the wide Nakdonggang River in Uiseong, Korea, around the 1960s-1970s, before a bridge was built: a large flat wooden ferry barge (georutbae) carrying an old 1960s Korean bus and a hand cart, several men in work clothes and straw hats pushing long bamboo poles to move it across calm water; villagers with bundles waiting on a sandy riverbank; on the far side a steep rocky cliff with a small traditional Korean pavilion (Gwansuru) on top among pine trees; low green mountains in the background; no bridge anywhere. Soft muted nostalgic colors, gentle textbook illustration style, clearly a drawing not a photograph."
     }
   ]
 }

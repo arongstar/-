@@ -19,7 +19,7 @@ PY
   size=${prompt##*SIZE=}; body=${prompt%SIZE=*}
   echo "▶ $id 생성 중 ($size)"
   codex exec --enable image_generation --skip-git-repo-check -s workspace-write \
-    "Use your image generation tool to create ONE image (size ${size}) from this prompt, then save the PNG file exactly at assets/ai/${id}.png in the current directory. Prompt: ${body}"
+    "Use your image generation tool to create ONE image (size ${size}) from this prompt, then save the PNG file exactly at assets/ai/${id}.png in the current directory. Prompt: ${body}" < /dev/null
   if [ ! -f "assets/ai/${id}.png" ]; then
     latest=$(find ~/.codex -name '*.png' -newer ai_image_prompts.json -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -d' ' -f2-)
     [ -n "$latest" ] && cp "$latest" "assets/ai/${id}.png"
