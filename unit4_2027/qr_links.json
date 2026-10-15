@@ -1,0 +1,37 @@
+[
+  {
+    "id": "qr_museum_vr",
+    "page": 51,
+    "label": "의성조문국박물관 사이버박물관 민속유물 전시관",
+    "url": "https://usc.go.kr/jmgmuseum/user/cyber/folk/depth2.do",
+    "status": "유지(직접 주소로 변환) — 의성조문국박물관 > 사이버박물관 > 민속유물 전시관(2026.10.12 접속 확인)"
+  },
+  {
+    "id": "qr_bus_route",
+    "page": 57,
+    "label": "의성군 버스 노선도",
+    "url": "https://www.usc.go.kr/ko/page.do?mnu_uid=604",
+    "status": "유지(직접 주소로 변환) — 의성군청 '의성군 버스노선도'(2026.10.12 접속 확인)"
+  },
+  {
+    "id": "qr_happybus",
+    "page": 58,
+    "label": "행복버스 운행 안내",
+    "url": "https://www.usc.go.kr/ko/page.do?mnu_uid=548",
+    "status": "교체 — 2026년판 m.site.naver.com/1yUqV는 '비활성 QR'. 의성군청 '행복버스'(사곡·비안·안평 운행 안내, 2026.10.12 접속 확인)"
+  },
+  {
+    "id": "qr_jangnal",
+    "page": 61,
+    "label": "의성장날 누리집",
+    "url": "https://esmall.cyso.co.kr/",
+    "status": "교체 — 2026년판 단축 주소가 의성군 문화관광 첫 화면으로 잘못 연결됨. 의성장날(경북 통합 쇼핑몰 '사이소' 안, 2026.10.12 접속 확인)"
+  },
+  {
+    "id": "qr_tv",
+    "page": 61,
+    "label": "의성TV",
+    "url": "https://www.youtube.com/@uiseongTV",
+    "status": "교체 — 2026년판 m.site.naver.com/1uK2W는 '비활성 QR'. 의성군 공식 유튜브 채널(2026.10.12 접속 확인)"
+  }
+]

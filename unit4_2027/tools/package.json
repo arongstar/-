@@ -1,0 +1,1 @@
+{ "name": "unit4-build", "private": true, "dependencies": { "@fontsource/jua": "^5", "@fontsource/noto-sans-kr": "^5" } }

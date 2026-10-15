@@ -1,0 +1,124 @@
+{
+  "style": "Warm, friendly illustration for a Korean elementary school (grade 3) social studies textbook. Soft pastel colors, clean outlines, simple background, gentle lighting. No text, no letters, no logos, no watermark. People drawn as simple friendly characters without realistic faces.",
+  "items": [
+    {
+      "id": "AI-01",
+      "page": 48,
+      "use": "부럼",
+      "size": "1536x1024",
+      "prompt": "Bureom nuts for Jeongwol Daeboreum: walnuts, peanuts, chestnuts and ginkgo nuts arranged in a round bamboo basket on a plain light background, top-down three-quarter view."
+    },
+    {
+      "id": "AI-02",
+      "page": 48,
+      "use": "달집태우기(오늘날, 안전하게)",
+      "size": "1536x1024",
+      "prompt": "Present-day Korean village festival on the first full moon night: a tall cone-shaped straw 'daljip' bonfire burning in an open riverside field, a large full moon in the sky, families watching from behind a rope barrier at a safe distance, a firefighter and a small fire truck standing by."
+    },
+    {
+      "id": "AI-03",
+      "page": 48,
+      "use": "쥐불놀이(옛날 모습)",
+      "size": "1536x1024",
+      "prompt": "Old-days Korean countryside at night in the 1960s: children in simple winter hanbok-style clothes swinging small tin cans with glowing embers on strings in empty winter rice paddies, making circles of light, full moon above, low thatched-roof houses in the distance. Nostalgic, past-time mood."
+    },
+    {
+      "id": "AI-04",
+      "page": 49,
+      "use": "단오 그네뛰기",
+      "size": "1536x1024",
+      "prompt": "Dano festival in the Joseon era: a young woman in a colorful hanbok swinging high on a tall traditional Korean swing (geune) hung from two tall wooden poles, villagers cheering below, early summer green trees."
+    },
+    {
+      "id": "AI-05",
+      "page": 49,
+      "use": "창포물에 머리 감기(수정: 실제로 머리를 감는 모습)",
+      "size": "1536x1024",
+      "prompt": "Dano festival custom in old Korea: a girl in hanbok kneeling and bending forward over a large wooden basin, her long black hair hanging down into water full of long green iris (changpo) leaves, while her mother pours changpo water over the girl's hair with a gourd dipper (bagaji) to wash it; another child waits with a cloth towel. Clearly the act of washing hair in the water. Outdoor courtyard of a traditional house, early summer."
+    },
+    {
+      "id": "AI-06",
+      "page": 60,
+      "use": "봉수대(고증)",
+      "size": "1024x1536",
+      "prompt": "Historically accurate Joseon-dynasty Korean beacon station (bongsudae) on a mountaintop: a raised stone platform with five round stone chimneys (yeonjo) in a straight row; white smoke rising from one chimney in daytime; a beacon guard (bongsugun) in Joseon soldier clothing with a felt hat standing beside it; distant mountain ridges. Educational, accurate, not fantasy."
+    },
+    {
+      "id": "AI-07",
+      "page": 58,
+      "use": "행복택시를 이용하는 주민들",
+      "size": "1536x1024",
+      "prompt": "Rural Korean village in present day: an elderly grandmother and grandfather getting into a white village taxi in front of a small village hall, carrying a shopping bag, the friendly taxi driver holding the door. Faces simplified, seen from the side."
+    },
+    {
+      "id": "AI-08",
+      "page": 61,
+      "use": "화상 수업으로 배우기",
+      "size": "1536x1024",
+      "prompt": "A Korean elementary school student at a desk at home talking happily with a friendly foreign English teacher shown on a laptop screen during a live video class, headset on, bright cozy room."
+    },
+    {
+      "id": "AI-09",
+      "page": 52,
+      "use": "옛날의 낙정나루 모습(재현 그림)",
+      "size": "1536x1024",
+      "prompt": "Reconstruction illustration of the old Nakjeong ferry crossing on the wide Nakdonggang River in Uiseong, Korea, around the 1960s-1970s, before a bridge was built: a large flat wooden ferry barge (georutbae) carrying an old 1960s Korean bus and a hand cart, several men in work clothes and straw hats pushing long bamboo poles to move it across calm water; villagers with bundles waiting on a sandy riverbank; on the far side a steep rocky cliff with a small traditional Korean pavilion (Gwansuru) on top among pine trees; low green mountains in the background; no bridge anywhere. Soft muted nostalgic colors, gentle textbook illustration style, clearly a drawing not a photograph."
+    },
+    {
+      "id": "AI-10",
+      "page": 48,
+      "use": "지신밟기",
+      "size": "1536x1024",
+      "prompt": "Jisinbalbgi folk ritual around the first full moon (Jeongwol Daeboreum) in an old Korean village: a pungmul farmers' band in white clothes with blue, red and yellow sashes and ribbon hats (sangmo), playing kkwaenggwari, janggu, buk and jing, parading into the yard of a traditional house; the host family offers food and makgeolli on a small low table; thatched and tiled roofs with light snow, cheerful mood."
+    },
+    {
+      "id": "AI-11",
+      "page": 49,
+      "use": "씨름(오늘날 의성 대회)",
+      "size": "1536x1024",
+      "prompt": "Present-day traditional Korean ssireum wrestling tournament held in Uiseong County, Korea: two wrestlers wearing red and blue satba cloth belts grappling on a round sand ring under a large white tent, a referee in white shirt, many spectators watching; behind them a large festival banner showing the Korean text '의성군' in big clear letters with a cute garlic mascot; autumn hills in the background."
+    },
+    {
+      "id": "AI-12",
+      "page": 49,
+      "use": "단심줄놀이",
+      "size": "1536x1024",
+      "prompt": "Dansimjul-nori, a traditional Korean group folk dance game: a tall wooden pole stands in the middle of a village yard with about twelve long strands of colorful cloth (red, blue, yellow, green, white) hanging from the top; people in hanbok each hold the end of a strand and dance around the pole in a circle, weaving the strands into a braided pattern down the pole; a pungmul drummer plays nearby; festive early-summer day."
+    },
+    {
+      "id": "AI-13",
+      "page": 50,
+      "use": "연날리기",
+      "size": "1536x1024",
+      "prompt": "Traditional Korean kite flying (yeonnalligi) around the Lunar New Year in old times: children and adults in winter hanbok flying rectangular Korean shield kites (bangpaeyeon) with a round hole in the center and diamond-shaped kites with long tails, holding wooden kite reels (eolle), over harvested rice paddies; clear winter blue sky, distant mountains and thatched-roof houses."
+    },
+    {
+      "id": "AI-14",
+      "page": 50,
+      "use": "씨름(옛날 모습)",
+      "size": "1536x1024",
+      "prompt": "Traditional Korean ssireum wrestling in the Joseon era, inspired by Kim Hong-do's genre paintings: two men in white hanbok gripping each other's satba belts in the middle, villagers in white clothes and gat hats sitting in a circle around them watching and cheering, a boy selling yeot taffy from a wooden box; grassy field under trees."
+    },
+    {
+      "id": "AI-15",
+      "page": 50,
+      "use": "의성가마싸움",
+      "size": "1536x1024",
+      "prompt": "Uiseong Gama-ssaum, a traditional Chuseok team game of old Korea: two teams of seodang schoolboys in white hanbok with braided hair push small decorated wooden palanquins (gama) mounted on four wooden wheels toward each other beside a stone stepping-bridge over a shallow stream in a small town; each team carries tall colorful banners and flags and tries to break the other team's palanquin or grab its flags; townspeople cheer from both banks; autumn."
+    },
+    {
+      "id": "AI-16",
+      "page": 59,
+      "use": "대구경북통합신공항(미래 상상도)",
+      "size": "1536x1024",
+      "prompt": "Imaginative future illustration of a new regional international airport planned in the countryside of Gyeongsangbuk-do, Korea: a modern passenger terminal with a gently curved roof, one long runway, a few airplanes at the gates and one taking off, surrounded by green hills, rice fields and a small river; new access roads and a railway line leading to the airport; bright daytime, bird's-eye view. Clearly a hopeful future concept drawing, not a photo."
+    },
+    {
+      "id": "AI-17",
+      "page": 59,
+      "use": "비행기와 구름",
+      "size": "1536x1024",
+      "prompt": "High-quality cute illustration for a children's textbook: a white passenger airplane with blue tail flying toward the upper right among several soft fluffy white clouds with light blue shading; clean simple shapes, isolated on a plain pure white background, no text, no logos."
+    }
+  ]
+}
