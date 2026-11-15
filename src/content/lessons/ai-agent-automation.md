@@ -15,7 +15,7 @@ materials:
 sites: [claude-code, claude-in-chrome, comet, claude, chatgpt]
 ---
 
-![교사 옆에서 AI 조수가 문서·엑셀·사진 파일을 폴더에 정리하고, 웹 브라우저를 클릭하는 모습](/images/ai-agent-automation/hero.jpg)
+![선생님이 노트북 앞에서 미소 짓고, 옆에서 AI 조수 로봇이 문서·엑셀·사진 파일을 폴더에 정리하는 모습](/images/ai-agent-automation/hero.jpg)
 
 > 📌 **이 교안은 2026년 11월 기준**으로 작성했어요. AI 도구는 화면, 요금제, 기능이 자주 바뀌니 연수 전에 각 서비스의 공식 안내를 한 번 더 확인해 주세요.
 
@@ -64,7 +64,7 @@ sites: [claude-code, claude-in-chrome, comet, claude, chatgpt]
 
 ## 2. 먼저 약속하기 — 에이전트 안전 수칙
 
-![교사가 자물쇠 방패를 들고 있고, AI 조수가 폴더를 열기 전에 손을 들어 허락을 구하는 모습](/images/ai-agent-automation/safety.jpg)
+![선생님이 자물쇠 방패를 들고 있고, AI 조수 로봇이 폴더를 든 채 손을 들어 허락을 구하는 모습](/images/ai-agent-automation/safety.jpg)
 
 에이전트는 실제로 파일을 바꾸고 웹에서 클릭을 하기 때문에, 챗봇보다 **조심할 것**이 더 많아요.
 
@@ -197,7 +197,7 @@ IMG_…, KakaoTalk_…, 스크린샷… 이름이 제각각인 사진을 학사�
 
 ## 4. 실습 ② AI 브라우저로 웹 업무 자동화
 
-![브라우저 안에서 AI 조수가 탭을 열고 양식을 채우며 여러 웹페이지의 정보를 비교표로 모으는 모습](/images/ai-agent-automation/browser.jpg)
+![선생님이 찻잔을 들고 놀란 표정으로 보는 가운데, 브라우저 안의 AI 조수 로봇이 여러 웹페이지 정보를 양식과 비교표로 모으는 모습](/images/ai-agent-automation/browser.jpg)
 
 AI 브라우저는 웹페이지를 **보고, 클릭하고, 입력하는** 에이전트예요. 오늘은 둘 중 하나를 골라 써요.
 
@@ -301,6 +301,8 @@ AI 브라우저로 **모은 정보**를, 클로드 코드로 **문서로 만드�
 ```
 
 ## 7. 마무리
+
+![선생님과 AI 조수 로봇이 하이파이브를 하고, 책상 위에 완성된 문서가 놓여 있는 모습](/images/ai-agent-automation/finish.jpg)
 
 - 챗봇은 **방법을 말해 주고**, 에이전트는 **일을 해 줍니다.**
 - 선생님의 역할은 **목표를 정확히 주고, 중요한 순간에 승인하고, 결과를 확인하는 것**이에요.
