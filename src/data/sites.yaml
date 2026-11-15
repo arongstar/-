@@ -164,3 +164,11 @@
   description: 여러 AI 모델로 이미지·영상·나레이션을 만드는 서비스. MCP 커넥터로 Claude와 연결하면 대화로 영상을 만들 수 있어요.
   use: 교사용
   note: 유료 크레딧이 들어요. 학생 사진·실존 인물 얼굴은 쓰지 말고, 학생 사용 전 이용약관 연령 기준을 확인하세요.
+
+- id: tpicks
+  name: 티픽스 (TPICKS)
+  url: https://tpicks.kr
+  category: 교사 커뮤니티·자료
+  description: 교실 웹도구, 교사가 만든 설치형 프로그램, 교사 커뮤니티, 계기교육 모음, PICK BOT과 학부모 답장 AI를 한곳에 모은 교사용 플랫폼.
+  use: 교사용
+  note: PICK BOT·학부모 답장 AI에 학생·학부모 개인정보를 넣지 마세요.

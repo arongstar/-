@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 230" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b7791f"/></marker></defs>
+  <rect width="960" height="230" rx="18" fill="#fffef8"/>
+  <g text-anchor="middle">
+    <g transform="translate(24,36)"><rect width="164" height="150" rx="16" fill="#fff" stroke="#e6d9a8" stroke-width="2"/><text x="82" y="44" font-size="30">🔍</text><text x="82" y="84" font-size="20" font-weight="800" fill="#1f2421">찾기</text><text x="82" y="110" font-size="13" fill="#5d655f">교실 도구·PICK BOT</text><text x="82" y="130" font-size="13" fill="#5d655f">계기교육 모아보기</text></g>
+    <g transform="translate(212,36)"><rect width="164" height="150" rx="16" fill="#fff" stroke="#e6d9a8" stroke-width="2"/><text x="82" y="44" font-size="30">▶️</text><text x="82" y="84" font-size="20" font-weight="800" fill="#1f2421">쓰기</text><text x="82" y="110" font-size="13" fill="#5d655f">웹도구는 바로 실행</text><text x="82" y="130" font-size="13" fill="#5d655f">프로그램은 설치</text></g>
+    <g transform="translate(400,36)"><rect width="164" height="150" rx="16" fill="#fff" stroke="#e6d9a8" stroke-width="2"/><text x="82" y="44" font-size="30">⭐</text><text x="82" y="84" font-size="20" font-weight="800" fill="#1f2421">모으기</text><text x="82" y="110" font-size="13" fill="#5d655f">즐겨찾기·나의 티픽스</text><text x="82" y="130" font-size="13" fill="#5d655f">(로그인 필요)</text></g>
+    <g transform="translate(588,36)"><rect width="164" height="150" rx="16" fill="#fff" stroke="#e6d9a8" stroke-width="2"/><text x="82" y="44" font-size="30">💬</text><text x="82" y="84" font-size="20" font-weight="800" fill="#1f2421">나누기</text><text x="82" y="110" font-size="13" fill="#5d655f">좋아요·댓글</text><text x="82" y="130" font-size="13" fill="#5d655f">수업 활용 사례 글</text></g>
+    <g transform="translate(776,36)"><rect width="160" height="150" rx="16" fill="#fff7d6" stroke="#b7791f" stroke-width="2.5"/><text x="80" y="44" font-size="30">🛠️</text><text x="80" y="84" font-size="20" font-weight="800" fill="#8a5a00">만들기</text><text x="80" y="110" font-size="13" fill="#5d655f">내가 만든 도구</text><text x="80" y="130" font-size="13" fill="#5d655f">올리고 PICK 받기</text></g>
+  </g>
+  <g stroke="#b7791f" stroke-width="3"><line x1="190" y1="111" x2="208" y2="111" marker-end="url(#a)"/><line x1="378" y1="111" x2="396" y2="111" marker-end="url(#a)"/><line x1="566" y1="111" x2="584" y2="111" marker-end="url(#a)"/><line x1="754" y1="111" x2="772" y2="111" marker-end="url(#a)"/></g>
+  <text x="480" y="214" text-anchor="middle" font-size="14" fill="#5d655f">쓰는 사람에서 시작해, 나누고 만드는 메이커로</text>
+</svg>
