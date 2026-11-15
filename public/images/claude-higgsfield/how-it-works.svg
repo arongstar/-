@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5d655f"/></marker></defs>
+  <rect width="960" height="300" rx="18" fill="#fbfaf6"/>
+  <g text-anchor="middle">
+    <rect x="24" y="70" width="170" height="160" rx="16" fill="#ffffff" stroke="#e2e0d8" stroke-width="2"/>
+    <text x="109" y="122" font-size="36">👨‍🏫</text>
+    <text x="109" y="160" font-size="20" font-weight="800" fill="#1f2421">선생님</text>
+    <text x="109" y="186" font-size="14" fill="#5d655f">"이런 영상이</text><text x="109" y="206" font-size="14" fill="#5d655f">필요해요"</text>
+
+    <rect x="248" y="50" width="210" height="200" rx="16" fill="#ffffff" stroke="#c96442" stroke-width="2.5"/>
+    <text x="353" y="92" font-size="21" font-weight="800" fill="#9a4a2e">Claude</text>
+    <text x="353" y="116" font-size="14" fill="#5d655f">기획·작가·감독</text>
+    <g font-size="14" fill="#1f2421"><text x="353" y="150">수업 목표 → 장면 구성</text><text x="353" y="174">대본·나레이션 쓰기</text><text x="353" y="198">프롬프트 다듬기</text><text x="353" y="222">예상 크레딧 계산</text></g>
+
+    <rect x="512" y="105" width="120" height="90" rx="45" fill="#2f6f5e"/>
+    <text x="572" y="146" font-size="20" font-weight="800" fill="#fff">MCP</text>
+    <text x="572" y="170" font-size="13" fill="#e3f0eb">연결 통로</text>
+
+    <rect x="686" y="50" width="250" height="200" rx="16" fill="#ffffff" stroke="#6d28d9" stroke-width="2.5"/>
+    <text x="811" y="92" font-size="21" font-weight="800" fill="#5b21b6">힉스필드</text>
+    <text x="811" y="116" font-size="14" fill="#5d655f">촬영·그림 스튜디오</text>
+    <g font-size="14" fill="#1f2421"><text x="811" y="150">이미지 생성 (캐릭터·포스터)</text><text x="811" y="174">영상 생성 (여러 AI 모델)</text><text x="811" y="198">한국어 나레이션·목소리</text><text x="811" y="222">크레딧 차감</text></g>
+  </g>
+  <g stroke="#5d655f" stroke-width="2.5" fill="none">
+    <line x1="196" y1="150" x2="244" y2="150" marker-end="url(#a)"/>
+    <line x1="460" y1="150" x2="508" y2="150" marker-start="url(#a)" marker-end="url(#a)"/>
+    <line x1="634" y1="150" x2="682" y2="150" marker-start="url(#a)" marker-end="url(#a)"/>
+  </g>
+  <text x="480" y="282" text-anchor="middle" font-size="14" fill="#5d655f">Claude 대화창에서 말로 시키면, Claude가 힉스필드 도구를 불러 이미지·영상을 만들어 돌려줘요</text>
+</svg>

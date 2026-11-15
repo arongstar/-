@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f6f5e"/></marker></defs>
+  <rect width="960" height="250" rx="18" fill="#fbfaf6"/>
+  <g text-anchor="middle">
+    <rect x="24" y="40" width="270" height="170" rx="16" fill="#e3f0eb" stroke="#2f6f5e" stroke-width="2"/>
+    <text x="159" y="82" font-size="15" font-weight="700" fill="#2f6f5e">1단계 · 크레딧 0</text>
+    <text x="159" y="118" font-size="23" font-weight="800" fill="#1f2421">텍스트로 기획</text>
+    <text x="159" y="150" font-size="14" fill="#5d655f">장면 구성·대본·프롬프트를</text><text x="159" y="172" font-size="14" fill="#5d655f">Claude와 충분히 다듬기</text>
+
+    <rect x="345" y="40" width="270" height="170" rx="16" fill="#fff4dc" stroke="#b7791f" stroke-width="2"/>
+    <text x="480" y="82" font-size="15" font-weight="700" fill="#8a5a00">2단계 · 크레딧 적게</text>
+    <text x="480" y="118" font-size="23" font-weight="800" fill="#1f2421">이미지로 확인</text>
+    <text x="480" y="150" font-size="14" fill="#5d655f">장면마다 첫 화면(키프레임)</text><text x="480" y="172" font-size="14" fill="#5d655f">이미지를 먼저 만들어 고르기</text>
+
+    <rect x="666" y="40" width="270" height="170" rx="16" fill="#fde8e8" stroke="#c53030" stroke-width="2"/>
+    <text x="801" y="82" font-size="15" font-weight="700" fill="#9b2c2c">3단계 · 크레딧 많이</text>
+    <text x="801" y="118" font-size="23" font-weight="800" fill="#1f2421">영상으로 완성</text>
+    <text x="801" y="150" font-size="14" fill="#5d655f">고른 이미지만 영상으로,</text><text x="801" y="172" font-size="14" fill="#5d655f">생성 전 예상 크레딧 확인</text>
+  </g>
+  <g stroke="#2f6f5e" stroke-width="3"><line x1="296" y1="125" x2="341" y2="125" marker-end="url(#a)"/><line x1="617" y1="125" x2="662" y2="125" marker-end="url(#a)"/></g>
+  <text x="480" y="236" text-anchor="middle" font-size="14" fill="#5d655f">핵심 원칙: 영상 &gt; 이미지 &gt; 텍스트 순으로 비싸요. 싼 단계에서 충분히 고친 뒤 다음 단계로!</text>
+</svg>
