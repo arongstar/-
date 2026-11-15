@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root { --bg:#f6f7fb; --card:#fff; --line:#e3e6ef; --text:#1f2430; --muted:#667085; --main:#3b5bdb; --soft:#edf2ff;
+          --good:#2f9e44; --good-soft:#ebfbee; --mid:#f08c00; --mid-soft:#fff4e6; --low:#e03131; --low-soft:#fff5f5; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif; font-size:16px; line-height:1.6; }
+  header { background:var(--main); color:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+  header h1 { font-size:20px; margin:0; }
+  header small { opacity:.85; }
+  main { max-width:1100px; margin:0 auto; padding:18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:16px; }
+  h2 { font-size:18px; margin:0 0 12px; }
+  label { font-weight:700; display:block; margin:12px 0 6px; }
+  select, textarea, input { width:100%; font:inherit; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; }
+  textarea { min-height:90px; resize:vertical; }
+  button { font:inherit; font-weight:700; border:0; border-radius:10px; padding:10px 16px; cursor:pointer; background:var(--main); color:#fff; }
+  button.ghost { background:#fff; color:var(--main); border:1px solid var(--main); }
+  button:disabled { opacity:.5; cursor:default; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .muted { color:var(--muted); font-size:14px; }
+  .stars { display:flex; gap:8px; flex-wrap:wrap; }
+  .stars button { background:#fff; color:var(--text); border:1px solid var(--line); }
+  .stars button.on { background:var(--soft); border-color:var(--main); color:var(--main); }
+  .rubric { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+  .rubric div { border-radius:10px; padding:8px 10px; font-size:14px; }
+  .lv-잘함 { background:var(--good-soft); color:var(--good); }
+  .lv-보통 { background:var(--mid-soft); color:var(--mid); }
+  .lv-노력 { background:var(--low-soft); color:var(--low); }
+  .badge { display:inline-block; font-size:13px; font-weight:700; padding:2px 10px; border-radius:999px; background:var(--soft); color:var(--main); }
+  .tabs { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+  .tabs button { background:#fff; color:var(--muted); border:1px solid var(--line); }
+  .tabs button.on { background:var(--main); color:#fff; border-color:var(--main); }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { border-bottom:1px solid var(--line); padding:8px; text-align:left; vertical-align:top; }
+  th { background:var(--soft); white-space:nowrap; }
+  td:nth-child(1), td:nth-child(2) { white-space:nowrap; }
+  button { white-space:nowrap; }
+  .lvbtns { display:flex; gap:4px; flex-wrap:wrap; }
+  .lvbtns button { padding:4px 8px; font-size:13px; background:#fff; color:var(--muted); border:1px solid var(--line); }
+  .lvbtns button.on.l0 { background:var(--good); color:#fff; border-color:var(--good); }
+  .lvbtns button.on.l1 { background:var(--mid); color:#fff; border-color:var(--mid); }
+  .lvbtns button.on.l2 { background:var(--low); color:#fff; border-color:var(--low); }
+  td textarea { min-height:56px; font-size:14px; }
+  .missing td { color:var(--muted); background:#fafafa; }
+  .matrix td, .matrix th { text-align:center; }
+  .cell { display:inline-block; min-width:56px; padding:2px 6px; border-radius:6px; font-size:13px; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#1f2430; color:#fff; padding:10px 18px; border-radius:999px; display:none; }
+  .history { border-left:4px solid var(--soft); padding:6px 12px; margin:10px 0; }
+  .feedback { background:var(--soft); border-radius:10px; padding:8px 12px; margin-top:6px; }
+  .scroll { overflow-x:auto; }
+  @media (max-width:700px) { .rubric { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header><h1 id="title">배움 기록장</h1><small id="who">불러오는 중…</small></header>
+<main id="app"><div class="card">불러오는 중이에요…</div></main>
+<div class="toast" id="toast"></div>
+
+<script>
+// google.script.run 을 Promise 로 쓰기
+function call(fn) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  return new Promise(function (resolve, reject) {
+    google.script.run.withSuccessHandler(resolve).withFailureHandler(function (e) { reject(e); })[fn].apply(null, args);
+  });
+}
+function el(tag, attrs, children) {
+  var e = document.createElement(tag);
+  Object.keys(attrs || {}).forEach(function (k) {
+    if (k === 'text') e.textContent = attrs[k];
+    else if (k === 'class') e.className = attrs[k];
+    else if (k.indexOf('on') === 0) e.addEventListener(k.slice(2), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  });
+  (children || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return e;
+}
+function toast(msg) {
+  var t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toast.t); toast.t = setTimeout(function () { t.style.display = 'none'; }, 2200);
+}
+function fail(e) { toast('⚠ ' + (e && e.message ? e.message : e)); }
+var app = document.getElementById('app');
+var STARS = { 1: '★ 조금 알겠어요', 2: '★★ 대부분 알겠어요', 3: '★★★ 잘 알고 설명할 수 있어요' };
+function lvClass(lv) { return 'lv-' + (lv || '').split(' ')[0]; }
+
+call('whoAmI').then(function (me) {
+  document.getElementById('title').textContent = (me.className ? me.className + ' ' : '') + '배움 기록장';
+  if (me.role === 'teacher') { document.getElementById('who').textContent = '교사 화면 · ' + me.email; teacherView(); }
+  else if (me.role === 'student') { document.getElementById('who').textContent = me.number + '번 ' + me.name; studentView(); }
+  else {
+    document.getElementById('who').textContent = me.email || '로그인 정보 없음';
+    app.innerHTML = '';
+    app.appendChild(el('div', { class: 'card' }, [
+      el('h2', { text: '등록되지 않은 계정이에요' }),
+      el('p', { text: '학교 구글 계정(경북AI배움터 계정)으로 로그인했는지 확인하고, 그래도 안 되면 선생님께 알려 주세요.' }),
+      el('p', { class: 'muted', text: '지금 계정: ' + (me.email || '알 수 없음') }),
+    ]));
+  }
+}).catch(fail);
+
+/* ================= 학생 화면 ================= */
+function studentView() {
+  call('getStudentData').then(function (d) {
+    app.innerHTML = '';
+    var selfValue = 0;
+    var lessonSel = el('select', {}, d.lessons.map(function (l) {
+      return el('option', { value: l.id, text: l.id + '차시 · ' + l.topic + (l.date ? ' (' + l.date + ')' : '') });
+    }));
+    var rubricBox = el('div', { class: 'rubric' });
+    var learned = el('textarea', { placeholder: '오늘 새롭게 알게 된 것, 할 수 있게 된 것을 적어요.' });
+    var hard = el('textarea', { placeholder: '어려웠던 점이나 더 알고 싶은 점을 적어요. (없으면 비워도 돼요)' });
+    var stars = el('div', { class: 'stars' });
+    [1, 2, 3].forEach(function (n) {
+      stars.appendChild(el('button', { type: 'button', text: STARS[n], 'data-n': n, onclick: function () {
+        selfValue = n; [].forEach.call(stars.children, function (b) { b.classList.toggle('on', Number(b.dataset.n) === n); });
+      } }));
+    });
+    function fill() {
+      var l = d.lessons.filter(function (x) { return x.id === lessonSel.value; })[0];
+      rubricBox.innerHTML = '';
+      if (!l) return;
+      rubricBox.appendChild(el('div', { class: 'muted', style: 'grid-column:1/-1', text: '성취기준 ' + l.standard }));
+      ['잘함', '보통', '노력 필요'].forEach(function (lv) { rubricBox.appendChild(el('div', { class: lvClass(lv), text: lv + ': ' + l.rubric[lv] })); });
+      var mine = d.records.filter(function (r) { return r.lessonId === l.id; })[0];
+      learned.value = mine ? mine.learned : ''; hard.value = mine ? mine.hard : '';
+      selfValue = mine ? mine.self : 0;
+      [].forEach.call(stars.children, function (b) { b.classList.toggle('on', Number(b.dataset.n) === selfValue); });
+    }
+    lessonSel.addEventListener('change', fill);
+    var submit = el('button', { text: '기록 저장하기', onclick: function () {
+      submit.disabled = true;
+      call('submitReflection', lessonSel.value, learned.value, hard.value, selfValue)
+        .then(function (r) { toast(r.updated ? '고쳐 썼어요!' : '저장했어요!'); studentView(); })
+        .catch(function (e) { fail(e); submit.disabled = false; });
+    } });
+
+    if (!d.lessons.length) app.appendChild(el('div', { class: 'card', text: '지금 기록할 차시가 없어요. 선생님이 차시를 열면 기록할 수 있어요.' }));
+    else app.appendChild(el('div', { class: 'card' }, [
+      el('h2', { text: '✏️ 오늘의 배움 기록' }),
+      el('label', { text: '차시' }), lessonSel, rubricBox,
+      el('label', { text: '배운 점' }), learned,
+      el('label', { text: '어려운 점·더 알고 싶은 점' }), hard,
+      el('label', { text: '스스로 평가하기' }), stars,
+      el('div', { class: 'row', style: 'margin-top:14px' }, [submit, el('span', { class: 'muted', text: '같은 차시에 다시 저장하면 고쳐 써져요.' })]),
+    ]));
+    fill();
+
+    var hist = el('div', { class: 'card' }, [el('h2', { text: '📚 나의 배움 기록 (' + d.records.length + ')' })]);
+    if (!d.records.length) hist.appendChild(el('p', { class: 'muted', text: '아직 기록이 없어요.' }));
+    d.records.slice().reverse().forEach(function (r) {
+      hist.appendChild(el('div', { class: 'history' }, [
+        el('div', { class: 'row' }, [el('span', { class: 'badge', text: r.lessonId + '차시' }), el('span', { class: 'muted', text: r.submittedAt + ' · ' + (STARS[r.self] || '') })]),
+        el('div', { text: '배운 점: ' + r.learned }),
+        r.hard ? el('div', { class: 'muted', text: '어려운 점: ' + r.hard }) : null,
+        (r.level || r.feedback) ? el('div', { class: 'feedback' }, [
+          r.level ? el('span', { class: 'cell ' + lvClass(r.level), text: r.level }) : null, ' ',
+          el('span', { text: '선생님: ' + (r.feedback || '') }),
+        ]) : el('div', { class: 'muted', text: '선생님 피드백을 기다리고 있어요.' }),
+      ]));
+    });
+    app.appendChild(hist);
+  }).catch(fail);
+}
+
+/* ================= 교사 화면 ================= */
+var T = null, tab = 'lesson', curLesson = null, curStudent = null;
+function teacherView() {
+  call('getTeacherData').then(function (d) { T = d; if (!curLesson && d.lessons.length) curLesson = d.lessons[d.lessons.length - 1].id; if (!curStudent && d.students.length) curStudent = d.students[0].email; renderTeacher(); }).catch(fail);
+}
+function renderTeacher() {
+  app.innerHTML = '';
+  var tabs = el('div', { class: 'tabs' });
+  [['lesson', '차시별 평가'], ['student', '학생별 누적'], ['matrix', '성취기준 현황']].forEach(function (t) {
+    tabs.appendChild(el('button', { text: t[1], class: tab === t[0] ? 'on' : '', onclick: function () { tab = t[0]; renderTeacher(); } }));
+  });
+  tabs.appendChild(el('button', { text: '새로고침', class: 'ghost', onclick: teacherView }));
+  app.appendChild(tabs);
+  if (tab === 'lesson') lessonTab(); else if (tab === 'student') studentTab(); else matrixTab();
+}
+function recOf(email, lessonId) {
+  return T.records.filter(function (r) { return r.email.toLowerCase() === email && r.lessonId === lessonId; })[0];
+}
+function levelButtons(rec, onPick) {
+  var box = el('div', { class: 'lvbtns' });
+  T.levels.forEach(function (lv, i) {
+    box.appendChild(el('button', { type: 'button', text: lv, class: 'l' + i + (rec.level === lv ? ' on' : ''), onclick: function () {
+      rec._level = rec._level === lv ? '' : lv;
+      [].forEach.call(box.children, function (b, j) { b.classList.toggle('on', T.levels[j] === rec._level); });
+      onPick && onPick();
+    } }));
+  });
+  rec._level = rec.level;
+  return box;
+}
+function lessonTab() {
+  var sel = el('select', { onchange: function () { curLesson = sel.value; renderTeacher(); } }, T.lessons.map(function (l) {
+    var o = el('option', { value: l.id, text: l.id + '차시 · ' + l.topic + (l.open ? '' : ' (닫힘)') }); if (l.id === curLesson) o.selected = true; return o;
+  }));
+  var l = T.lessons.filter(function (x) { return x.id === curLesson; })[0];
+  var card = el('div', { class: 'card' }, [el('h2', { text: '차시별 평가' }), sel]);
+  if (!l) { card.appendChild(el('p', { class: 'muted', text: '차시 시트에 차시를 먼저 추가해 주세요.' })); app.appendChild(card); return; }
+  var submitted = T.students.filter(function (s) { return recOf(s.email, l.id); }).length;
+  card.appendChild(el('p', { class: 'muted', text: '성취기준 ' + l.standard + ' · 제출 ' + submitted + '/' + T.students.length + '명' }));
+  var rub = el('div', { class: 'rubric' });
+  T.levels.forEach(function (lv) { rub.appendChild(el('div', { class: lvClass(lv), text: lv + ': ' + l.rubric[lv] })); });
+  card.appendChild(rub);
+  var table = el('table', {}, [el('tr', {}, ['번호', '이름', '배운 점 / 어려운 점', '자기평가', '교사 평가', '피드백', ''].map(function (h) { return el('th', { text: h }); }))]);
+  T.students.forEach(function (s) {
+    var r = recOf(s.email, l.id);
+    if (!r) { table.appendChild(el('tr', { class: 'missing' }, [el('td', { text: s.number }), el('td', { text: s.name }), el('td', { colspan: 5, text: '아직 제출하지 않았어요' })])); return; }
+    var fb = el('textarea', {}); fb.value = r.feedback;
+    var save = el('button', { text: '저장', onclick: function () {
+      save.disabled = true;
+      call('saveEvaluation', r.id, r._level, fb.value).then(function () { r.level = r._level; r.feedback = fb.value; toast(s.name + ' 평가를 저장했어요'); save.disabled = false; })
+        .catch(function (e) { fail(e); save.disabled = false; });
+    } });
+    table.appendChild(el('tr', {}, [
+      el('td', { text: s.number }), el('td', { text: s.name }),
+      el('td', {}, [el('div', { text: r.learned }), r.hard ? el('div', { class: 'muted', text: '😥 ' + r.hard }) : null]),
+      el('td', { text: '★'.repeat(r.self) }), el('td', {}, [levelButtons(r)]), el('td', {}, [fb]), el('td', {}, [save]),
+    ]));
+  });
+  card.appendChild(el('div', { class: 'scroll' }, [table]));
+  app.appendChild(card);
+}
+function studentTab() {
+  var sel = el('select', { onchange: function () { curStudent = sel.value; renderTeacher(); } }, T.students.map(function (s) {
+    var o = el('option', { value: s.email, text: s.number + '번 ' + s.name }); if (s.email === curStudent) o.selected = true; return o;
+  }));
+  var s = T.students.filter(function (x) { return x.email === curStudent; })[0];
+  var card = el('div', { class: 'card' }, [el('h2', { text: '학생별 누적 기록' }), sel]);
+  if (!s) { app.appendChild(card); return; }
+  var recs = T.records.filter(function (r) { return r.email.toLowerCase() === s.email; });
+  var cnt = {}; T.levels.forEach(function (lv) { cnt[lv] = recs.filter(function (r) { return r.level === lv; }).length; });
+  var avg = recs.length ? (recs.reduce(function (a, r) { return a + r.self; }, 0) / recs.length).toFixed(1) : '-';
+  card.appendChild(el('p', {}, [
+    el('span', { class: 'badge', text: '기록 ' + recs.length + '/' + T.lessons.length + '차시' }), ' ',
+    el('span', { class: 'badge', text: '자기평가 평균 ' + avg }), ' ',
+    el('span', { class: 'cell lv-잘함', text: '잘함 ' + cnt['잘함'] }), ' ',
+    el('span', { class: 'cell lv-보통', text: '보통 ' + cnt['보통'] }), ' ',
+    el('span', { class: 'cell lv-노력', text: '노력 필요 ' + cnt['노력 필요'] }),
+  ]));
+  T.lessons.forEach(function (l) {
+    var r = recOf(s.email, l.id);
+    card.appendChild(el('div', { class: 'history' }, [
+      el('div', { class: 'row' }, [el('span', { class: 'badge', text: l.id + '차시' }), el('span', { class: 'muted', text: l.standard + ' ' + l.topic })]),
+      r ? el('div', { text: '배운 점: ' + r.learned + (r.hard ? ' / 어려운 점: ' + r.hard : '') }) : el('div', { class: 'muted', text: '미제출' }),
+      r && (r.level || r.feedback) ? el('div', { class: 'feedback' }, [r.level ? el('span', { class: 'cell ' + lvClass(r.level), text: r.level }) : null, ' ' + (r.feedback || '')]) : null,
+    ]));
+  });
+  // 평가 근거 모아보기 (과세특 초안 재료)
+  var lines = T.lessons.map(function (l) {
+    var r = recOf(s.email, l.id);
+    return r && r.level ? '- ' + l.standard + ' ' + l.topic + ': ' + r.level + (r.feedback ? ' (' + r.feedback + ')' : '') + ' / 학생 기록: ' + r.learned : null;
+  }).filter(Boolean);
+  var area = el('textarea', { readonly: 'readonly', style: 'min-height:140px' }); area.value = lines.join('\n');
+  card.appendChild(el('label', { text: '평가 근거 모아보기 (복사해서 과세특 초안 재료로)' }));
+  card.appendChild(area);
+  card.appendChild(el('button', { class: 'ghost', text: '복사하기', onclick: function () { area.select(); document.execCommand('copy'); toast('복사했어요'); } }));
+  app.appendChild(card);
+}
+function matrixTab() {
+  var card = el('div', { class: 'card' }, [el('h2', { text: '성취기준 현황' }), el('p', { class: 'muted', text: '칸의 색: 교사 평가 · 숫자: 자기평가(★)' })]);
+  var head = el('tr', {}, [el('th', { text: '번호' }), el('th', { text: '이름' })].concat(T.lessons.map(function (l) { return el('th', { text: l.id + '차시\n' + l.standard }); })));
+  var table = el('table', { class: 'matrix' }, [head]);
+  T.students.forEach(function (s) {
+    table.appendChild(el('tr', {}, [el('td', { text: s.number }), el('td', { text: s.name })].concat(T.lessons.map(function (l) {
+      var r = recOf(s.email, l.id);
+      if (!r) return el('td', { class: 'muted', text: '–' });
+      return el('td', {}, [el('span', { class: 'cell ' + (r.level ? lvClass(r.level) : ''), text: (r.level || '미평가') + ' ★' + r.self })]);
+    }))));
+  });
+  card.appendChild(el('div', { class: 'scroll' }, [table]));
+  app.appendChild(card);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root { --bg:#f5f7f6; --line:#dfe5e2; --text:#1d2622; --muted:#66736d; --ok:#2f9e44; --ok-soft:#ebfbee; --out:#e8590c; --out-soft:#fff4e6; --main:#1c7c54; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif; }
+  header { background:var(--main); color:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  header h1 { margin:0; font-size:22px; }
+  main { max-width:1100px; margin:0 auto; padding:18px; }
+  .summary { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .pill { background:#fff; border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-weight:700; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+  .dev { border:2px solid var(--line); border-radius:16px; padding:16px; background:#fff; cursor:pointer; text-align:left; font:inherit; }
+  .dev b { font-size:24px; display:block; }
+  .dev.in { border-color:var(--ok); background:var(--ok-soft); }
+  .dev.out { border-color:var(--out); background:var(--out-soft); }
+  .dev .st { font-weight:700; margin-top:4px; }
+  .dev.in .st { color:var(--ok); } .dev.out .st { color:var(--out); }
+  .dev small { color:var(--muted); display:block; margin-top:2px; }
+  dialog { border:0; border-radius:18px; padding:22px; width:min(360px,92vw); }
+  dialog::backdrop { background:rgba(0,0,0,.45); }
+  dialog h2 { margin:0 0 10px; }
+  .num { font-size:28px; width:100%; text-align:center; padding:10px; border:2px solid var(--line); border-radius:12px; }
+  .row { display:flex; gap:8px; margin-top:14px; }
+  button.act { flex:1; font:inherit; font-weight:700; border:0; border-radius:12px; padding:12px; color:#fff; background:var(--main); cursor:pointer; }
+  button.cancel { background:#adb5bd; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-top:18px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  td, th { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#1d2622; color:#fff; padding:10px 18px; border-radius:999px; display:none; }
+</style>
+</head>
+<body>
+<header><h1 id="title">태블릿 대여·반납</h1><button class="act" style="flex:none;white-space:nowrap" onclick="load()">새로고침</button></header>
+<main>
+  <div class="summary" id="summary"></div>
+  <div class="grid" id="grid">불러오는 중…</div>
+  <div class="card" id="logCard" hidden><h2 style="margin-top:0">최근 기록 (교사만 보여요)</h2><table id="log"></table></div>
+</main>
+<dialog id="dlg">
+  <h2 id="dlgTitle"></h2>
+  <p id="dlgText"></p>
+  <input class="num" id="num" inputmode="numeric" maxlength="2" placeholder="번호">
+  <div class="row"><button class="act cancel" onclick="dlg.close()">취소</button><button class="act" id="ok">확인</button></div>
+</dialog>
+<div class="toast" id="toast"></div>
+<script>
+function call(fn) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  return new Promise(function (res, rej) { google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn].apply(null, args); });
+}
+function toast(m) { var t = document.getElementById('toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () { t.style.display = 'none'; }, 2200); }
+var dlg = document.getElementById('dlg'), num = document.getElementById('num'), current = null;
+function render(b) {
+  document.getElementById('title').textContent = (b.className ? b.className + ' ' : '') + '태블릿 대여·반납';
+  var out = b.devices.filter(function (d) { return d.out; });
+  var sum = document.getElementById('summary'); sum.innerHTML = '';
+  [['전체 ' + b.devices.length + '대'], ['보관 중 ' + (b.devices.length - out.length) + '대'], ['대여 중 ' + out.length + '대']].forEach(function (t) {
+    var s = document.createElement('span'); s.className = 'pill'; s.textContent = t[0]; sum.appendChild(s);
+  });
+  var grid = document.getElementById('grid'); grid.innerHTML = '';
+  b.devices.forEach(function (d) {
+    var btn = document.createElement('button'); btn.className = 'dev ' + (d.out ? 'out' : 'in');
+    var name = document.createElement('b'); name.textContent = d.id;
+    var st = document.createElement('div'); st.className = 'st'; st.textContent = d.out ? d.who + '번 사용 중' : '보관 중';
+    var sm = document.createElement('small'); sm.textContent = d.out ? d.since + '부터' : (d.memo || '눌러서 빌리기');
+    btn.appendChild(name); btn.appendChild(st); btn.appendChild(sm);
+    btn.onclick = function () { open(d); };
+    grid.appendChild(btn);
+  });
+  var lc = document.getElementById('logCard'); lc.hidden = !b.isTeacher;
+  if (b.isTeacher) {
+    var tbl = document.getElementById('log'); tbl.innerHTML = '<tr><th>시각</th><th>기기</th><th>구분</th><th>번호</th></tr>';
+    b.log.forEach(function (l) {
+      var tr = document.createElement('tr');
+      [l.at, l.id, l.type, l.who + '번'].forEach(function (v) { var td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+      tbl.appendChild(tr);
+    });
+  }
+}
+function open(d) {
+  current = d;
+  document.getElementById('dlgTitle').textContent = d.id + (d.out ? ' 반납하기' : ' 빌리기');
+  document.getElementById('dlgText').textContent = d.out ? d.who + '번이 쓰고 있어요. 반납할까요?' : '내 번호를 입력해 주세요.';
+  num.style.display = d.out ? 'none' : 'block'; num.value = '';
+  dlg.showModal(); if (!d.out) num.focus();
+}
+document.getElementById('ok').onclick = function () {
+  var p = current.out ? call('giveBack', current.id) : call('rent', current.id, num.value);
+  p.then(function (b) { dlg.close(); toast(current.out ? '반납했어요' : '빌렸어요'); render(b); })
+   .catch(function (e) { toast('⚠ ' + (e.message || e)); });
+};
+num.addEventListener('keydown', function (e) { if (e.key === 'Enter') document.getElementById('ok').click(); });
+function load() { call('getBoard').then(render).catch(function (e) { toast('⚠ ' + (e.message || e)); }); }
+load();
+</script>
+</body>
+</html>

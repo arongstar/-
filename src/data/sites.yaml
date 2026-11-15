@@ -172,3 +172,11 @@
   description: 교실 웹도구, 교사가 만든 설치형 프로그램, 교사 커뮤니티, 계기교육 모음, PICK BOT과 학부모 답장 AI를 한곳에 모은 교사용 플랫폼.
   use: 교사용
   note: PICK BOT·학부모 답장 AI에 학생·학부모 개인정보를 넣지 마세요.
+
+- id: apps-script
+  name: 구글 Apps Script
+  url: https://script.google.com
+  category: 코딩·SW
+  description: 구글 시트·문서·드라이브를 자동으로 다루는 구글의 무료 코딩 도구. 화면을 붙여 '웹 앱'으로 배포하면 우리 반 전용 앱을 만들 수 있어요.
+  use: 교사용
+  note: 학교 구글 계정으로 만들고, 시트 공유는 '나만', 접근은 우리 학교 도메인으로 제한하세요.

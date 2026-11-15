@@ -132,6 +132,8 @@ npm run dev
 
 ## 폴더 구조
 
+- `apps-script/` : Apps Script 웹앱 4종의 원본 코드와 테스트. 코드를 고친 뒤 `python3 apps-script/package.py` 로 내려받기용 zip 을 다시 만들고, `node apps-script/test/test-B.cjs` 처럼 테스트할 수 있어요.
+
 ```
 src/content/lessons/   교안 (.md 파일 하나 = 교안 하나)
 src/data/sites.yaml    사이트 모음

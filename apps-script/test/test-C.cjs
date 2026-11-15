@@ -1,0 +1,17 @@
+const assert = require('assert');
+const { load } = require('./gas-mock.cjs');
+const g = load(__dirname + '/../C-observation/Code.gs');
+g.call('setup');
+g.ss.getSheetByName('학생').appendRow([1, '김하늘']);
+g.ss.getSheetByName('성취기준').appendRow(['[6국01-07]', '절차와 규칙을 지키고 타당한 근거를 제시하며 토론한다.', '근거 제시/규칙 지키기/반론']);
+let d = g.call('getData');
+assert.equal(d.standards[0].points.length, 3);
+assert.throws(() => g.call('addObservation', '9', '[6국01-07]', '잘함', ''), /번호/);
+assert.throws(() => g.call('addObservation', '1', 'X', '잘함', ''), /성취기준/);
+assert.throws(() => g.call('addObservation', '1', '[6국01-07]', '최고', ''), /수준/);
+const o = g.call('addObservation', '1', '[6국01-07]', '잘함', '근거 제시');
+assert.equal(g.call('getData').obs.length, 1);
+assert.equal(g.call('deleteObservation', o.id), true);
+assert.equal(g.call('getData').obs.length, 0);
+assert.throws(() => g.as('other@school.kr').call('getData'), /만든 선생님/);
+console.log('C: 모든 서버 테스트 통과');
