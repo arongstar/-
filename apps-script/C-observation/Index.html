@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root { --bg:#f7f5fb; --line:#e4dff0; --text:#221f2b; --muted:#6b6577; --main:#6741d9; --soft:#f3f0ff;
+          --good:#2f9e44; --good-soft:#ebfbee; --mid:#f08c00; --mid-soft:#fff4e6; --low:#e03131; --low-soft:#fff5f5; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif; line-height:1.55; }
+  header { background:var(--main); color:#fff; padding:12px 18px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:space-between; }
+  header h1 { margin:0; font-size:20px; }
+  main { max-width:1100px; margin:0 auto; padding:16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
+  select, textarea { width:100%; font:inherit; padding:10px; border:1px solid var(--line); border-radius:10px; }
+  textarea { min-height:70px; }
+  .muted { color:var(--muted); font-size:14px; }
+  .tabs { display:flex; gap:6px; }
+  .tabs button, .chip, .lv { font:inherit; border:1px solid var(--line); background:#fff; border-radius:10px; padding:8px 14px; cursor:pointer; font-weight:700; color:var(--muted); }
+  .tabs button.on { background:#fff; color:var(--main); }
+  header .tabs button { background:transparent; color:#fff; border-color:rgba(255,255,255,.5); }
+  header .tabs button.on { background:#fff; color:var(--main); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:8px; margin-top:10px; }
+  .stu { font:inherit; border:2px solid var(--line); background:#fff; border-radius:12px; padding:10px 6px; cursor:pointer; text-align:center; position:relative; }
+  .stu b { display:block; font-size:20px; }
+  .stu.sel { border-color:var(--main); background:var(--soft); }
+  .stu.l0 { box-shadow: inset 0 -5px 0 var(--good); } .stu.l1 { box-shadow: inset 0 -5px 0 var(--mid); } .stu.l2 { box-shadow: inset 0 -5px 0 var(--low); }
+  .cnt { position:absolute; top:4px; right:6px; font-size:12px; color:var(--muted); }
+  .lvrow { display:flex; gap:8px; margin:10px 0; flex-wrap:wrap; }
+  .lv.on.l0 { background:var(--good); color:#fff; border-color:var(--good); }
+  .lv.on.l1 { background:var(--mid); color:#fff; border-color:var(--mid); }
+  .lv.on.l2 { background:var(--low); color:#fff; border-color:var(--low); }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .chip { font-weight:500; padding:4px 10px; font-size:14px; }
+  .save { font:inherit; font-weight:700; border:0; background:var(--main); color:#fff; border-radius:10px; padding:10px 18px; cursor:pointer; }
+  .item { border-left:4px solid var(--line); padding:4px 10px; margin:8px 0; display:flex; justify-content:space-between; gap:8px; }
+  .item.l0 { border-color:var(--good); } .item.l1 { border-color:var(--mid); } .item.l2 { border-color:var(--low); }
+  .del { font:inherit; border:0; background:none; color:var(--low); cursor:pointer; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#221f2b; color:#fff; padding:10px 18px; border-radius:999px; display:none; }
+</style>
+</head>
+<body>
+<header><h1>수업 관찰 체크</h1><div class="tabs"><button class="on" data-t="check">관찰하기</button><button data-t="student">학생별 모아보기</button></div></header>
+<main id="app">불러오는 중…</main>
+<div class="toast" id="toast"></div>
+<script>
+function call(fn) { var a = [].slice.call(arguments, 1); return new Promise(function (ok, ng) { google.script.run.withSuccessHandler(ok).withFailureHandler(ng)[fn].apply(null, a); }); }
+function el(tag, attrs, kids) {
+  var e = document.createElement(tag);
+  Object.keys(attrs || {}).forEach(function (k) {
+    if (k === 'text') e.textContent = attrs[k]; else if (k === 'class') e.className = attrs[k];
+    else if (k.indexOf('on') === 0) e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]);
+  });
+  (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return e;
+}
+function toast(m) { var t = document.getElementById('toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () { t.style.display = 'none'; }, 2000); }
+var D = null, tab = 'check', code = null, picked = null, level = null, viewStu = null;
+var app = document.getElementById('app');
+document.querySelectorAll('header .tabs button').forEach(function (b) {
+  b.onclick = function () { tab = b.dataset.t; document.querySelectorAll('header .tabs button').forEach(function (x) { x.classList.toggle('on', x === b); }); render(); };
+});
+function lvIdx(lv) { return D.levels.indexOf(lv); }
+function latest(num, c) { var o = D.obs.filter(function (x) { return x.number === num && x.code === c; }); return o[o.length - 1]; }
+call('getData').then(function (d) { D = d; code = d.standards.length ? d.standards[0].code : null; viewStu = d.students.length ? d.students[0].number : null; render(); })
+  .catch(function (e) { app.textContent = '⚠ ' + (e.message || e); });
+
+function render() { app.innerHTML = ''; if (tab === 'check') checkTab(); else studentTab(); }
+
+function checkTab() {
+  if (!D.standards.length || !D.students.length) { app.appendChild(el('div', { class: 'card', text: '학생 시트와 성취기준 시트를 먼저 채워 주세요.' })); return; }
+  var std = D.standards.filter(function (s) { return s.code === code; })[0];
+  var sel = el('select', { onchange: function () { code = sel.value; picked = null; render(); } }, D.standards.map(function (s) {
+    var o = el('option', { value: s.code, text: s.code + ' ' + s.text }); if (s.code === code) o.selected = true; return o;
+  }));
+  var grid = el('div', { class: 'grid' });
+  D.students.forEach(function (s) {
+    var last = latest(s.number, code), n = D.obs.filter(function (x) { return x.number === s.number && x.code === code; }).length;
+    grid.appendChild(el('button', { class: 'stu' + (picked === s.number ? ' sel' : '') + (last ? ' l' + lvIdx(last.level) : ''), onclick: function () { picked = s.number; level = null; render(); } },
+      [el('b', { text: s.number }), el('span', { text: s.name }), n ? el('span', { class: 'cnt', text: n + '회' }) : null]));
+  });
+  app.appendChild(el('div', { class: 'card' }, [sel, el('p', { class: 'muted', text: '관찰 포인트: ' + (std.points.join(' · ') || '-') + '   (아래 색 띠: 가장 최근 관찰 수준)' }), grid]));
+
+  if (picked) {
+    var stu = D.students.filter(function (s) { return s.number === picked; })[0];
+    var memo = el('textarea', { placeholder: '관찰한 사실을 짧게 적어요. 예) 반대 측 근거를 메모하며 듣고 질문함' });
+    var lvrow = el('div', { class: 'lvrow' });
+    D.levels.forEach(function (lv, i) {
+      lvrow.appendChild(el('button', { class: 'lv l' + i, text: lv, onclick: function () { level = lv; [].forEach.call(lvrow.children, function (b, j) { b.classList.toggle('on', j === i); }); } }));
+    });
+    var chips = el('div', { class: 'chips' }, std.points.map(function (p) {
+      return el('button', { class: 'chip', text: '+ ' + p, onclick: function () { memo.value = (memo.value ? memo.value + ', ' : '') + p; } });
+    }));
+    var save = el('button', { class: 'save', text: '기록하기', onclick: function () {
+      save.disabled = true;
+      call('addObservation', picked, code, level, memo.value).then(function (o) { D.obs.push(o); toast(stu.name + ' 기록 완료'); picked = null; render(); })
+        .catch(function (e) { toast('⚠ ' + (e.message || e)); save.disabled = false; });
+    } });
+    app.appendChild(el('div', { class: 'card' }, [el('h3', { style: 'margin:0', text: stu.number + '번 ' + stu.name }), lvrow, chips, memo, el('div', { style: 'margin-top:10px' }, [save])]));
+  }
+
+  var recent = D.obs.filter(function (o) { return o.code === code; }).slice(-8).reverse();
+  var box = el('div', { class: 'card' }, [el('h3', { style: 'margin-top:0', text: '최근 기록' })]);
+  if (!recent.length) box.appendChild(el('p', { class: 'muted', text: '아직 기록이 없어요.' }));
+  recent.forEach(function (o) {
+    box.appendChild(el('div', { class: 'item l' + lvIdx(o.level) }, [
+      el('span', { text: o.at.slice(5) + ' · ' + o.number + '번 ' + o.name + ' · ' + o.level + (o.memo ? ' · ' + o.memo : '') }),
+      el('button', { class: 'del', text: '지우기', onclick: function () {
+        if (!confirm('이 기록을 지울까요?')) return;
+        call('deleteObservation', o.id).then(function () { D.obs = D.obs.filter(function (x) { return x.id !== o.id; }); render(); }).catch(function (e) { toast('⚠ ' + (e.message || e)); });
+      } }),
+    ]));
+  });
+  app.appendChild(box);
+}
+
+function studentTab() {
+  var sel = el('select', { onchange: function () { viewStu = sel.value; render(); } }, D.students.map(function (s) {
+    var o = el('option', { value: s.number, text: s.number + '번 ' + s.name }); if (s.number === viewStu) o.selected = true; return o;
+  }));
+  var stu = D.students.filter(function (s) { return s.number === viewStu; })[0];
+  var card = el('div', { class: 'card' }, [sel]);
+  var lines = [];
+  D.standards.forEach(function (s) {
+    var list = D.obs.filter(function (o) { return o.number === viewStu && o.code === s.code; });
+    card.appendChild(el('h3', { text: s.code + ' ' + s.text + ' (' + list.length + '회)' }));
+    if (!list.length) card.appendChild(el('p', { class: 'muted', text: '관찰 기록 없음' }));
+    list.forEach(function (o) {
+      card.appendChild(el('div', { class: 'item l' + lvIdx(o.level) }, [el('span', { text: o.at.slice(0, 10) + ' · ' + o.level + (o.memo ? ' · ' + o.memo : '') })]));
+      lines.push('- ' + s.code + ' ' + s.text + ' / ' + o.level + (o.memo ? ' / ' + o.memo : ''));
+    });
+  });
+  var prompt = '아래는 초등학교 6학년 국어 수업에서 교사가 직접 관찰한 기록이야.\n이 사실만을 근거로 교과 세부능력 및 특기사항 초안을 ~함/~임 체로 3~4문장 써 줘.\n관찰 기록에 없는 내용은 지어내지 마.\n\n' + lines.join('\n');
+  var area = el('textarea', { style: 'min-height:180px', readonly: 'readonly' }); area.value = prompt;
+  card.appendChild(el('h3', { text: '과세특 초안 요청문 (학생 이름은 넣지 않았어요)' }));
+  card.appendChild(area);
+  card.appendChild(el('button', { class: 'save', text: '복사하기', onclick: function () { area.select(); document.execCommand('copy'); toast('복사했어요'); } }));
+  app.appendChild(card);
+}
+</script>
+</body>
+</html>

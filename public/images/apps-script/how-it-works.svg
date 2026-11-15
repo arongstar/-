@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 290" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5d655f"/></marker></defs>
+  <rect width="960" height="290" rx="18" fill="#f8fafc"/>
+  <g text-anchor="middle">
+    <rect x="24" y="60" width="190" height="160" rx="16" fill="#fff" stroke="#3b5bdb" stroke-width="2"/>
+    <text x="119" y="100" font-size="30">👩‍🎓👨‍🏫</text>
+    <text x="119" y="138" font-size="19" font-weight="800" fill="#1f2430">학생·교사</text>
+    <text x="119" y="164" font-size="13" fill="#667085">웹앱 주소(URL) 열기</text>
+    <text x="119" y="184" font-size="13" fill="#667085">학교 구글 계정 로그인</text>
+    <text x="119" y="204" font-size="12" fill="#3b5bdb">(경북AI배움터 계정)</text>
+
+    <rect x="268" y="40" width="200" height="200" rx="16" fill="#fff" stroke="#e8590c" stroke-width="2.5"/>
+    <text x="368" y="80" font-size="19" font-weight="800" fill="#c2410c">화면 (Index.html)</text>
+    <text x="368" y="110" font-size="13" fill="#667085">입력 칸·버튼·표</text>
+    <text x="368" y="132" font-size="13" fill="#667085">학생 화면 / 교사 화면</text>
+    <rect x="300" y="150" width="136" height="70" rx="10" fill="#fff4e6"/>
+    <text x="368" y="178" font-size="13" fill="#c2410c">google.script.run</text>
+    <text x="368" y="200" font-size="12" fill="#667085">서버 함수 부르기</text>
+
+    <rect x="522" y="40" width="200" height="200" rx="16" fill="#fff" stroke="#6741d9" stroke-width="2.5"/>
+    <text x="622" y="80" font-size="19" font-weight="800" fill="#5f3dc4">처리 (Code.gs)</text>
+    <text x="622" y="110" font-size="13" fill="#667085">누가 접속했는지 확인</text>
+    <text x="622" y="132" font-size="13" fill="#667085">입력값 검사·저장</text>
+    <text x="622" y="154" font-size="13" fill="#667085">교사만 평가 가능</text>
+    <text x="622" y="190" font-size="12" fill="#5f3dc4">Apps Script</text>
+    <text x="622" y="210" font-size="12" fill="#667085">(구글 서버에서 실행)</text>
+
+    <rect x="776" y="60" width="160" height="160" rx="16" fill="#fff" stroke="#2f9e44" stroke-width="2.5"/>
+    <text x="856" y="100" font-size="30">📊</text>
+    <text x="856" y="138" font-size="19" font-weight="800" fill="#2b8a3e">구글 시트</text>
+    <text x="856" y="164" font-size="13" fill="#667085">학생 명단·차시</text>
+    <text x="856" y="184" font-size="13" fill="#667085">기록·평가가 쌓이는</text>
+    <text x="856" y="204" font-size="13" fill="#667085">저장소</text>
+  </g>
+  <g stroke="#5d655f" stroke-width="2.5" fill="none">
+    <line x1="216" y1="140" x2="264" y2="140" marker-start="url(#a)" marker-end="url(#a)"/>
+    <line x1="470" y1="140" x2="518" y2="140" marker-start="url(#a)" marker-end="url(#a)"/>
+    <line x1="724" y1="140" x2="772" y2="140" marker-start="url(#a)" marker-end="url(#a)"/>
+  </g>
+  <text x="480" y="274" text-anchor="middle" font-size="14" fill="#667085">코드는 AI가 써 주고, 선생님은 시트를 준비하고 붙여 넣은 뒤 '웹 앱'으로 배포만 하면 돼요</text>
+</svg>

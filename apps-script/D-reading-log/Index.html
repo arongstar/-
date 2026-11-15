@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>
+  :root { --bg:#fbf8f3; --line:#ece3d4; --text:#2b2520; --muted:#7a6f63; --main:#c2410c; --soft:#fff1e6; --leaf:#2f9e44; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif; line-height:1.55; }
+  header { background:var(--main); color:#fff; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; }
+  header h1 { margin:0; font-size:21px; }
+  main { max-width:1000px; margin:0 auto; padding:16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:14px; }
+  h2 { margin:0 0 10px; font-size:18px; }
+  label { display:block; font-weight:700; margin:10px 0 4px; }
+  input, textarea, select { width:100%; font:inherit; padding:9px 11px; border:1px solid var(--line); border-radius:10px; }
+  textarea { min-height:64px; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .stars button { font-size:26px; background:none; border:0; cursor:pointer; color:#ddd; padding:0 2px; }
+  .stars button.on { color:#f59f00; }
+  .btn { font:inherit; font-weight:700; border:0; border-radius:10px; padding:10px 18px; background:var(--main); color:#fff; cursor:pointer; }
+  .muted { color:var(--muted); font-size:14px; }
+  .progress { height:14px; background:var(--soft); border-radius:999px; overflow:hidden; margin:6px 0; }
+  .progress div { height:100%; background:var(--leaf); }
+  .shelf { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; }
+  .book { border:1px solid var(--line); border-left:6px solid var(--main); border-radius:10px; padding:10px 12px; position:relative; }
+  .book b { display:block; }
+  .book .x { position:absolute; top:6px; right:8px; border:0; background:none; color:var(--muted); cursor:pointer; }
+  .ok { color:var(--leaf); font-weight:700; font-size:13px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  td, th { padding:7px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { background:var(--soft); white-space:nowrap; }
+  td:first-child, td:nth-child(2) { white-space:nowrap; }
+  .chk { font:inherit; border:1px solid var(--line); background:#fff; border-radius:8px; padding:3px 8px; cursor:pointer; }
+  .chk.on { background:var(--leaf); color:#fff; border-color:var(--leaf); }
+  .scroll { overflow-x:auto; }
+  .toast { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); background:#2b2520; color:#fff; padding:10px 18px; border-radius:999px; display:none; }
+  @media (max-width:640px) { .two { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header><h1 id="title">우리 반 독서 기록장</h1><span id="who"></span></header>
+<main id="app">불러오는 중…</main>
+<div class="toast" id="toast"></div>
+<script>
+function call(fn) { var a = [].slice.call(arguments, 1); return new Promise(function (ok, ng) { google.script.run.withSuccessHandler(ok).withFailureHandler(ng)[fn].apply(null, a); }); }
+function el(tag, attrs, kids) {
+  var e = document.createElement(tag);
+  Object.keys(attrs || {}).forEach(function (k) {
+    if (k === 'text') e.textContent = attrs[k]; else if (k === 'class') e.className = attrs[k];
+    else if (k.indexOf('on') === 0) e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]);
+  });
+  (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+  return e;
+}
+function toast(m) { var t = document.getElementById('toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () { t.style.display = 'none'; }, 2200); }
+function fail(e) { toast('⚠ ' + (e && e.message ? e.message : e)); }
+var app = document.getElementById('app'), ME = null;
+function today() { var d = new Date(), p = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+
+call('whoAmI').then(function (me) {
+  ME = me;
+  document.getElementById('title').textContent = (me.className ? me.className + ' ' : '') + '독서 기록장';
+  if (me.role === 'student') { document.getElementById('who').textContent = me.number + '번 ' + me.name; call('getMyShelf').then(studentView).catch(fail); }
+  else if (me.role === 'teacher') { document.getElementById('who').textContent = '교사 화면'; call('getTeacherView').then(teacherView).catch(fail); }
+  else { app.innerHTML = ''; app.appendChild(el('div', { class: 'card' }, [el('h2', { text: '등록되지 않은 계정이에요' }), el('p', { text: '학교 구글 계정(경북AI배움터 계정)으로 로그인했는지 확인해 주세요. (' + (me.email || '계정 정보 없음') + ')' })])); }
+}).catch(fail);
+
+function statsCard(s) {
+  return el('div', { class: 'card' }, [
+    el('h2', { text: '🏫 우리 반 독서' }),
+    el('p', { text: '지금까지 우리 반이 함께 읽은 책 ' + s.total + '권 · 이번 달 ' + s.thisMonth + '권' }),
+    s.popular.length ? el('div', {}, [el('div', { class: 'muted', text: '이번 달 많이 읽은 책' })].concat(s.popular.map(function (p, i) { return el('div', { text: (i + 1) + '. ' + p.title + ' (' + p.n + '명)' }); }))) : null,
+  ]);
+}
+
+function studentView(d) {
+  app.innerHTML = '';
+  var stars = 0;
+  var title = el('input', { placeholder: '예) 어린 왕자' }), author = el('input', { placeholder: '예) 생텍쥐페리' });
+  var doneOn = el('input', { type: 'date' }); doneOn.value = today();
+  var comment = el('textarea', { placeholder: '이 책을 한 줄로 말하면? 가장 인상 깊었던 점은?' });
+  var quote = el('textarea', { placeholder: '마음에 남는 문장을 옮겨 적어요 (선택)' });
+  var starBox = el('div', { class: 'stars' });
+  [1, 2, 3, 4, 5].forEach(function (n) {
+    starBox.appendChild(el('button', { type: 'button', text: '★', onclick: function () { stars = n; [].forEach.call(starBox.children, function (b, i) { b.classList.toggle('on', i < n); }); } }));
+  });
+  var save = el('button', { class: 'btn', text: '책장에 꽂기', onclick: function () {
+    save.disabled = true;
+    call('addBook', { title: title.value, author: author.value, doneOn: doneOn.value, stars: stars, comment: comment.value, quote: quote.value })
+      .then(function (r) { toast('책장에 꽂았어요! 📚'); studentView(r); }).catch(function (e) { fail(e); save.disabled = false; });
+  } });
+  app.appendChild(el('div', { class: 'card' }, [
+    el('h2', { text: '📖 다 읽은 책 기록하기' }),
+    el('div', { class: 'two' }, [el('div', {}, [el('label', { text: '책 제목' }), title]), el('div', {}, [el('label', { text: '지은이' }), author])]),
+    el('div', { class: 'two' }, [el('div', {}, [el('label', { text: '다 읽은 날' }), doneOn]), el('div', {}, [el('label', { text: '별점' }), starBox])]),
+    el('label', { text: '한 줄 감상' }), comment, el('label', { text: '기억에 남는 문장' }), quote,
+    el('div', { style: 'margin-top:12px' }, [save]),
+  ]));
+  var goal = ME.goal || 0, n = d.mine.length;
+  var shelf = el('div', { class: 'shelf' });
+  d.mine.slice().reverse().forEach(function (b) {
+    shelf.appendChild(el('div', { class: 'book' }, [
+      el('b', { text: b.title }), el('span', { class: 'muted', text: (b.author ? b.author + ' · ' : '') + b.doneOn }),
+      el('div', { text: '★'.repeat(b.stars) }), el('div', { text: b.comment }),
+      b.checked ? el('div', { class: 'ok', text: '✔ 선생님이 읽었어요' }) : null,
+      el('button', { class: 'x', title: '지우기', text: '✕', onclick: function () { if (confirm('이 기록을 지울까요?')) call('deleteMyBook', b.id).then(studentView).catch(fail); } }),
+    ]));
+  });
+  app.appendChild(el('div', { class: 'card' }, [
+    el('h2', { text: '📚 나의 책장 ' + n + '권' + (goal ? ' / 목표 ' + goal + '권' : '') }),
+    goal ? el('div', { class: 'progress' }, [el('div', { style: 'width:' + Math.min(100, Math.round(n / goal * 100)) + '%' })]) : null,
+    n ? shelf : el('p', { class: 'muted', text: '첫 책을 기록해 보세요!' }),
+  ]));
+  app.appendChild(statsCard(d.stats));
+}
+
+function teacherView(d) {
+  app.innerHTML = '';
+  app.appendChild(statsCard(d.stats));
+  var sum = el('table', {}, [el('tr', {}, ['번호', '이름', '권수', '최근 읽은 책', '평균 별점'].map(function (h) { return el('th', { text: h }); }))]);
+  d.students.forEach(function (s) {
+    var mine = d.books.filter(function (b) { return b.email === s.email; });
+    var last = mine[mine.length - 1];
+    var avg = mine.length ? (mine.reduce(function (a, b) { return a + b.stars; }, 0) / mine.length).toFixed(1) : '-';
+    sum.appendChild(el('tr', {}, [el('td', { text: s.number }), el('td', { text: s.name }), el('td', { text: mine.length + '권' }), el('td', { text: last ? last.title : '-' }), el('td', { text: avg })]));
+  });
+  app.appendChild(el('div', { class: 'card' }, [el('h2', { text: '학생별 독서량' }), el('div', { class: 'scroll' }, [sum])]));
+  var list = el('table', {}, [el('tr', {}, ['번호', '이름', '책', '감상·문장', '확인'].map(function (h) { return el('th', { text: h }); }))]);
+  d.books.slice().reverse().forEach(function (b) {
+    var btn = el('button', { class: 'chk' + (b.checked ? ' on' : ''), text: b.checked ? '✔ 확인' : '확인', onclick: function () {
+      call('toggleCheck', b.id).then(function (on) { b.checked = on; btn.classList.toggle('on', on); btn.textContent = on ? '✔ 확인' : '확인'; }).catch(fail);
+    } });
+    list.appendChild(el('tr', {}, [el('td', { text: b.number }), el('td', { text: b.name }),
+      el('td', {}, [el('b', { text: b.title }), el('div', { class: 'muted', text: b.doneOn + ' · ' + '★'.repeat(b.stars) })]),
+      el('td', {}, [el('div', { text: b.comment }), b.quote ? el('div', { class: 'muted', text: '“' + b.quote + '”' }) : null]), el('td', {}, [btn])]));
+  });
+  app.appendChild(el('div', { class: 'card' }, [el('h2', { text: '독서 기록 전체 (최신순)' }), el('div', { class: 'scroll' }, [list])]));
+}
+</script>
+</body>
+</html>

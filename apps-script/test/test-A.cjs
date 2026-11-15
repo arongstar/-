@@ -1,0 +1,13 @@
+const assert = require('assert');
+const { load } = require('./gas-mock.cjs');
+const g = load(__dirname + '/../A-device-rental/Code.gs');
+g.call('setup');
+let b = g.call('getBoard');
+assert.equal(b.devices.length, 12); assert.equal(b.isTeacher, true);
+assert.throws(() => g.call('rent', 'T01', 'abc'), /숫자/);
+b = g.call('rent', 'T01', '7'); assert.equal(b.devices[0].out, true); assert.equal(b.devices[0].who, '7');
+assert.throws(() => g.call('rent', 'T01', '8'), /이미 7번/);
+assert.throws(() => g.call('giveBack', 'T02'), /이미 반납/);
+b = g.as('stu@school.kr').call('giveBack', 'T01'); assert.equal(b.devices[0].out, false); assert.equal(b.isTeacher, false); assert.equal(b.log.length, 0);
+assert.throws(() => g.call('rent', 'X99', '1'), /없는 기기/);
+console.log('A: 모든 서버 테스트 통과');
