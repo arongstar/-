@@ -3,7 +3,11 @@
 const escapeHtml = (s = '') =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-function transform(node) {
+function transform(node, base) {
+  // 본문의 /images/... /files/... 같은 절대 경로에 사이트 기본 경로를 붙여 줌
+  if ((node.type === 'image' || node.type === 'link') && typeof node.url === 'string' && /^\/(?!\/)/.test(node.url)) {
+    node.url = base + node.url;
+  }
   if (!node.children) return;
   node.children = node.children.map((child) => {
     if (child.type === 'code' && child.lang === 'prompt') {
@@ -18,11 +22,12 @@ function transform(node) {
           `<pre class="prompt-text">${escapeHtml(child.value)}</pre></figure>`,
       };
     }
-    transform(child);
+    transform(child, base);
     return child;
   });
 }
 
-export default function remarkPromptBlocks() {
-  return (tree) => transform(tree);
+export default function remarkPromptBlocks(options = {}) {
+  const base = (options.base || '/').replace(/\/$/, '');
+  return (tree) => transform(tree, base);
 }

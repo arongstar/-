@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5d655f"/></marker>
+  </defs>
+  <rect width="960" height="430" rx="18" fill="#fbfaf6"/>
+  <rect x="300" y="24" width="360" height="64" rx="32" fill="#1f2421"/>
+  <text x="480" y="64" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff">이 일은 어디에서 일어나나요?</text>
+  <path d="M400,90 L170,140" stroke="#5d655f" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M480,90 L480,140" stroke="#5d655f" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M560,90 L790,140" stroke="#5d655f" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <rect x="24" y="146" width="292" height="260" rx="16" fill="#ffffff" stroke="#2f6f5e" stroke-width="2"/>
+  <text x="170" y="182" text-anchor="middle" font-size="15" fill="#5d655f">내 컴퓨터의 파일</text>
+  <text x="170" y="214" text-anchor="middle" font-size="22" font-weight="800" fill="#245647">클로드 코드</text>
+  <g font-size="15" fill="#1f2421">
+    <text x="50" y="256">• 엑셀 여러 개 합치기·집계</text>
+    <text x="50" y="284">• 설문 결과 분석·그래프</text>
+    <text x="50" y="312">• 파일 이름·폴더 일괄 정리</text>
+    <text x="50" y="340">• 우리 반 전용 웹 도구 만들기</text>
+    <text x="50" y="368">• 문서 초안 여러 개 한 번에</text>
+  </g>
+
+  <rect x="334" y="146" width="292" height="260" rx="16" fill="#ffffff" stroke="#2558a8" stroke-width="2"/>
+  <text x="480" y="182" text-anchor="middle" font-size="15" fill="#5d655f">인터넷 웹사이트</text>
+  <text x="480" y="214" text-anchor="middle" font-size="22" font-weight="800" fill="#2558a8">AI 브라우저</text>
+  <g font-size="15" fill="#1f2421">
+    <text x="360" y="256">• 여러 사이트 조사·비교표</text>
+    <text x="360" y="284">• 열린 탭·긴 페이지 요약</text>
+    <text x="360" y="312">• 구글 설문지 등 양식 만들기</text>
+    <text x="360" y="340">• 반복 클릭·입력 대신하기</text>
+    <text x="360" y="368">• 영상·자료 찾아 목록 만들기</text>
+  </g>
+
+  <rect x="644" y="146" width="292" height="260" rx="16" fill="#fff4dc" stroke="#8a5a00" stroke-width="2"/>
+  <text x="790" y="182" text-anchor="middle" font-size="15" fill="#5d655f">개인정보·판단·학교 시스템</text>
+  <text x="790" y="214" text-anchor="middle" font-size="22" font-weight="800" fill="#8a5a00">사람이 직접</text>
+  <g font-size="15" fill="#1f2421">
+    <text x="670" y="256">• 나이스·업무포털 입력</text>
+    <text x="670" y="284">• 학생 평가·생활기록 판단</text>
+    <text x="670" y="312">• 학부모 상담·민감한 소통</text>
+    <text x="670" y="340">• 결재·제출 등 최종 확정</text>
+    <text x="670" y="368">• AI 결과물의 최종 검토</text>
+  </g>
+</svg>

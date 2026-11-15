@@ -12,7 +12,7 @@ export default defineConfig({
   markdown: {
     processor: unified({
       syntaxHighlight: false,
-      remarkPlugins: [remarkPromptBlocks],
+      remarkPlugins: [[remarkPromptBlocks, { base: process.env.BASE_PATH || '/' }]],
     }),
   },
 });

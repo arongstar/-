@@ -67,6 +67,15 @@ materials:
 
 > 큰 파일(수십 MB 이상, 영상 등)은 구글 드라이브에 올리고 링크로 연결하는 것을 추천해요. (GitHub은 파일 하나당 100MB 제한)
 
+### 교안에 이미지 넣기
+
+1. `public/images/교안이름/` 폴더에 그림 파일을 올립니다. (jpg·png·svg, 1장에 500KB 이하 권장)
+2. 본문에 아래처럼 씁니다. `[ ]` 안의 글은 그림을 설명하는 대체 글이에요.
+
+```markdown
+![AI 조수가 파일을 정리하는 모습](/images/ai-agent-automation/hero.jpg)
+```
+
 ### 3) 사이트 모음에 사이트 추가하기
 
 `src/data/sites.yaml` 파일 맨 아래에 이어서 씁니다.

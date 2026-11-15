@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5d655f"/></marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2f6f5e"/></marker>
+  </defs>
+  <rect width="960" height="470" rx="18" fill="#fbfaf6"/>
+  <!-- left: chatbot -->
+  <rect x="24" y="24" width="400" height="422" rx="16" fill="#ffffff" stroke="#e2e0d8"/>
+  <text x="224" y="64" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2421">챗봇 (ChatGPT 대화창 등)</text>
+  <text x="224" y="92" text-anchor="middle" font-size="15" fill="#5d655f">답을 "말해" 줍니다</text>
+  <rect x="64" y="120" width="320" height="56" rx="12" fill="#f0efe9"/>
+  <text x="224" y="154" text-anchor="middle" font-size="17" fill="#1f2421">👩‍🏫 질문: "회신서 합치는 법 알려 줘"</text>
+  <line x1="224" y1="178" x2="224" y2="208" stroke="#5d655f" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="64" y="212" width="320" height="56" rx="12" fill="#f0efe9"/>
+  <text x="224" y="246" text-anchor="middle" font-size="17" fill="#1f2421">🤖 방법을 글로 설명</text>
+  <line x1="224" y1="270" x2="224" y2="300" stroke="#5d655f" stroke-width="2" marker-end="url(#a)"/>
+  <rect x="64" y="304" width="320" height="72" rx="12" fill="#fff4dc"/>
+  <text x="224" y="335" text-anchor="middle" font-size="17" fill="#8a5a00" font-weight="700">👩‍🏫 내가 직접 엑셀을 열고</text>
+  <text x="224" y="360" text-anchor="middle" font-size="17" fill="#8a5a00" font-weight="700">복사·붙여넣기·정리</text>
+  <text x="224" y="418" text-anchor="middle" font-size="15" fill="#5d655f">일은 결국 내가 한다</text>
+  <!-- right: agent -->
+  <rect x="452" y="24" width="484" height="422" rx="16" fill="#ffffff" stroke="#2f6f5e" stroke-width="2"/>
+  <text x="694" y="64" text-anchor="middle" font-size="22" font-weight="700" fill="#245647">AI 에이전트 (클로드 코드, AI 브라우저)</text>
+  <text x="694" y="92" text-anchor="middle" font-size="15" fill="#5d655f">일을 "해" 줍니다</text>
+  <rect x="514" y="120" width="360" height="56" rx="12" fill="#e3f0eb"/>
+  <text x="694" y="154" text-anchor="middle" font-size="17" fill="#1f2421">👩‍🏫 목표: "세 반 회신서 합쳐서 미제출자 찾아 줘"</text>
+  <line x1="694" y1="178" x2="694" y2="206" stroke="#2f6f5e" stroke-width="2" marker-end="url(#g)"/>
+  <!-- loop -->
+  <rect x="471" y="212" width="142" height="64" rx="12" fill="#ffffff" stroke="#2f6f5e"/>
+  <text x="542" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#245647">① 계획</text>
+  <text x="542" y="262" text-anchor="middle" font-size="13" fill="#5d655f">할 일 나누기</text>
+  <rect x="623" y="212" width="142" height="64" rx="12" fill="#ffffff" stroke="#2f6f5e"/>
+  <text x="694" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#245647">② 실행</text>
+  <text x="694" y="262" text-anchor="middle" font-size="13" fill="#5d655f">파일 열고·만들고·클릭</text>
+  <rect x="775" y="212" width="142" height="64" rx="12" fill="#ffffff" stroke="#2f6f5e"/>
+  <text x="846" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#245647">③ 확인</text>
+  <text x="846" y="262" text-anchor="middle" font-size="13" fill="#5d655f">결과 점검·오류 수정</text>
+  <line x1="613" y1="244" x2="621" y2="244" stroke="#2f6f5e" stroke-width="2" marker-end="url(#g)"/>
+  <line x1="765" y1="244" x2="773" y2="244" stroke="#2f6f5e" stroke-width="2" marker-end="url(#g)"/>
+  <path d="M846,278 C846,314 542,314 542,280" fill="none" stroke="#2f6f5e" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#g)"/>
+  <text x="694" y="318" text-anchor="middle" font-size="13" fill="#2f6f5e">될 때까지 스스로 반복</text>
+  <line x1="694" y1="326" x2="694" y2="350" stroke="#2f6f5e" stroke-width="2" marker-end="url(#g)"/>
+  <rect x="514" y="354" width="360" height="56" rx="12" fill="#2f6f5e"/>
+  <text x="694" y="388" text-anchor="middle" font-size="17" font-weight="700" fill="#ffffff">📄 완성된 엑셀 파일 + "이렇게 했어요" 보고</text>
+  <text x="694" y="432" text-anchor="middle" font-size="15" fill="#5d655f">나는 목표를 주고, 결과를 확인한다</text>
+</svg>

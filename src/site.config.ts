@@ -9,6 +9,8 @@ export const SITE = {
 // 사이트 모음 페이지에서 분류가 보이는 순서 (여기 없는 분류는 맨 뒤에 붙습니다)
 export const CATEGORY_ORDER = [
   '대화형 AI',
+  'AI 에이전트',
+  'AI 브라우저',
   '자료 정리·요약',
   '디자인·발표',
   '퀴즈·평가',
