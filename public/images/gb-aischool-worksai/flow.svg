@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 250" font-family="Pretendard, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/></marker></defs>
+  <rect width="960" height="250" rx="18" fill="#f7f8fc"/>
+  <g font-size="15" fill="#475569" text-anchor="middle">
+    <rect x="24" y="40" width="196" height="170" rx="16" fill="#ffffff" stroke="#7c3aed" stroke-width="2"/>
+    <circle cx="122" cy="78" r="20" fill="#7c3aed"/><text x="122" y="85" font-size="18" font-weight="800" fill="#fff">1</text>
+    <text x="122" y="128" font-size="21" font-weight="800" fill="#3b2a8f">웍스AI</text>
+    <text x="122" y="158">문항·활동지</text><text x="122" y="180">초안 만들기</text>
+
+    <rect x="262" y="40" width="196" height="170" rx="16" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/>
+    <circle cx="360" cy="78" r="20" fill="#c2410c"/><text x="360" y="85" font-size="18" font-weight="800" fill="#fff">2</text>
+    <text x="360" y="128" font-size="21" font-weight="800" fill="#9a3412">교사 검토</text>
+    <text x="360" y="158">정답·사실 확인하고</text><text x="360" y="180">고치기</text>
+
+    <rect x="500" y="40" width="196" height="170" rx="16" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="598" cy="78" r="20" fill="#2563eb"/><text x="598" y="85" font-size="18" font-weight="800" fill="#fff">3</text>
+    <text x="598" y="128" font-size="21" font-weight="800" fill="#1e40af">경북AI배움터</text>
+    <text x="598" y="158">코들·띵커벨에</text><text x="598" y="180">옮겨 수업</text>
+
+    <rect x="738" y="40" width="196" height="170" rx="16" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="836" cy="78" r="20" fill="#2563eb"/><text x="836" y="85" font-size="18" font-weight="800" fill="#fff">4</text>
+    <text x="836" y="128" font-size="21" font-weight="800" fill="#1e40af">대시보드</text>
+    <text x="836" y="158">수업 뒤</text><text x="836" y="180">참여 현황 확인</text>
+  </g>
+  <g stroke="#7c3aed" stroke-width="3" marker-end="url(#a)">
+    <line x1="222" y1="125" x2="258" y2="125"/><line x1="460" y1="125" x2="496" y2="125"/><line x1="698" y1="125" x2="734" y2="125"/>
+  </g>
+</svg>
