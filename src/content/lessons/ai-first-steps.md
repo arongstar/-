@@ -1,5 +1,6 @@
 ---
 title: 생성형 AI 첫걸음 — 교사 업무에 바로 쓰는 대화형 AI
+cover: /images/covers/first-steps.jpg
 summary: 대화형 AI가 무엇인지 알아보고, 가정통신문·수업 아이디어·평가 문항 만들기에 바로 쓰는 프롬프트 작성법을 익혀요.
 date: 2026-11-10
 audience: 초등 교사 (AI 처음 써 보는 분)

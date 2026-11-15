@@ -12,6 +12,8 @@ const lessons = defineCollection({
     date: z.coerce.date(),
     audience: z.string().default('초등 교사'),
     duration: z.string().optional(),
+    // 목록 카드와 교안 머리에 보일 대표 그림 (public/images 아래 경로)
+    cover: z.string().optional(),
     tags: z.array(z.string()).default([]),
     // 다운로드 자료: file 은 public/files 아래 경로 또는 외부 링크(구글 드라이브 등)
     materials: z

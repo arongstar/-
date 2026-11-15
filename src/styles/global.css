@@ -106,9 +106,14 @@ button { font: inherit; cursor: pointer; }
 .chip-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
 /* Home */
-.hero { padding: 24px 0 28px; }
-.hero h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 8px; }
+.hero {
+  display: grid; gap: 24px; align-items: center; padding: 8px 0 32px;
+}
+@media (min-width: 860px) { .hero { grid-template-columns: 1.05fr 1fr; } }
+.hero h1 { font-size: clamp(30px, 5vw, 44px); margin: 0 0 10px; }
 .hero p { color: var(--muted); margin: 0 0 18px; font-size: 18px; }
+.hero .hero-kicker { color: var(--accent-strong); font-weight: 700; font-size: 15px; margin: 0 0 6px; }
+.hero-img { width: 100%; height: auto; border-radius: 22px; box-shadow: var(--shadow); }
 .hero-links { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .filter-bar { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
@@ -120,11 +125,13 @@ button { font: inherit; cursor: pointer; }
 
 .lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .lesson-card {
-  display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: var(--radius);
+  display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden; border-radius: var(--radius);
   background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
   color: var(--text); text-decoration: none; transition: border-color 0.15s, transform 0.15s;
 }
 .lesson-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.lesson-card-img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-bottom: 1px solid var(--line); }
+.lesson-card-body { display: flex; flex-direction: column; gap: 6px; padding: 16px 20px 20px; flex: 1; }
 .lesson-card h2 { font-size: 20px; margin: 0; }
 .lesson-card p { margin: 0 0 6px; color: var(--muted); font-size: 15px; flex: 1; }
 .lesson-meta { color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 4px; }
@@ -269,3 +276,101 @@ button { font: inherit; cursor: pointer; }
   .lesson-layout { display: block; }
   .prompt-card { break-inside: avoid; }
 }
+
+
+/* ===== 교안 머리 (표지 그림 + 정보) ===== */
+.lesson-hero {
+  display: grid; gap: 24px; align-items: center; margin-bottom: 28px; padding: 24px;
+  background: linear-gradient(135deg, var(--accent-soft), var(--surface) 70%);
+  border: 1px solid var(--line); border-radius: 24px;
+}
+@media (min-width: 900px) { .lesson-hero.has-cover { grid-template-columns: 1.15fr 1fr; padding: 28px 32px; } }
+.lesson-hero h1 { font-size: clamp(26px, 4vw, 36px); margin: 10px 0 8px; }
+.lesson-hero-img { width: 100%; height: auto; border-radius: 18px; box-shadow: var(--shadow); }
+.meta-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.meta-chip {
+  font-size: 14px; font-weight: 600; padding: 4px 12px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--line); color: var(--muted);
+}
+.stat-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+.stat {
+  display: inline-flex; align-items: baseline; gap: 4px; padding: 6px 14px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line); font-size: 14px; color: var(--muted);
+}
+.stat b { font-size: 20px; color: var(--accent-strong); }
+
+/* ===== 본문 큰 제목: 단원 띠 ===== */
+.prose h2 {
+  border-top: 0; padding: 12px 18px; margin: 2.2em 0 0.8em;
+  background: var(--accent-soft); border-radius: 14px; border-left: 6px solid var(--accent);
+  font-size: 1.4em;
+}
+.prose > h2:first-child { margin-top: 0; padding-top: 12px; }
+.prose h3 { padding-left: 2px; }
+
+/* ===== 도움말·주의·안내 상자 ===== */
+.prose .callout {
+  position: relative; margin: 1.2em 0; padding: 14px 18px 14px 52px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--surface);
+}
+.prose .callout p { margin: 0.25em 0; }
+.prose .callout::before {
+  position: absolute; left: 16px; top: 13px; font-size: 1.15em; line-height: 1.5;
+}
+.prose .callout::after {
+  content: attr(data-label); position: absolute; left: 52px; top: -10px; font-size: 12px; font-weight: 800;
+  padding: 1px 8px; border-radius: 6px; color: #fff;
+}
+.prose .callout-tip { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.prose .callout-tip::before { content: '💡'; }
+.prose .callout-tip::after { background: var(--accent); }
+.prose .callout-warn { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.prose .callout-warn::before { content: '⚠️'; }
+.prose .callout-warn::after { background: var(--warn); }
+.prose .callout-note { background: var(--student-soft); border-color: color-mix(in srgb, var(--student) 35%, transparent); }
+.prose .callout-note::before { content: '📌'; }
+.prose .callout-note::after { background: var(--student); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .prose .callout::after { color: #111; } }
+
+/* ===== 실습 카드 ===== */
+.prose .practice {
+  margin: 1.6em 0; padding: 4px 22px 18px; border-radius: 18px;
+  border: 2px solid var(--accent); background: var(--surface); box-shadow: var(--shadow);
+}
+.prose .practice > h3 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.prose .practice > h3::before {
+  content: '✋ 실습'; font-size: 0.7em; font-weight: 800; padding: 3px 10px; border-radius: 999px;
+  background: var(--accent); color: #fff; white-space: nowrap;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .prose .practice > h3::before { color: #0f1a16; } }
+.prose .practice { counter-reset: step; }
+.prose .practice ol { list-style: none; padding-left: 0; }
+.prose .practice ol > li {
+  counter-increment: step; position: relative; padding: 8px 12px 8px 50px; margin: 8px 0;
+  background: var(--prompt-bg); border-radius: 12px;
+}
+.prose .practice ol > li::before {
+  content: counter(step); position: absolute; left: 12px; top: 8px; width: 26px; height: 26px;
+  display: grid; place-items: center; border-radius: 50%; background: var(--accent); color: #fff;
+  font-weight: 800; font-size: 0.85em;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .prose .practice ol > li::before { color: #0f1a16; } }
+
+/* ===== 메뉴 위치 ===== */
+.prose .menu-path {
+  display: inline-block; margin: 0.4em 0; padding: 6px 14px 6px 34px; position: relative;
+  background: var(--surface-2); border-radius: 999px; font-size: 0.93em; color: var(--text);
+}
+.prose .menu-path::before { content: '📍'; position: absolute; left: 11px; top: 5px; }
+
+/* ===== 표 ===== */
+.prose table { display: table; width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+@media (max-width: 700px) { .prose table { display: block; overflow-x: auto; } }
+.prose th, .prose td { border: 0; border-bottom: 1px solid var(--line); }
+.prose tr:last-child td { border-bottom: 0; }
+.prose th { background: var(--accent-soft); color: var(--accent-strong); }
+.prose tbody tr:nth-child(even) td { background: var(--prompt-bg); }
+.prose table.schedule td:first-child {
+  font-weight: 800; color: var(--accent-strong); white-space: nowrap;
+}
+.prose table.schedule td:nth-child(2) { font-weight: 700; }
