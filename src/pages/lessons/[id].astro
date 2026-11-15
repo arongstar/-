@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SiteCard from '../../components/SiteCard.astro';
 import { getCollection, getEntries, render } from 'astro:content';
 import { url, isExternal, formatDate } from '../../lib/url';
+import { lessonStats } from '../../lib/lesson';
 
 export async function getStaticPaths() {
   const lessons = await getCollection('lessons', ({ data }) => !data.draft);
@@ -14,25 +15,38 @@ const { Content, headings } = await render(lesson);
 const sites = await getEntries(lesson.data.sites);
 const toc = headings.filter((h) => h.depth === 2);
 const fileName = (f: string) => decodeURIComponent(f.split('/').pop() || f);
+const stats = lessonStats(lesson.body ?? '', lesson.data.materials.length);
+const pdfHref = url(`/pdf/${lesson.id}.pdf`);
+const pdfName = `${lesson.data.title.split(' — ')[0]} 교안.pdf`;
 ---
 <Base title={lesson.data.title} description={lesson.data.summary}>
   <nav class="breadcrumb"><a href={url('/')}>← 교안 목록</a></nav>
 
-  <header class="lesson-header">
-    <div class="lesson-meta">
-      <span>{formatDate(lesson.data.date)}</span>
-      <span>· 대상: {lesson.data.audience}</span>
-      {lesson.data.duration && <span>· {lesson.data.duration}</span>}
+  <header class:list={['lesson-hero', { 'has-cover': lesson.data.cover }]}>
+    <div class="lesson-hero-text">
+      <div class="meta-chips">
+        <span class="meta-chip">📅 {formatDate(lesson.data.date)}</span>
+        <span class="meta-chip">👥 {lesson.data.audience}</span>
+        {lesson.data.duration && <span class="meta-chip">⏱ {lesson.data.duration}</span>}
+      </div>
+      <h1>{lesson.data.title}</h1>
+      {lesson.data.summary && <p class="lesson-summary">{lesson.data.summary}</p>}
+      <div class="stat-row">
+        {stats.practices > 0 && <span class="stat"><b>{stats.practices}</b>실습</span>}
+        {stats.prompts > 0 && <span class="stat"><b>{stats.prompts}</b>프롬프트</span>}
+        {stats.materials > 0 && <span class="stat"><b>{stats.materials}</b>자료</span>}
+        {sites.length > 0 && <span class="stat"><b>{sites.length}</b>사이트</span>}
+      </div>
+      <div class="lesson-tools">
+        <a class="btn btn-primary" href={pdfHref} download={pdfName}>📄 교안 PDF 받기</a>
+        <button type="button" class="btn" data-qr-open>QR 공유</button>
+        <button type="button" class="btn" data-font="-1" aria-label="글자 작게">가-</button>
+        <button type="button" class="btn" data-font="1" aria-label="글자 크게">가+</button>
+      </div>
     </div>
-    <h1>{lesson.data.title}</h1>
-    {lesson.data.summary && <p class="lesson-summary">{lesson.data.summary}</p>}
-    <div class="chips small">{lesson.data.tags.map((t) => <span class="chip">{t}</span>)}</div>
-    <div class="lesson-tools">
-      <button type="button" class="btn" data-font="-1" aria-label="글자 작게">가-</button>
-      <button type="button" class="btn" data-font="1" aria-label="글자 크게">가+</button>
-      <button type="button" class="btn" data-qr-open>QR 공유</button>
-      <button type="button" class="btn" onclick="window.print()">인쇄</button>
-    </div>
+    {lesson.data.cover && (
+      <img class="lesson-hero-img" src={url(lesson.data.cover)} alt="" width="1400" height="788" />
+    )}
   </header>
 
   <div class="lesson-layout">
@@ -43,11 +57,6 @@ const fileName = (f: string) => decodeURIComponent(f.split('/').pop() || f);
           <ul>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
         </nav>
       )}
-      <div class="side-box" id="prompt-box" hidden>
-        <h2>예시 프롬프트 <span class="count" id="prompt-count"></span></h2>
-        <ol id="prompt-list"></ol>
-        <button type="button" class="btn btn-primary btn-block" id="download-all-prompts">프롬프트 전체 받기 (.txt)</button>
-      </div>
       {lesson.data.materials.length > 0 && (
         <div class="side-box">
           <h2>자료 내려받기</h2>
@@ -69,6 +78,11 @@ const fileName = (f: string) => decodeURIComponent(f.split('/').pop() || f);
           </ul>
         </div>
       )}
+      <div class="side-box" id="prompt-box" hidden>
+        <h2>예시 프롬프트 <span class="count" id="prompt-count"></span></h2>
+        <ol id="prompt-list"></ol>
+        <button type="button" class="btn btn-primary btn-block" id="download-all-prompts">프롬프트 전체 받기 (.txt)</button>
+      </div>
     </aside>
 
     <article class="prose" id="lesson-body">

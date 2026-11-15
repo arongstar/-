@@ -1,5 +1,6 @@
 ---
 title: AI로 수업 자료 만들기 — 이미지·활동지·퀴즈
+cover: /images/covers/class-materials.jpg
 summary: AI 이미지 생성, 활동지 만들기, 퀴즈 제작까지 수업 자료를 빠르게 만드는 방법을 실습해요.
 date: 2026-11-14
 audience: 초등 교사

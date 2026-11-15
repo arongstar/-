@@ -12,12 +12,16 @@ const siteCount = (await getCollection('sites')).length;
 ---
 <Base>
   <section class="hero">
-    <h1>{SITE.title}</h1>
-    <p>연수에서 다룬 교안을 언제든 다시 보고, 예시 프롬프트와 자료를 내려받으세요.</p>
-    <div class="hero-links">
-      <a class="btn btn-primary" href="#lessons">교안 {lessons.length}개 보기</a>
-      <a class="btn" href={url('/sites')}>소개한 사이트 {siteCount}곳</a>
+    <div class="hero-text">
+      <p class="hero-kicker">초등 선생님을 위한 연수 자료실</p>
+      <h1>{SITE.title}</h1>
+      <p>연수에서 다룬 교안을 언제든 다시 보고, 예시 프롬프트와 실습 자료를 내려받으세요.</p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="#lessons">교안 {lessons.length}개 보기</a>
+        <a class="btn" href={url('/sites')}>소개한 사이트 {siteCount}곳</a>
+      </div>
     </div>
+    <img class="hero-img" src={url('/images/covers/home.jpg')} alt="" width="1400" height="788" />
   </section>
 
   <section id="lessons">
@@ -37,13 +41,16 @@ const siteCount = (await getCollection('sites')).length;
           data-tags={l.data.tags.join('|')}
           data-search={`${l.data.title} ${l.data.summary} ${l.data.tags.join(' ')}`.toLowerCase()}
         >
-          <div class="lesson-meta">
-            <span>{formatDate(l.data.date)}</span>
-            {l.data.duration && <span>· {l.data.duration}</span>}
+          {l.data.cover && <img class="lesson-card-img" src={url(l.data.cover)} alt="" loading="lazy" width="1400" height="788" />}
+          <div class="lesson-card-body">
+            <div class="lesson-meta">
+              <span>{formatDate(l.data.date)}</span>
+              {l.data.duration && <span>· {l.data.duration}</span>}
+            </div>
+            <h2>{l.data.title}</h2>
+            <p>{l.data.summary}</p>
+            <div class="chips small">{l.data.tags.map((t) => <span class="chip">{t}</span>)}</div>
           </div>
-          <h2>{l.data.title}</h2>
-          <p>{l.data.summary}</p>
-          <div class="chips small">{l.data.tags.map((t) => <span class="chip">{t}</span>)}</div>
         </a>
       ))}
     </div>
