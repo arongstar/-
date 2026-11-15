@@ -1,0 +1,30 @@
+---
+import { url } from '../lib/url';
+interface Props {
+  site: { id: string; name: string; url: string; category: string; description: string; use: string; note?: string };
+  lessons?: { id: string; title: string }[];
+}
+const { site, lessons = [] } = Astro.props;
+const host = new URL(site.url).hostname.replace(/^www\./, '');
+---
+<article class="site-card" data-category={site.category} data-search={`${site.name} ${site.description} ${site.category} ${host}`.toLowerCase()}>
+  <div class="site-card-top">
+    <span class="chip">{site.category}</span>
+    <span class:list={['use-tag', site.use === '학생 활동 가능' ? 'use-student' : 'use-teacher']}>{site.use}</span>
+  </div>
+  <h3><a href={site.url} target="_blank" rel="noopener">{site.name} <span aria-hidden="true">↗</span></a></h3>
+  <p class="site-host">{host}</p>
+  <p>{site.description}</p>
+  {site.note && <p class="site-note">⚠ {site.note}</p>}
+  {lessons.length > 0 && (
+    <p class="site-lessons">
+      관련 교안:{' '}
+      {lessons.map((l, i) => (
+        <>
+          {i > 0 && ', '}
+          <a href={url(`/lessons/${l.id}`)}>{l.title}</a>
+        </>
+      ))}
+    </p>
+  )}
+</article>

@@ -1,0 +1,118 @@
+# 사이트 모음 — 여기에 항목을 추가하면 "사이트 모음" 페이지에 바로 나타납니다.
+#
+# id:          영문·숫자·하이픈으로 된 고유 이름 (교안에서 이 id로 연결)
+# name:        화면에 보일 이름
+# url:         사이트 주소 (https:// 로 시작)
+# category:    분류 (같은 분류끼리 묶여서 보입니다)
+# description: 한두 줄 소개
+# use:         "교사용" 또는 "학생 활동 가능"
+# note:        (선택) 주의할 점 — 노란 상자로 표시됩니다
+
+- id: chatgpt
+  name: ChatGPT
+  url: https://chatgpt.com
+  category: 대화형 AI
+  description: 질문에 답하고 글을 쓰고 정리해 주는 대화형 AI. 수업 아이디어, 가정통신문, 평가 문항 초안 만들기에 좋아요.
+  use: 교사용
+  note: 가입 연령과 보호자 동의 기준이 있으니 학생 사용 전 약관을 확인하세요.
+
+- id: gemini
+  name: Gemini
+  url: https://gemini.google.com
+  category: 대화형 AI
+  description: 구글의 대화형 AI. 구글 문서·드라이브 등 구글 서비스와 함께 쓰기 편해요.
+  use: 교사용
+  note: 학교 구글 워크스페이스 계정의 사용 허용 여부를 확인하세요.
+
+- id: claude
+  name: Claude
+  url: https://claude.ai
+  category: 대화형 AI
+  description: 긴 문서 읽기와 글 다듬기에 강한 대화형 AI. 교육과정 문서나 연수 자료 요약에 활용해 보세요.
+  use: 교사용
+
+- id: copilot
+  name: Microsoft Copilot
+  url: https://copilot.microsoft.com
+  category: 대화형 AI
+  description: 마이크로소프트의 대화형 AI. 웹 검색 결과를 바탕으로 답해 주고 이미지도 만들 수 있어요.
+  use: 교사용
+
+- id: wrtn
+  name: 뤼튼
+  url: https://wrtn.ai
+  category: 대화형 AI
+  description: 한국어에 친숙한 AI 서비스. 다양한 목적별 도구를 한곳에서 써 볼 수 있어요.
+  use: 교사용
+
+- id: notebooklm
+  name: NotebookLM
+  url: https://notebooklm.google.com
+  category: 자료 정리·요약
+  description: 내가 올린 PDF·문서·영상만을 근거로 요약하고 질문에 답해 주는 AI 노트. 교육과정 해설서 정리에 유용해요.
+  use: 교사용
+
+- id: canva
+  name: Canva
+  url: https://www.canva.com
+  category: 디자인·발표
+  description: 템플릿으로 포스터, 카드뉴스, 활동지, 발표 자료를 쉽게 만드는 디자인 도구. AI 이미지 생성 기능도 있어요.
+  use: 학생 활동 가능
+  note: 교사 인증을 하면 교육용 기능을 무료로 쓸 수 있어요. 학생 계정은 교사가 수업(클래스)으로 초대해 관리하세요.
+
+- id: miricanvas
+  name: 미리캔버스
+  url: https://www.miricanvas.com
+  category: 디자인·발표
+  description: 한국어 템플릿이 풍부한 디자인 도구. 안내장, 포스터, 상장 만들기에 편리해요.
+  use: 교사용
+
+- id: gamma
+  name: Gamma
+  url: https://gamma.app
+  category: 디자인·발표
+  description: 주제와 개요만 입력하면 AI가 발표 자료를 자동으로 만들어 줘요.
+  use: 교사용
+
+- id: padlet
+  name: Padlet
+  url: https://padlet.com
+  category: 협업·소통
+  description: 온라인 게시판에 학생들이 글·그림·사진을 함께 올리는 협업 도구. 생각 모으기 활동에 좋아요.
+  use: 학생 활동 가능
+  note: 무료 요금제는 만들 수 있는 보드 수가 제한돼요.
+
+- id: tkbell
+  name: 띵커벨
+  url: https://www.tkbell.co.kr
+  category: 퀴즈·평가
+  description: 퀴즈, 토의·토론, 보드 활동을 할 수 있는 수업 참여 도구. 학생은 가입 없이 코드로 참여해요.
+  use: 학생 활동 가능
+
+- id: teachable-machine
+  name: 티처블 머신
+  url: https://teachablemachine.withgoogle.com
+  category: AI 원리 체험
+  description: 사진·소리·자세를 학습시켜 나만의 AI 모델을 만들어 보는 체험 도구. 'AI는 어떻게 배울까?' 수업에 좋아요.
+  use: 학생 활동 가능
+
+- id: quickdraw
+  name: Quick, Draw!
+  url: https://quickdraw.withgoogle.com
+  category: AI 원리 체험
+  description: 그림을 그리면 AI가 무엇인지 맞히는 게임. AI가 데이터로 학습한다는 것을 놀이로 체험해요.
+  use: 학생 활동 가능
+
+- id: autodraw
+  name: AutoDraw
+  url: https://www.autodraw.com
+  category: AI 원리 체험
+  description: 대충 그린 그림을 AI가 알아보고 깔끔한 그림으로 바꿔 줘요. 저학년 AI 첫 경험으로 추천해요.
+  use: 학생 활동 가능
+
+- id: entry
+  name: 엔트리
+  url: https://playentry.org
+  category: 코딩·SW
+  description: 블록 코딩 교육 플랫폼. 인공지능 블록으로 번역, 음성 인식, 모델 학습 활동을 할 수 있어요.
+  use: 학생 활동 가능

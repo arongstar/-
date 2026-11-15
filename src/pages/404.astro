@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url';
+---
+<Base title="페이지를 찾을 수 없어요">
+  <section class="page-head">
+    <h1>페이지를 찾을 수 없어요</h1>
+    <p>주소가 바뀌었거나 아직 올라오지 않은 교안일 수 있어요.</p>
+    <p><a class="btn btn-primary" href={url('/')}>교안 목록으로</a></p>
+  </section>
+</Base>

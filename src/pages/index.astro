@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../site.config';
+import { url, formatDate } from '../lib/url';
+
+const lessons = (await getCollection('lessons', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const tags = [...new Set(lessons.flatMap((l) => l.data.tags))].sort((a, b) => a.localeCompare(b, 'ko'));
+const siteCount = (await getCollection('sites')).length;
+---
+<Base>
+  <section class="hero">
+    <h1>{SITE.title}</h1>
+    <p>연수에서 다룬 교안을 언제든 다시 보고, 예시 프롬프트와 자료를 내려받으세요.</p>
+    <div class="hero-links">
+      <a class="btn btn-primary" href="#lessons">교안 {lessons.length}개 보기</a>
+      <a class="btn" href={url('/sites')}>소개한 사이트 {siteCount}곳</a>
+    </div>
+  </section>
+
+  <section id="lessons">
+    <div class="filter-bar">
+      <input type="search" id="lesson-search" placeholder="교안 검색 (예: 챗GPT, 평가, 이미지)" aria-label="교안 검색" />
+      <div class="chips" role="group" aria-label="주제로 거르기">
+        <button type="button" class="chip-btn active" data-tag="">전체</button>
+        {tags.map((t) => <button type="button" class="chip-btn" data-tag={t}>{t}</button>)}
+      </div>
+    </div>
+
+    <div class="lesson-grid">
+      {lessons.map((l) => (
+        <a
+          class="lesson-card"
+          href={url(`/lessons/${l.id}`)}
+          data-tags={l.data.tags.join('|')}
+          data-search={`${l.data.title} ${l.data.summary} ${l.data.tags.join(' ')}`.toLowerCase()}
+        >
+          <div class="lesson-meta">
+            <span>{formatDate(l.data.date)}</span>
+            {l.data.duration && <span>· {l.data.duration}</span>}
+          </div>
+          <h2>{l.data.title}</h2>
+          <p>{l.data.summary}</p>
+          <div class="chips small">{l.data.tags.map((t) => <span class="chip">{t}</span>)}</div>
+        </a>
+      ))}
+    </div>
+    <p class="empty" id="lesson-empty" hidden>찾는 교안이 없어요. 다른 낱말로 검색해 보세요.</p>
+  </section>
+
+  <script>
+    const search = document.getElementById('lesson-search') as HTMLInputElement;
+    const cards = [...document.querySelectorAll<HTMLElement>('.lesson-card')];
+    const empty = document.getElementById('lesson-empty')!;
+    let tag = '';
+    function apply() {
+      const q = search.value.trim().toLowerCase();
+      let shown = 0;
+      cards.forEach((c) => {
+        const ok = (!tag || c.dataset.tags!.split('|').includes(tag)) && (!q || c.dataset.search!.includes(q));
+        c.hidden = !ok;
+        if (ok) shown++;
+      });
+      empty.hidden = shown > 0;
+    }
+    search.addEventListener('input', apply);
+    document.querySelectorAll<HTMLButtonElement>('.chip-btn').forEach((b) =>
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.chip-btn').forEach((x) => x.classList.remove('active'));
+        b.classList.add('active');
+        tag = b.dataset.tag || '';
+        apply();
+      }),
+    );
+  </script>
+</Base>

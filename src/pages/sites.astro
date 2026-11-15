@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteCard from '../components/SiteCard.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORY_ORDER } from '../site.config';
+
+const sites = (await getCollection('sites')).sort((a, b) => a.data.name.localeCompare(b.data.name, 'ko'));
+const lessons = await getCollection('lessons', ({ data }) => !data.draft);
+const lessonsFor = (siteId: string) =>
+  lessons.filter((l) => l.data.sites.some((s) => s.id === siteId)).map((l) => ({ id: l.id, title: l.data.title }));
+const rank = (c: string) => (CATEGORY_ORDER.includes(c) ? CATEGORY_ORDER.indexOf(c) : 999);
+const categories = [...new Set(sites.map((s) => s.data.category))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b, 'ko'));
+---
+<Base title="사이트 모음" description="연수에서 소개한 AI·디지털 도구 사이트 모음">
+  <section class="page-head">
+    <h1>사이트 모음</h1>
+    <p>연수에서 소개한 AI·디지털 도구를 한곳에 모았어요. 이름을 누르면 새 창으로 열립니다.</p>
+  </section>
+
+  <div class="filter-bar">
+    <input type="search" id="site-search" placeholder="사이트 검색 (예: 이미지, 퀴즈, 발표)" aria-label="사이트 검색" />
+    <div class="chips" role="group" aria-label="분류로 거르기">
+      <button type="button" class="chip-btn active" data-cat="">전체 ({sites.length})</button>
+      {categories.map((c) => (
+        <button type="button" class="chip-btn" data-cat={c}>
+          {c} ({sites.filter((s) => s.data.category === c).length})
+        </button>
+      ))}
+    </div>
+    <label class="check"><input type="checkbox" id="student-only" /> 학생 활동 가능한 것만</label>
+  </div>
+
+  {categories.map((c) => (
+    <section class="site-section" data-section={c}>
+      <h2>{c}</h2>
+      <div class="site-grid">
+        {sites.filter((s) => s.data.category === c).map((s) => <SiteCard site={s.data} lessons={lessonsFor(s.id)} />)}
+      </div>
+    </section>
+  ))}
+  <p class="empty" id="site-empty" hidden>찾는 사이트가 없어요.</p>
+  <p class="disclaimer">※ 사이트의 가입 연령, 이용 약관, 요금 정책은 수시로 바뀔 수 있으니 수업에 쓰기 전에 꼭 확인해 주세요.</p>
+
+  <script>
+    const search = document.getElementById('site-search') as HTMLInputElement;
+    const studentOnly = document.getElementById('student-only') as HTMLInputElement;
+    const cards = [...document.querySelectorAll<HTMLElement>('.site-card')];
+    const sections = [...document.querySelectorAll<HTMLElement>('.site-section')];
+    const empty = document.getElementById('site-empty')!;
+    let cat = '';
+    function apply() {
+      const q = search.value.trim().toLowerCase();
+      cards.forEach((c) => {
+        c.hidden = !(
+          (!cat || c.dataset.category === cat) &&
+          (!q || c.dataset.search!.includes(q)) &&
+          (!studentOnly.checked || !!c.querySelector('.use-student'))
+        );
+      });
+      let any = false;
+      sections.forEach((s) => {
+        const vis = [...s.querySelectorAll<HTMLElement>('.site-card')].some((c) => !c.hidden);
+        s.hidden = !vis;
+        any ||= vis;
+      });
+      empty.hidden = any;
+    }
+    search.addEventListener('input', apply);
+    studentOnly.addEventListener('change', apply);
+    document.querySelectorAll<HTMLButtonElement>('.chip-btn').forEach((b) =>
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.chip-btn').forEach((x) => x.classList.remove('active'));
+        b.classList.add('active');
+        cat = b.dataset.cat || '';
+        apply();
+      }),
+    );
+  </script>
+</Base>
