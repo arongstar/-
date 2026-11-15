@@ -1,0 +1,160 @@
+---
+import '../styles/global.css';
+import { SITE } from '../site.config';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = SITE.description } = Astro.props;
+const pageTitle = title ? `${title} | ${SITE.shortTitle}` : SITE.title;
+const path = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '') || '/';
+const isActive = (p: string) => (p === '/' ? path === '/' || path.startsWith('/lessons') : path.startsWith(p));
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={url('/')}>
+          <span class="brand-mark" aria-hidden="true">AI</span>
+          <span>{SITE.title}</span>
+        </a>
+        <nav class="nav">
+          <a href={url('/')} class:list={{ active: isActive('/') }}>교안</a>
+          <a href={url('/sites')} class:list={{ active: isActive('/sites') }}>사이트 모음</a>
+          <button type="button" class="nav-qr" data-qr-open aria-label="이 페이지 QR 코드 보기">QR 공유</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>{SITE.description}</p>
+      </div>
+    </footer>
+
+    <dialog class="qr-dialog" id="qr-dialog">
+      <div class="qr-body">
+        <p class="qr-heading">휴대폰 카메라로 찍으면 이 페이지가 열려요</p>
+        <div class="qr-code" id="qr-code"></div>
+        <p class="qr-url" id="qr-url"></p>
+        <div class="qr-buttons">
+          <button type="button" class="btn" data-copy-url>주소 복사</button>
+          <button type="button" class="btn btn-primary" data-qr-close>닫기</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      import QRCode from 'qrcode';
+
+      const toastEl = document.getElementById('toast')!;
+      let toastTimer: number | undefined;
+      function toast(msg: string) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toastEl.classList.remove('show'), 1800);
+      }
+
+      async function copyText(text: string) {
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+        toast('복사했어요! 붙여넣기(Ctrl+V) 하세요');
+      }
+
+      function downloadText(filename: string, text: string) {
+        const blob = new Blob(['﻿' + text], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename.replace(/[\\/:*?"<>|]/g, '_') + '.txt';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      }
+      (window as any).__downloadText = downloadText;
+      (window as any).__copyText = copyText;
+
+      // 프롬프트 카드: 복사 / 다운로드
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const card = target.closest('.prompt-card') as HTMLElement | null;
+        if (card) {
+          const text = card.querySelector('.prompt-text')?.textContent ?? '';
+          if (target.closest('.btn-copy')) copyText(text);
+          if (target.closest('.btn-download')) downloadText(card.dataset.title || '프롬프트', text);
+        }
+        if (target.closest('[data-code-copy]')) {
+          const pre = target.closest('.code-wrap')?.querySelector('pre');
+          if (pre) copyText(pre.textContent ?? '');
+        }
+      });
+
+      // 일반 코드 블록에도 복사 버튼 달기
+      document.querySelectorAll('.prose pre:not(.prompt-text)').forEach((pre) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'code-wrap';
+        pre.parentNode!.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy';
+        btn.dataset.codeCopy = '';
+        btn.textContent = '복사';
+        wrap.appendChild(btn);
+      });
+
+      // QR 공유
+      const dialog = document.getElementById('qr-dialog') as HTMLDialogElement;
+      document.querySelectorAll('[data-qr-open]').forEach((btn) =>
+        btn.addEventListener('click', async () => {
+          const href = location.href.split('#')[0];
+          document.getElementById('qr-code')!.innerHTML = await QRCode.toString(href, {
+            type: 'svg',
+            margin: 1,
+            width: 320,
+          });
+          document.getElementById('qr-url')!.textContent = decodeURI(href);
+          dialog.showModal();
+        }),
+      );
+      dialog.querySelector('[data-qr-close]')!.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
+      dialog
+        .querySelector('[data-copy-url]')!
+        .addEventListener('click', () => copyText(location.href.split('#')[0]));
+    </script>
+  </body>
+</html>

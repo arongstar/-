@@ -1,0 +1,126 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteCard from '../../components/SiteCard.astro';
+import { getCollection, getEntries, render } from 'astro:content';
+import { url, isExternal, formatDate } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('lessons', ({ data }) => !data.draft);
+  return lessons.map((lesson) => ({ params: { id: lesson.id }, props: { lesson } }));
+}
+
+const { lesson } = Astro.props;
+const { Content, headings } = await render(lesson);
+const sites = await getEntries(lesson.data.sites);
+const toc = headings.filter((h) => h.depth === 2);
+const fileName = (f: string) => decodeURIComponent(f.split('/').pop() || f);
+---
+<Base title={lesson.data.title} description={lesson.data.summary}>
+  <nav class="breadcrumb"><a href={url('/')}>← 교안 목록</a></nav>
+
+  <header class="lesson-header">
+    <div class="lesson-meta">
+      <span>{formatDate(lesson.data.date)}</span>
+      <span>· 대상: {lesson.data.audience}</span>
+      {lesson.data.duration && <span>· {lesson.data.duration}</span>}
+    </div>
+    <h1>{lesson.data.title}</h1>
+    {lesson.data.summary && <p class="lesson-summary">{lesson.data.summary}</p>}
+    <div class="chips small">{lesson.data.tags.map((t) => <span class="chip">{t}</span>)}</div>
+    <div class="lesson-tools">
+      <button type="button" class="btn" data-font="-1" aria-label="글자 작게">가-</button>
+      <button type="button" class="btn" data-font="1" aria-label="글자 크게">가+</button>
+      <button type="button" class="btn" data-qr-open>QR 공유</button>
+      <button type="button" class="btn" onclick="window.print()">인쇄</button>
+    </div>
+  </header>
+
+  <div class="lesson-layout">
+    <aside class="lesson-side">
+      {toc.length > 0 && (
+        <nav class="side-box toc" aria-label="목차">
+          <h2>목차</h2>
+          <ul>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+        </nav>
+      )}
+      <div class="side-box" id="prompt-box" hidden>
+        <h2>예시 프롬프트 <span class="count" id="prompt-count"></span></h2>
+        <ol id="prompt-list"></ol>
+        <button type="button" class="btn btn-primary btn-block" id="download-all-prompts">프롬프트 전체 받기 (.txt)</button>
+      </div>
+      {lesson.data.materials.length > 0 && (
+        <div class="side-box">
+          <h2>자료 내려받기</h2>
+          <ul class="material-list">
+            {lesson.data.materials.map((m) => (
+              <li>
+                <a
+                  href={url(m.file)}
+                  {...(isExternal(m.file) ? { target: '_blank', rel: 'noopener' } : { download: fileName(m.file) })}
+                >
+                  <span class="material-icon" aria-hidden="true">{isExternal(m.file) ? '🔗' : '⬇'}</span>
+                  <span>
+                    <strong>{m.title}</strong>
+                    {m.description && <small>{m.description}</small>}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </aside>
+
+    <article class="prose" id="lesson-body">
+      <Content />
+
+      {sites.length > 0 && (
+        <section class="lesson-sites">
+          <h2 id="소개한-사이트">이 교안에서 소개한 사이트</h2>
+          <div class="site-grid">{sites.map((s) => <SiteCard site={s.data} />)}</div>
+          <p><a href={url('/sites')}>전체 사이트 모음 보기 →</a></p>
+        </section>
+      )}
+    </article>
+  </div>
+
+  <script define:vars={{ lessonTitle: lesson.data.title }}>
+    // 페이지 안의 프롬프트를 모아 옆 상자에 목록 + 전체 다운로드
+    const cards = [...document.querySelectorAll('#lesson-body .prompt-card')];
+    if (cards.length) {
+      const box = document.getElementById('prompt-box');
+      const list = document.getElementById('prompt-list');
+      box.hidden = false;
+      document.getElementById('prompt-count').textContent = cards.length + '개';
+      cards.forEach((card, i) => {
+        card.id = card.id || 'prompt-' + (i + 1);
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = '#' + card.id;
+        a.textContent = card.dataset.title;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+      document.getElementById('download-all-prompts').addEventListener('click', () => {
+        const text = cards
+          .map((c, i) => `[${i + 1}] ${c.dataset.title}\n${'-'.repeat(30)}\n${c.querySelector('.prompt-text').textContent.trim()}\n`)
+          .join('\n\n');
+        window.__downloadText(lessonTitle + ' - 프롬프트 모음', `${lessonTitle}\n예시 프롬프트 모음\n\n${text}`);
+      });
+    }
+
+    // 글자 크기 조절 (발표할 때 크게)
+    const KEY = 'lesson-font-scale';
+    let scale = 1;
+    try { scale = Number(localStorage.getItem(KEY)) || 1; } catch {}
+    const applyScale = () => document.documentElement.style.setProperty('--content-scale', String(scale));
+    applyScale();
+    document.querySelectorAll('[data-font]').forEach((b) =>
+      b.addEventListener('click', () => {
+        scale = Math.min(1.8, Math.max(0.85, +(scale + Number(b.dataset.font) * 0.15).toFixed(2)));
+        applyScale();
+        try { localStorage.setItem(KEY, String(scale)); } catch {}
+      }),
+    );
+  </script>
+</Base>
