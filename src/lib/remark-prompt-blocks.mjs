@@ -54,6 +54,10 @@ function transform(node, base) {
   if ((node.type === 'image' || node.type === 'link') && typeof node.url === 'string' && /^\/(?!\/)/.test(node.url)) {
     node.url = base + node.url;
   }
+  // 본문에 직접 쓴 HTML(<video src="/files/..."> 등)도 기본 경로를 붙여 줌
+  if (node.type === 'html' && typeof node.value === 'string') {
+    node.value = node.value.replace(/\b(src|href|poster)="\/(?!\/)/g, `$1="${base}/`);
+  }
 
   if (node.type === 'blockquote') {
     const t = firstText(node);
