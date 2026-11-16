@@ -1,0 +1,279 @@
+---
+// 발표 슬라이드 묶음을 그립니다. (웹 발표 화면과 슬라이드 PDF가 함께 씀)
+// mode="web"  : 강사 소개 장을 빼고, 강사 이름도 넣지 않음
+// mode="pdf"  : 표지에 강사, 2쪽에 강사 소개 장
+import '../../styles/slides.css';
+import { INSTRUCTOR } from '../../site.config';
+import { url, formatDate } from '../../lib/url';
+
+interface Props {
+  deck: any;
+  lessonDate: Date;
+  mode: 'web' | 'pdf';
+  qrSvg: string;
+  onlineUrl: string;
+}
+const { deck, lessonDate, mode, qrSvg, onlineUrl } = Astro.props;
+const isPdf = mode === 'pdf';
+
+const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// **굵게** 와 줄바꿈만 지원하는 아주 작은 서식
+const fmt = (s = '') => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+const it = (x: any) => (typeof x === 'string' ? { title: x } : x);
+const img = (p?: string) => (p ? url(p) : '');
+const shortUrl = decodeURI(onlineUrl).replace(/^https?:\/\//, '').replace(/\/$/, '');
+const instructor = `${INSTRUCTOR.affiliation} ${INSTRUCTOR.role} ${INSTRUCTOR.name}`;
+
+const pages: any[] = [{ type: 'cover' }];
+if (isPdf) pages.push({ type: 'intro' });
+pages.push(...deck.slides, { type: 'thanks' });
+---
+<div class="deck" data-mode={mode}>
+  {pages.map((s, i) => {
+    const n = i + 1;
+    const head = s.title && !['cover', 'intro', 'section', 'break', 'thanks'].includes(s.type);
+    return (
+      <section class:list={['slide', `slide-${s.type}`]} data-n={n}>
+        {s.type === 'cover' && (
+          <>
+            <div class="cover-text">
+              <span class="pill pill-accent">{deck.badge}</span>
+              <h1 class="cover-title" set:html={fmt(deck.title)} />
+              <ul class="cover-parts">{deck.parts.map((p: string) => <li set:html={fmt(p)} />)}</ul>
+              <p class="cover-meta">
+                {isPdf ? (
+                  <>{formatDate(lessonDate)} &nbsp;|&nbsp; 강사 {instructor}</>
+                ) : (
+                  <>디지털·AI 연수 교안 &nbsp;|&nbsp; {shortUrl}</>
+                )}
+              </p>
+            </div>
+            {deck.cover && <div class="cover-img"><img src={img(deck.cover)} alt="" /></div>}
+          </>
+        )}
+
+        {s.type === 'intro' && (
+          <>
+            <div class="intro-head">
+              <span class="pill pill-yellow">강사 소개</span>
+              <strong class="intro-name">{INSTRUCTOR.name}</strong>
+              <div class="intro-aff">
+                <b>{INSTRUCTOR.affiliation} {INSTRUCTOR.role}</b>
+                <span>{INSTRUCTOR.degree}</span>
+              </div>
+            </div>
+            <div class="intro-grid">
+              {[[0, 2], [1, 3]].map((col, ci) => (
+                <div class="intro-col">
+                  {col.map((gi) => INSTRUCTOR.groups[gi]).filter(Boolean).map((g) => (
+                    <div class:list={['intro-box', `c${INSTRUCTOR.groups.indexOf(g) % 4}`]}>
+                      <h3><span aria-hidden="true">{g.icon}</span> {g.title}</h3>
+                      <dl>
+                        {g.rows.map(([y, t]) => (
+                          <>
+                            <dt>{y}</dt>
+                            <dd>{t}</dd>
+                          </>
+                        ))}
+                      </dl>
+                    </div>
+                  ))}
+                  {ci === 1 && (
+                    <div class="intro-box intro-schools">
+                      <h3><span aria-hidden="true">🏫</span> 최근 강의한 학교 <small>(2025~)</small></h3>
+                      <p>{INSTRUCTOR.recentSchools}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {head && (
+          <header class="s-head">
+            {s.tag && <span class="pill pill-accent">{s.tag}</span>}
+            <h2 class="s-title" set:html={fmt(s.title)} />
+          </header>
+        )}
+
+        {s.type === 'guide' && (
+          <div class="s-body guide">
+            <div class="guide-qr">
+              <b>온라인 교안</b>
+              <div class="qr" set:html={qrSvg} />
+              <span>{shortUrl}</span>
+            </div>
+            <div class="guide-col">
+              <h3>교안 사이트에 있는 것</h3>
+              <ul class="guide-have">{s.have.map((h: string) => <li set:html={fmt(h)} />)}</ul>
+            </div>
+            <div class="guide-col">
+              <h3>오늘 필요한 것</h3>
+              <ol class="numlist">
+                {s.need.map((x: any, k: number) => (
+                  <li class={`c${k % 4}`}>
+                    <i>{k + 1}</i>
+                    <div><b set:html={fmt(it(x).title)} />{it(x).text && <span set:html={fmt(it(x).text)} />}</div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        )}
+
+        {s.type === 'flow' && (
+          <div class="s-body flow" style={`--cols:${s.columns.length}`}>
+            {s.columns.map((c: any, k: number) => (
+              <div class={`flow-col c${k % 4}`}>
+                <span class="flow-label">{c.label}</span>
+                <h3 set:html={fmt(c.title)} />
+                <ol class="numlist">
+                  {c.items.map((x: string, j: number) => (
+                    <li><i>{j + 1}</i><div><b set:html={fmt(x)} /></div></li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {s.type === 'section' && (
+          <>
+            <div class="section-text">
+              <span class="pill pill-accent pill-lg">{s.part}</span>
+              <h2 class="section-title" set:html={fmt(s.title)} />
+              {s.lead && <p class="section-lead" set:html={fmt(s.lead)} />}
+              <ol class="numlist">
+                {s.items.map((x: string, j: number) => (
+                  <li class="c1"><i>{j + 1}</i><div><b set:html={fmt(x)} /></div></li>
+                ))}
+              </ol>
+            </div>
+            {s.image && <div class="section-img"><img src={img(s.image)} alt="" /></div>}
+          </>
+        )}
+
+        {s.type === 'steps' && (
+          <div class="s-body steps" style={`--cols:${s.steps.length}`}>
+            {s.steps.map((x: any, k: number) => (
+              <div class={`step c${k % 4}`}>
+                <i>{k + 1}</i>
+                <b set:html={fmt(it(x).title)} />
+                {it(x).text && <span set:html={fmt(it(x).text)} />}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {s.type === 'list' && (
+          <div class:list={['s-body', 'list', { 'has-img': s.image }]}>
+            {s.image && (
+              <figure class="frame">
+                <img src={img(s.image)} alt="" />
+                {s.caption && <figcaption set:html={fmt(s.caption)} />}
+              </figure>
+            )}
+            <ol class:list={['numlist', 'numlist-lg', { two: !s.image && s.items.length > 4, many: s.image && s.items.length > 4 }]}>
+              {s.items.map((x: any, k: number) => (
+                <li class={`c${k % 4}`}>
+                  <i>{k + 1}</i>
+                  <div><b set:html={fmt(it(x).title)} />{it(x).text && <span set:html={fmt(it(x).text)} />}</div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
+
+        {s.type === 'compare' && (
+          <div class="s-body compare" style={`--cols:${s.columns.length}`}>
+            {s.columns.map((c: any, k: number) =>
+              c.image ? (
+                <figure class="frame">
+                  <img src={img(c.image)} alt="" />
+                  {c.caption && <figcaption set:html={fmt(c.caption)} />}
+                </figure>
+              ) : (
+                <div class={`compare-col c${k % 4}`}>
+                  {c.title && <h3 set:html={fmt(c.title)} />}
+                  <ul>{c.items.map((x: string) => <li set:html={fmt(x)} />)}</ul>
+                </div>
+              ),
+            )}
+          </div>
+        )}
+
+        {s.type === 'table' && (
+          <div class="s-body table">
+            <table>
+              <thead><tr>{s.head.map((h: string) => <th set:html={fmt(h)} />)}</tr></thead>
+              <tbody>
+                {s.rows.map((r: string[]) => (
+                  <tr>{r.map((c: string, k: number) => (k === 0 ? <th set:html={fmt(c)} /> : <td set:html={fmt(c)} />))}</tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {s.type === 'prompts' && (
+          <div class="s-body prompts">
+            {s.items.map((p: any, k: number) => (
+              <div class={`prompt c${k % 4}`}>
+                <i>{k + 1}</i>
+                <div><b set:html={fmt(p.title)} /><q set:html={fmt(p.text)} /></div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {s.type === 'quiz' && (
+          <div class="s-body quiz" style={`--cols:${s.options.length}`}>
+            {s.options.map((o: any, k: number) => (
+              <div class={`quiz-opt c${k % 4}`}>
+                <i>{o.label}</i>
+                <b set:html={fmt(o.title)} />
+                {o.text && <span set:html={fmt(o.text)} />}
+              </div>
+            ))}
+          </div>
+        )}
+        {s.type === 'quiz' && s.answer && (
+          <div class="s-note s-answer" data-reveal>
+            <b>정답 · {s.answer.title}</b>
+            {s.answer.text && <span set:html={fmt(s.answer.text)} />}
+          </div>
+        )}
+
+        {s.type === 'break' && (
+          <div class="center">
+            {s.image && <img class="center-img" src={img(s.image)} alt="" />}
+            <h2 class="big-title" set:html={fmt(s.title)} />
+            {s.text && <p class="center-text" set:html={fmt(s.text)} />}
+          </div>
+        )}
+
+        {s.type === 'thanks' && (
+          <div class="center thanks">
+            <h2 class="big-title">감사합니다</h2>
+            <p class="center-text" set:html={fmt(deck.thanks || '교안 · 예시 프롬프트 · 실습 자료는 언제든 이 주소에서 다시 볼 수 있어요.')} />
+            <div class="thanks-qr">
+              <div class="qr" set:html={qrSvg} />
+              <span>{shortUrl}</span>
+            </div>
+            {isPdf && <p class="thanks-who">{instructor}</p>}
+          </div>
+        )}
+
+        {s.note && (s.note.title || s.note.text) && (
+          <div class="s-note">
+            {s.note.title && <b set:html={fmt(s.note.title)} />}
+            {s.note.text && <span set:html={fmt(s.note.text)} />}
+          </div>
+        )}
+
+        <span class="s-num">{n}</span>
+      </section>
+    );
+  })}
+</div>

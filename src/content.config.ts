@@ -45,4 +45,64 @@ const sites = defineCollection({
   }),
 });
 
-export const collections = { lessons, sites };
+// 발표 슬라이드: src/content/decks/<교안id>.yaml
+// 교안 하나에 슬라이드 묶음 하나. 표지·강사 소개(PDF만)·마지막 인사 장은 자동으로 붙습니다.
+const item = z.union([z.string(), z.object({ title: z.string(), text: z.string().optional() })]);
+const note = z.object({ title: z.string().optional(), text: z.string().optional() }).optional();
+const common = { tag: z.string().optional(), title: z.string().default(''), note };
+const slide = z.discriminatedUnion('type', [
+  // 연수 안내: 온라인 교안 QR + 사이트에 있는 것 + 오늘 필요한 것
+  z.object({ type: z.literal('guide'), ...common, have: z.array(z.string()), need: z.array(item) }),
+  // 오늘의 흐름: 칸(1부 앞/뒤, 2부…)마다 번호 목록
+  z.object({
+    type: z.literal('flow'), ...common,
+    columns: z.array(z.object({ label: z.string(), title: z.string(), items: z.array(z.string()) })),
+  }),
+  // 부 나누기 장
+  z.object({
+    type: z.literal('section'), ...common, part: z.string(), lead: z.string().optional(),
+    items: z.array(z.string()).default([]), image: z.string().optional(),
+  }),
+  // 1 → 2 → 3 → 4 단계 카드
+  z.object({ type: z.literal('steps'), ...common, steps: z.array(item) }),
+  // 번호 목록 (+ 왼쪽 그림)
+  z.object({
+    type: z.literal('list'), ...common, image: z.string().optional(), caption: z.string().optional(), items: z.array(item),
+  }),
+  // 나란히 비교 (그림 칸 또는 목록 칸)
+  z.object({
+    type: z.literal('compare'), ...common,
+    columns: z.array(
+      z.object({
+        title: z.string().optional(), image: z.string().optional(), caption: z.string().optional(),
+        items: z.array(z.string()).default([]),
+      }),
+    ),
+  }),
+  // 한 장 정리 표
+  z.object({ type: z.literal('table'), ...common, head: z.array(z.string()), rows: z.array(z.array(z.string())) }),
+  // 이렇게 시켜 보기 (짧은 프롬프트)
+  z.object({ type: z.literal('prompts'), ...common, items: z.array(z.object({ title: z.string(), text: z.string() })) }),
+  // 퀴즈: 발표 화면에서는 '다음'을 한 번 누르면 정답이 보임
+  z.object({
+    type: z.literal('quiz'), ...common,
+    options: z.array(z.object({ label: z.string(), title: z.string(), text: z.string().optional() })),
+    answer: z.object({ title: z.string(), text: z.string().optional() }).optional(),
+  }),
+  // 쉬는 시간
+  z.object({ type: z.literal('break'), ...common, text: z.string().optional(), image: z.string().optional() }),
+]);
+const decks = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.yaml', base: './src/content/decks' }),
+  schema: z.object({
+    lesson: reference('lessons'),
+    badge: z.string().default('디지털·AI 교원 연수'),
+    title: z.string(),
+    parts: z.array(z.string()).default([]),
+    cover: z.string().optional(),
+    thanks: z.string().optional(),
+    slides: z.array(slide),
+  }),
+});
+
+export const collections = { lessons, sites, decks };
