@@ -78,14 +78,12 @@ pages.push(...deck.slides, { type: 'thanks' });
                       </dl>
                     </div>
                   ))}
-                  {ci === 1 && (
-                    <div class="intro-box intro-schools">
-                      <h3><span aria-hidden="true">🏫</span> 최근 강의한 학교 <small>(2025~)</small></h3>
-                      <p>{INSTRUCTOR.recentSchools}</p>
-                    </div>
-                  )}
                 </div>
               ))}
+              <div class="intro-box intro-schools">
+                <h3><span aria-hidden="true">🏫</span> 최근 강의한 학교 <small>(2025~)</small></h3>
+                <p>{INSTRUCTOR.recentSchools}</p>
+              </div>
             </div>
           </>
         )}

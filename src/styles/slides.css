@@ -102,7 +102,7 @@
 .cover-img img { width: 100%; border-radius: 24px; box-shadow: 0 10px 30px rgb(80 60 30 / 0.12); }
 
 /* 강사 소개 */
-.slide-intro { padding: 30px 40px 34px; gap: 14px; background: #fff; }
+.slide-intro { padding: 28px 40px 30px; gap: 12px; background: #fff; }
 .intro-head {
   flex: none; display: flex; align-items: center; gap: 28px; background: #1c2540; color: #fff;
   border-radius: 20px; padding: 20px 30px;
@@ -111,14 +111,15 @@
 .intro-name { font-size: 40px; font-weight: 900; letter-spacing: 0.02em; margin-top: 14px; }
 .intro-aff { display: flex; flex-direction: column; font-size: 18px; color: #d7dbe6; }
 .intro-aff b { color: var(--yellow); font-size: 20px; }
-.intro-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.08fr 1fr; gap: 14px; }
-.intro-col { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.intro-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.08fr 1fr; grid-template-rows: 1fr auto; gap: 12px 14px; }
+.intro-col { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
 .intro-col > .intro-box { flex: 1; }
-.intro-col > .intro-schools { flex: none; }
-.intro-box { background: var(--cs); border-radius: 16px; padding: 16px 22px; display: flex; flex-direction: column; justify-content: center; }
-.intro-box h3 { font-size: 21px; font-weight: 800; color: var(--c); margin-bottom: 8px; }
-.intro-box dl { display: grid; grid-template-columns: 104px 1fr; row-gap: 5px; font-size: 17.5px; line-height: 1.38; }
-.intro-box dt { color: var(--c); font-weight: 700; font-variant-numeric: tabular-nums; }
+.intro-grid > .intro-schools { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; gap: 18px; padding: 11px 22px; }
+.intro-grid > .intro-schools h3 { margin: 0; white-space: nowrap; }
+.intro-box { background: var(--cs); border-radius: 16px; padding: 12px 22px; display: flex; flex-direction: column; justify-content: center; }
+.intro-box h3 { font-size: 20px; font-weight: 800; color: var(--c); margin-bottom: 6px; }
+.intro-box dl { display: grid; grid-template-columns: 110px 1fr; row-gap: 3px; font-size: 17px; line-height: 1.36; }
+.intro-box dt { color: var(--c); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .intro-schools { --c: #4b5266; --cs: #f1f2f5; }
 .intro-schools small { font-weight: 500; font-size: 14px; }
 .intro-schools p { font-size: 17.5px; }
