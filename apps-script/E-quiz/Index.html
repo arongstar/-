@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base target="_top">
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fbf8f1; color: #1c2540; word-break: keep-all; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 24px 18px 48px; }
+    h1 { font-size: 30px; margin: 8px 0 4px; }
+    .sub { color: #5b6275; margin: 0 0 20px; font-size: 18px; }
+    .card { background: #fff; border: 2px solid #ebe5d8; border-radius: 22px; padding: 22px; }
+    .nums { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 10px; margin: 14px 0 20px; }
+    .nums button { height: 60px; font-size: 22px; font-weight: 800; border: 2px solid #ebe5d8; background: #fff; border-radius: 14px; cursor: pointer; color: #1c2540; }
+    .nums button.on { background: #2f6f5e; border-color: #2f6f5e; color: #fff; }
+    .big { width: 100%; height: 64px; border: 0; border-radius: 16px; font-size: 22px; font-weight: 800; background: #e0713a; color: #fff; cursor: pointer; }
+    .big:disabled { background: #d9d3c6; cursor: default; }
+    .progress { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: #5b6275; margin-bottom: 10px; }
+    .bar { height: 10px; background: #ebe5d8; border-radius: 99px; overflow: hidden; margin-bottom: 18px; }
+    .bar i { display: block; height: 100%; background: #2f6f5e; }
+    .q { font-size: 26px; font-weight: 800; line-height: 1.45; margin: 4px 0 18px; }
+    .choices { display: grid; gap: 12px; margin-bottom: 18px; }
+    .choice { display: flex; align-items: center; gap: 14px; text-align: left; padding: 16px 18px; border-radius: 16px; border: 3px solid transparent; font-size: 21px; font-weight: 700; cursor: pointer; color: #1c2540; }
+    .choice b { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+    .c1 { background: #e3f0eb; } .c1 b { background: #2f6f5e; }
+    .c2 { background: #fdeee3; } .c2 b { background: #e0713a; }
+    .c3 { background: #e6eefb; } .c3 b { background: #3a66c4; }
+    .c4 { background: #f5e7f3; } .c4 b { background: #9b4a9a; }
+    .choice.on { border-color: #1c2540; box-shadow: 0 4px 0 #1c2540; }
+    .row { display: flex; gap: 10px; }
+    .ghost { flex: 0 0 120px; height: 64px; border-radius: 16px; border: 2px solid #ebe5d8; background: #fff; font-size: 20px; font-weight: 700; cursor: pointer; color: #1c2540; }
+    .score { text-align: center; padding: 10px 0 18px; }
+    .score strong { display: block; font-size: 64px; color: #e0713a; line-height: 1.1; }
+    .review { list-style: none; padding: 0; margin: 16px 0 22px; display: grid; gap: 10px; }
+    .review li { background: #fff; border: 2px solid #ebe5d8; border-radius: 16px; padding: 14px 16px; font-size: 17px; line-height: 1.55; }
+    .review .ok { color: #2f6f5e; font-weight: 800; } .review .ng { color: #c0392b; font-weight: 800; }
+    .review small { display: block; color: #5b6275; margin-top: 4px; }
+    .msg { background: #fff4d6; border-radius: 14px; padding: 12px 16px; margin: 12px 0; font-weight: 700; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 id="title">우리 반 복습 퀴즈</h1>
+    <p class="sub" id="sub">불러오는 중이에요…</p>
+    <div class="msg" id="msg" hidden></div>
+
+    <!-- 1. 번호 고르기 -->
+    <section class="card" id="step-number" hidden>
+      <strong style="font-size:22px">내 번호를 눌러요</strong>
+      <div class="nums" id="nums"></div>
+      <button class="big" id="start" disabled>퀴즈 시작</button>
+    </section>
+
+    <!-- 2. 문제 풀기 -->
+    <section class="card" id="step-quiz" hidden>
+      <div class="progress"><span id="count"></span><span id="who"></span></div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="q" id="question"></div>
+      <div class="choices" id="choices"></div>
+      <div class="row">
+        <button class="ghost" id="prev">이전</button>
+        <button class="big" id="next" disabled>다음</button>
+      </div>
+    </section>
+
+    <!-- 3. 결과 -->
+    <section id="step-result" hidden>
+      <div class="card score">
+        <span id="score-who"></span>
+        <strong id="score"></strong>
+        <span id="score-text"></span>
+      </div>
+      <ul class="review" id="review"></ul>
+      <button class="big" id="again" style="background:#2f6f5e">처음으로</button>
+    </section>
+  </div>
+
+  <script>
+    let quiz = null, number = null, answers = [], cur = 0;
+    const $ = (id) => document.getElementById(id);
+    const show = (id) => ['step-number', 'step-quiz', 'step-result'].forEach((s) => ($(s).hidden = s !== id));
+    const say = (t) => { $('msg').textContent = t || ''; $('msg').hidden = !t; };
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+    // 처음: 서버에서 퀴즈 받아오기
+    google.script.run
+      .withSuccessHandler((q) => {
+        quiz = q;
+        $('title').textContent = q.title;
+        if (!q.open) { $('sub').textContent = ''; say('지금은 퀴즈 시간이 아니에요. 선생님 안내를 기다려 주세요.'); return; }
+        $('sub').textContent = '문제 ' + q.questions.length + '개 · 다 풀면 바로 점수와 해설을 볼 수 있어요.';
+        for (let i = 1; i <= q.students; i++) {
+          const b = document.createElement('button');
+          b.textContent = i;
+          b.onclick = () => { number = i; [...$('nums').children].forEach((x) => x.classList.toggle('on', x === b)); $('start').disabled = false; };
+          $('nums').appendChild(b);
+        }
+        show('step-number');
+      })
+      .withFailureHandler((e) => { $('sub').textContent = ''; say(e.message); })
+      .getQuiz();
+
+    $('start').onclick = () => { answers = new Array(quiz.questions.length).fill(null); cur = 0; draw(); show('step-quiz'); };
+
+    // 문제 한 개 그리기
+    function draw() {
+      const q = quiz.questions[cur], n = quiz.questions.length;
+      $('count').textContent = (cur + 1) + ' / ' + n;
+      $('who').textContent = number + '번';
+      $('bar').style.width = ((cur + 1) / n) * 100 + '%';
+      $('question').textContent = q.text;
+      $('choices').innerHTML = q.choices.map((c, i) =>
+        '<button class="choice c' + (i + 1) + (answers[cur] === i + 1 ? ' on' : '') + '" data-i="' + (i + 1) + '"><b>' + (i + 1) + '</b>' + esc(c) + '</button>').join('');
+      [...$('choices').children].forEach((b) => b.onclick = () => { answers[cur] = Number(b.dataset.i); draw(); });
+      $('prev').disabled = cur === 0;
+      $('next').disabled = !answers[cur];
+      $('next').textContent = cur === n - 1 ? '제출하기' : '다음';
+    }
+    $('prev').onclick = () => { if (cur > 0) { cur--; draw(); } };
+    $('next').onclick = () => {
+      if (cur < quiz.questions.length - 1) { cur++; draw(); return; }
+      $('next').disabled = true; $('next').textContent = '채점 중…'; say('');
+      google.script.run
+        .withSuccessHandler(result)
+        .withFailureHandler((e) => { say(e.message); draw(); })
+        .submitAnswers(number, answers);
+    };
+
+    // 결과 보여 주기
+    function result(r) {
+      $('score-who').textContent = r.number + '번의 점수';
+      $('score').textContent = r.score + '점';
+      $('score-text').textContent = r.total + '문제 중 ' + r.correct + '문제를 맞혔어요!';
+      $('review').innerHTML = r.review.map((x, i) =>
+        '<li><span class="' + (x.ok ? 'ok">⭕ ' : 'ng">❌ ') + (i + 1) + '번</span> ' + esc(x.text) +
+        '<small>내 답: ' + esc(x.picked) + (x.ok ? '' : ' · 정답: ' + esc(x.answer)) + '</small>' +
+        (x.explain ? '<small>💡 ' + esc(x.explain) + '</small>' : '') + '</li>').join('');
+      show('step-result');
+    }
+    $('again').onclick = () => { number = null; $('start').disabled = true; [...$('nums').children].forEach((x) => x.classList.remove('on')); show('step-number'); };
+  </script>
+</body>
+</html>
