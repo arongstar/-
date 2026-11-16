@@ -202,14 +202,19 @@
 /* 표 */
 .table { align-items: center; }
 .table table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 20px; overflow: hidden; border: 2px solid var(--line); }
-.table th, .table td { padding: 24px 28px; font-size: 25px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+.table th, .table td { padding: 22px 28px; font-size: 25px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
 .table thead th { background: #1c2540; color: #fff; font-size: 27px; }
 .table tbody th { background: #f5f1e8; color: var(--accent); white-space: nowrap; width: 200px; }
 .table tbody tr:last-child > * { border-bottom: 0; }
+.table.dense th, .table.dense td { padding: 15px 24px; font-size: 22px; }
+.table.dense thead th { font-size: 23px; }
+.compare.three .compare-col { padding: 26px 26px; gap: 24px; }
+.compare.three .compare-col h3 { font-size: 29px; }
+.compare.three .compare-col li { font-size: 23px; }
 
 /* 프롬프트 */
-.prompts { flex-direction: column; gap: 16px; }
-.prompt { flex: 1; display: flex; gap: 22px; align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 18px 30px; }
+.prompts { flex-direction: column; gap: 12px; }
+.prompt { flex: 1; display: flex; gap: 22px; align-items: center; background: #fff; border: 2px solid var(--line); border-radius: 20px; padding: 14px 30px; }
 .prompt i {
   flex: none; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; background: var(--c); color: #fff;
   font-style: normal; font-weight: 800; font-size: 24px;

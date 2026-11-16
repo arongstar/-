@@ -184,7 +184,7 @@ pages.push(...deck.slides, { type: 'thanks' });
         )}
 
         {s.type === 'compare' && (
-          <div class="s-body compare" style={`--cols:${s.columns.length}`}>
+          <div class:list={['s-body', 'compare', { three: s.columns.length > 2 }]} style={`--cols:${s.columns.length}`}>
             {s.columns.map((c: any, k: number) =>
               c.image ? (
                 <figure class="frame">
@@ -202,7 +202,7 @@ pages.push(...deck.slides, { type: 'thanks' });
         )}
 
         {s.type === 'table' && (
-          <div class="s-body table">
+          <div class:list={['s-body', 'table', { dense: s.rows.length > 4 }]}>
             <table>
               <thead><tr>{s.head.map((h: string) => <th set:html={fmt(h)} />)}</tr></thead>
               <tbody>
