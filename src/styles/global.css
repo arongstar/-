@@ -369,6 +369,7 @@ button { font: inherit; cursor: pointer; }
 .prose th, .prose td { border: 0; border-bottom: 1px solid var(--line); }
 .prose tr:last-child td { border-bottom: 0; }
 .prose th { background: var(--accent-soft); color: var(--accent-strong); }
+.prose td code { white-space: nowrap; }
 .prose tbody tr:nth-child(even) td { background: var(--prompt-bg); }
 .prose table.schedule td:first-child {
   font-weight: 800; color: var(--accent-strong); white-space: nowrap;
