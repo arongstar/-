@@ -107,7 +107,20 @@ const short = lesson.data.title.split(' — ')[0];
       document.getElementById('next').addEventListener('click', next);
       document.getElementById('prev').addEventListener('click', prev);
       document.getElementById('fs').addEventListener('click', toggleFs);
+      // 복사 버튼: 프롬프트를 클립보드로 (발표 넘김은 하지 않음)
+      document.querySelectorAll('.copy-btn').forEach((b) => b.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const text = b.dataset.copy || '';
+        try { await navigator.clipboard.writeText(text); }
+        catch {
+          const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+          document.execCommand('copy'); t.remove();
+        }
+        const old = b.textContent; b.textContent = '복사됨 ✓'; b.classList.add('done');
+        setTimeout(() => { b.textContent = old; b.classList.remove('done'); }, 1500);
+      }));
       stage.addEventListener('click', (e) => {
+        if (e.target.closest('button, a, pre')) return;
         const r = stage.getBoundingClientRect();
         (e.clientX - r.left < r.width / 3 ? prev : next)();
       });

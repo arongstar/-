@@ -168,11 +168,15 @@ pages.push(...deck.slides, { type: 'thanks' });
           <div class:list={['s-body', 'list', { 'has-img': s.image }]}>
             {s.image && (
               <figure class="frame">
-                <img src={img(s.image)} alt="" />
+                <div class="shot">
+                  <img src={img(s.image)} alt="" />
+                  {s.marks.map((m: any) => <span class="mark" style={`left:${m.x}%;top:${m.y}%`}>{m.n}</span>)}
+                  {s.mock && <span class="mock-badge">예시 그림 · 실제 화면과 조금 달라요</span>}
+                </div>
                 {s.caption && <figcaption set:html={fmt(s.caption)} />}
               </figure>
             )}
-            <ol class:list={['numlist', 'numlist-lg', { two: !s.image && s.items.length > 4, many: s.image && s.items.length > 4 }]}>
+            <ol class:list={['numlist', 'numlist-lg', { two: !s.image && s.items.length >= 4, many: s.image && s.items.length > 4 }]}>
               {s.items.map((x: any, k: number) => (
                 <li class={`c${k % 4}`}>
                   <i>{k + 1}</i>
@@ -220,8 +224,22 @@ pages.push(...deck.slides, { type: 'thanks' });
               <div class={`prompt c${k % 4}`}>
                 <i>{k + 1}</i>
                 <div><b set:html={fmt(p.title)} /><q set:html={fmt(p.text)} /></div>
+                <button type="button" class="copy-btn" data-copy={p.copy || p.text}>복사</button>
               </div>
             ))}
+          </div>
+        )}
+
+        {s.type === 'prompt' && (
+          <div class="s-body prompt-one">
+            <div class="pbox">
+              <div class="pbox-head">
+                <span class="pbox-badge">프롬프트</span>
+                <b set:html={fmt(s.label)} />
+                <button type="button" class="copy-btn" data-copy={s.text}>복사</button>
+              </div>
+              <pre class="pbox-text">{s.text}</pre>
+            </div>
           </div>
         )}
 

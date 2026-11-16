@@ -66,9 +66,14 @@ const slide = z.discriminatedUnion('type', [
   // 1 → 2 → 3 → 4 단계 카드
   z.object({ type: z.literal('steps'), ...common, steps: z.array(item) }),
   // 번호 목록 (+ 왼쪽 그림)
+  // image 위에 marks 로 ① ② 번호 표시 (x, y 는 그림 왼쪽 위에서 % 위치), mock 이면 '예시 그림' 표시
   z.object({
     type: z.literal('list'), ...common, image: z.string().optional(), caption: z.string().optional(), items: z.array(item),
+    marks: z.array(z.object({ n: z.union([z.number(), z.string()]), x: z.number(), y: z.number() })).default([]),
+    mock: z.boolean().default(false),
   }),
+  // 프롬프트 한 개를 크게 + [복사] 버튼 (웹 발표 화면에서만 버튼이 보임)
+  z.object({ type: z.literal('prompt'), ...common, label: z.string(), text: z.string() }),
   // 나란히 비교 (그림 칸 또는 목록 칸)
   z.object({
     type: z.literal('compare'), ...common,
@@ -82,7 +87,8 @@ const slide = z.discriminatedUnion('type', [
   // 한 장 정리 표
   z.object({ type: z.literal('table'), ...common, head: z.array(z.string()), rows: z.array(z.array(z.string())) }),
   // 이렇게 시켜 보기 (짧은 프롬프트)
-  z.object({ type: z.literal('prompts'), ...common, items: z.array(z.object({ title: z.string(), text: z.string() })) }),
+  // copy 를 주면 화면에는 text(짧게), [복사]는 copy(전체 프롬프트)
+  z.object({ type: z.literal('prompts'), ...common, items: z.array(z.object({ title: z.string(), text: z.string(), copy: z.string().optional() })) }),
   // 퀴즈: 발표 화면에서는 '다음'을 한 번 누르면 정답이 보임
   z.object({
     type: z.literal('quiz'), ...common,
