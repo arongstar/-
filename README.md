@@ -130,15 +130,6 @@ npm run dev
 
 브라우저에서 http://localhost:4321 을 엽니다.
 
-## Claude에게 교안 맡기기 (스킬)
-
-`.claude/skills/lesson-publish/` 에 교안 만들기·배포 절차가 정리되어 있어요. Claude Code에서 "○○ 교안 만들어줘"라고 하면 이 절차대로 자료 조사 → 교안 작성 → 그림·자료 → 검사 → PR까지 하고, "머지해줘"라고 하면 배포까지 합니다. 슬래시 명령 `/lesson-publish` 로 직접 부를 수도 있어요.
-
-- `SKILL.md` : 전체 절차와 글쓰기 규칙
-- `references/cover-image.md` : 캐릭터 표지 그림 만드는 법(Codex)
-- `assets/character-ref.jpg` : 표지에 쓰는 캐릭터 시트
-- `scripts/check-site.mjs` : 배포 전 검사(취소선, 깨진 링크, 강사 이름 노출 등)
-
 ## 폴더 구조
 
 - `apps-script/` : Apps Script 웹앱 4종의 원본 코드와 테스트. 코드를 고친 뒤 `python3 apps-script/package.py` 로 내려받기용 zip 을 다시 만들고, `node apps-script/test/test-B.cjs` 처럼 테스트할 수 있어요.
