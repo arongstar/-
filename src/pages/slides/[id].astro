@@ -1,0 +1,147 @@
+---
+// 웹 발표 화면: ← → 키, 클릭, 밀기로 넘기고, F 키나 [전체 화면] 버튼으로 크게 띄웁니다.
+import Deck from '../../components/slides/Deck.astro';
+import { SITE } from '../../site.config';
+import { url } from '../../lib/url';
+import { deckPaths, lessonQr } from '../../lib/deck';
+
+export const getStaticPaths = deckPaths;
+const { deck, lesson } = Astro.props;
+const { onlineUrl, qrSvg } = await lessonQr(Astro.site, lesson.id);
+const short = lesson.data.title.split(' — ')[0];
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{short} — 발표 | {SITE.shortTitle}</title>
+    <meta name="description" content={lesson.data.summary} />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
+    <style is:global>
+      html, body { margin: 0; height: 100%; background: #23262e; overflow: hidden; }
+      body { font-family: 'Pretendard Variable', Pretendard, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
+      .stage { position: fixed; inset: 0 0 56px 0; overflow: hidden; touch-action: pan-y; }
+      .is-fs .stage { inset: 0; }
+      .stage-inner {
+        position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px;
+        transform: translate(-50%, -50%) scale(var(--s, 1)); transform-origin: center center;
+        box-shadow: 0 10px 40px rgb(0 0 0 / 0.35);
+      }
+      .stage .slide { display: none; }
+      .stage .slide.on { display: flex; }
+      .bar {
+        position: fixed; left: 0; right: 0; bottom: 0; height: 56px; display: flex; align-items: center; gap: 8px;
+        padding: 0 12px; background: #1a1c22; color: #e8eaf0; font-size: 15px; transition: opacity 0.2s;
+      }
+      .is-fs .bar { opacity: 0; pointer-events: none; }
+      .is-fs.show-bar .bar { opacity: 1; pointer-events: auto; }
+      .bar a, .bar button {
+        color: inherit; background: #2b2e37; border: 0; border-radius: 8px; padding: 8px 12px; font: inherit;
+        text-decoration: none; cursor: pointer; white-space: nowrap;
+      }
+      .bar a:hover, .bar button:hover { background: #3a3e4a; }
+      .bar .count { min-width: 76px; text-align: center; font-variant-numeric: tabular-nums; }
+      .bar .title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #a9aebd; padding: 0 6px; }
+      .bar .hint { color: #7d8395; font-size: 13px; }
+      .progress { position: fixed; left: 0; bottom: 56px; height: 3px; background: #e0713a; transition: width 0.2s; }
+      .is-fs .progress { bottom: 0; }
+      @media (max-width: 640px) {
+        .bar .title, .bar .hint, .bar .pdf { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage" id="stage">
+      <div class="stage-inner" id="inner">
+        <Deck deck={deck} lessonDate={lesson.data.date} mode="web" qrSvg={qrSvg} onlineUrl={onlineUrl} />
+      </div>
+    </div>
+    <div class="progress" id="progress"></div>
+    <nav class="bar" aria-label="발표 조작">
+      <a href={url(`/lessons/${lesson.id}/`)}>← 교안</a>
+      <button type="button" id="prev" aria-label="이전 장">◀</button>
+      <span class="count" id="count">1 / 1</span>
+      <button type="button" id="next" aria-label="다음 장">▶</button>
+      <span class="title">{short}</span>
+      <span class="hint">← → 넘기기 · F 전체 화면</span>
+      <a class="pdf" href={url(`/pdf/${lesson.id}-slides.pdf`)} download={`${short} 발표 슬라이드.pdf`}>PDF</a>
+      <button type="button" id="fs">전체 화면</button>
+    </nav>
+
+    <script is:inline>
+      const slides = [...document.querySelectorAll('.stage .slide')];
+      const inner = document.getElementById('inner');
+      const stage = document.getElementById('stage');
+      let cur = 0;
+
+      function fit() {
+        const r = stage.getBoundingClientRect();
+        const s = Math.min(r.width / 1280, r.height / 720);
+        inner.style.setProperty('--s', String(s));
+      }
+      function show(i, keepAnswer) {
+        cur = Math.max(0, Math.min(slides.length - 1, i));
+        slides.forEach((el, k) => el.classList.toggle('on', k === cur));
+        // 퀴즈 정답은 처음에 가려 두기
+        if (!keepAnswer) slides[cur].querySelectorAll('[data-reveal]').forEach((a) => a.classList.add('concealed'));
+        document.getElementById('count').textContent = `${cur + 1} / ${slides.length}`;
+        document.getElementById('progress').style.width = `${((cur + 1) / slides.length) * 100}%`;
+        history.replaceState(null, '', `#${cur + 1}`);
+      }
+      function next() {
+        const hidden = slides[cur].querySelector('[data-reveal].concealed');
+        if (hidden) { hidden.classList.remove('concealed'); return; }
+        if (cur < slides.length - 1) show(cur + 1);
+      }
+      function prev() { if (cur > 0) show(cur - 1, true); }
+      function toggleFs() {
+        if (document.fullscreenElement) document.exitFullscreen();
+        else document.documentElement.requestFullscreen?.();
+      }
+
+      document.getElementById('next').addEventListener('click', next);
+      document.getElementById('prev').addEventListener('click', prev);
+      document.getElementById('fs').addEventListener('click', toggleFs);
+      stage.addEventListener('click', (e) => {
+        const r = stage.getBoundingClientRect();
+        (e.clientX - r.left < r.width / 3 ? prev : next)();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.altKey || e.ctrlKey || e.metaKey) return;
+        if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next(); }
+        else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+        else if (e.key === 'Home') show(0);
+        else if (e.key === 'End') show(slides.length - 1);
+        else if (e.key === 'f' || e.key === 'F') toggleFs();
+      });
+      let sx = null;
+      stage.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener('touchend', (e) => {
+        if (sx === null) return;
+        const dx = e.changedTouches[0].clientX - sx;
+        sx = null;
+        if (Math.abs(dx) > 40) { (dx < 0 ? next : prev)(); }
+      });
+      // 전체 화면에서는 아래 막대를 숨기고, 마우스를 움직이면 잠깐 보여 줌
+      let t;
+      document.addEventListener('fullscreenchange', () => {
+        document.body.classList.toggle('is-fs', !!document.fullscreenElement);
+        requestAnimationFrame(fit);
+      });
+      document.addEventListener('mousemove', () => {
+        document.body.classList.add('show-bar');
+        clearTimeout(t);
+        t = setTimeout(() => document.body.classList.remove('show-bar'), 1800);
+      });
+      window.addEventListener('resize', fit);
+      fit();
+      const start = parseInt(location.hash.slice(1), 10);
+      show(Number.isFinite(start) ? start - 1 : 0);
+    </script>
+  </body>
+</html>

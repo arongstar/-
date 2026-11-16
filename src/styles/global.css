@@ -92,6 +92,9 @@ button { font: inherit; cursor: pointer; }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent-strong); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .btn-primary { color: #0f1a16; } }
+.btn-present { background: #fdeee3; border-color: #f2c7a8; color: #a8461a; font-weight: 700; }
+.btn-present:hover { background: #fbe0cc; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .btn-present { background: #3a2a20; border-color: #5a3d2a; color: #f4b98e; } }
 .btn-block { width: 100%; margin-top: 8px; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }

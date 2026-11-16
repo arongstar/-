@@ -27,7 +27,9 @@ const server = createServer(async (req, res) => {
 await new Promise((r) => server.listen(0, r));
 const origin = `http://127.0.0.1:${server.address().port}`;
 
-const ids = (await readdir(join(DIST, 'print'), { withFileTypes: true })).filter((d) => d.isDirectory()).map((d) => d.name);
+const dirs = async (p) => (await readdir(p, { withFileTypes: true }).catch(() => [])).filter((d) => d.isDirectory()).map((d) => d.name);
+const ids = (await dirs(join(DIST, 'print'))).filter((d) => d !== 'slides');
+const slideIds = await dirs(join(DIST, 'print', 'slides'));
 await mkdir(join(DIST, 'pdf'), { recursive: true });
 
 const browser = await chromium.launch(process.env.PW_EXECUTABLE ? { executablePath: process.env.PW_EXECUTABLE } : {});
@@ -47,6 +49,20 @@ for (const id of ids) {
       <span>${title.replace(/[<&>]/g, '')}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`,
   });
   console.log(`PDF 생성: pdf/${id}.pdf`);
+}
+// 발표 슬라이드 PDF (16:9, 한 장에 한 슬라이드)
+await page.setViewportSize({ width: 1280, height: 720 });
+for (const id of slideIds) {
+  await page.goto(`${origin}${BASE}print/slides/${id}/`, { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
+  await page.evaluate(() => document.fonts.ready);
+  await page.pdf({
+    path: join(DIST, 'pdf', `${id}-slides.pdf`),
+    width: '1280px',
+    height: '720px',
+    printBackground: true,
+    preferCSSPageSize: true,
+  });
+  console.log(`PDF 생성: pdf/${id}-slides.pdf`);
 }
 await browser.close();
 server.close();
