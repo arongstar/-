@@ -157,6 +157,30 @@
   use: 교사용
   note: 개인정보 등 민감정보는 입력·업로드하지 마세요. 결과는 초안으로만 쓰세요.
 
+- id: hyperframes
+  name: HyperFrames
+  url: https://github.com/heygen-com/hyperframes
+  category: AI 영상·이미지
+  description: HTML로 만든 화면을 그대로 MP4 영상으로 바꿔 주는 무료 오픈소스. 클로드에게 말로 시키면 개념 설명·도입·타이머 같은 수업 영상을 만들어 줘요.
+  use: 교사용
+  note: Node.js 22 이상과 FFmpeg가 필요해요. 설치는 클로드에게 맡기면 편해요.
+
+- id: remotion
+  name: Remotion (리모션)
+  url: https://www.remotion.dev
+  category: AI 영상·이미지
+  description: 영상을 React 코드로 만드는 도구. 공식 클로드 스킬이 있어 그래프·데이터 영상처럼 정교한 장면에 좋아요.
+  use: 교사용
+  note: 개인·소규모는 무료지만, 일정 규모 이상의 회사는 유료 라이선스가 필요해요.
+
+- id: openmontage
+  name: OpenMontage
+  url: https://github.com/calesthio/OpenMontage
+  category: AI 영상·이미지
+  description: 주제만 주면 조사·대본·음성·자막·편집까지 이어서 해 주는 영상 제작 파이프라인. 클로드 코드 안에서 돌아가요.
+  use: 교사용
+  note: AGPL-3.0 라이선스예요. 일부 기능은 유료 API 키가 필요하고, 한국어 음성은 설치 후 확인이 필요해요.
+
 - id: higgsfield
   name: 힉스필드 (Higgsfield)
   url: https://higgsfield.ai
