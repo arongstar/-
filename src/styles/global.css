@@ -448,3 +448,7 @@ button { font: inherit; cursor: pointer; }
   font-weight: 800; color: var(--accent-strong); white-space: nowrap;
 }
 .prose table.schedule td:nth-child(2) { font-weight: 700; }
+
+/* 표 안의 작은 서비스 아이콘 (교안 본문에서 <img class="ai-ico">) */
+.prose img.ai-ico { display: inline-block; width: 22px; height: 22px; margin: 0 6px 0 0; vertical-align: -5px; border-radius: 0; }
+.prose th img.ai-ico { width: 24px; height: 24px; }
