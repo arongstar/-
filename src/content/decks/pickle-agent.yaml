@@ -72,6 +72,17 @@ slides:
       title: "생활 업무는 피클, 컴퓨터 업무는 Aside"
       text: "둘 다 학교 행정 시스템과 학생 정보에는 쓰지 않아요"
 
+  - type: list
+    tag: 화면
+    title: 첫 화면과 추천 일
+    image: /images/pickle-agent/slide-chat.jpg
+    caption: 실제 화면 — 자기소개 · 추천 일 · 아침 브리핑
+    items:
+      - { title: "내 피클 이름 · 지금 하는 일", text: "웹 둘러보는 중 · 생각 중" }
+      - { title: "“전화도 제 번호로 대신”", text: "처음 들어가면 피클이 자기소개" }
+      - { title: "추천 일 고르기", text: "사이트 탈퇴 · 정부 혜택 찾기 · 구독 해지" }
+      - { title: "아침 브리핑", text: "싫으면 “멈춰 줘” · 돌 때마다 사용량" }
+
   - type: table
     tag: 화면
     title: 아래 탭 네 개 + 왼쪽 메뉴
@@ -104,6 +115,17 @@ slides:
     note:
       title: "요금: 도움말은 요금제(Plus · Pro · Max · Ultra) 필요, 매주 다시 채워져요"
       text: "국내 보도: 한국 계정은 초대받은 사람에게 무료로 먼저 · 앱의 요금제 카드에서 확인"
+
+  - type: list
+    tag: 실습 ①
+    title: 앱 연결은 꼭 필요한 것만
+    image: /images/pickle-agent/slide-connect.jpg
+    caption: 실제 화면 — 앱 및 서비스 연결 · 선택 카드
+    items:
+      - { title: "My Pickle › Connections", text: "여행 · 음식 · 쇼핑 · 캘린더 · 금융" }
+      - { title: "연결하면 넓게 읽어요", text: "대화 · 기억 · 작업 기록에 남을 수 있어요" }
+      - { title: "연수에서는 캘린더 하나만", text: "학교 업무 메일 · 계정은 연결 X" }
+      - { title: "고를 게 있으면 선택 카드", text: "로그인된 사이트로 바로 일해요" }
 
   - type: prompt
     tag: 실습 ②
