@@ -125,7 +125,7 @@ sites: [gemini, apps-script, padlet]
 마지막에 붙여 넣는 순서와 웹 앱 배포 설정을 단계별로 알려 줘.
 ```
 
-![제미나이 답변의 코드 블록 오른쪽 위 복사 버튼(①Code.gs ②Index.html) — 예시 그림](/images/gemini-apps-script/gemini-chat-marked.svg)
+![제미나이 답변의 Code.gs 코드 블록 오른쪽 위 ①복사 버튼](/images/gemini-apps-script/gemini-chat-marked.jpg)
 
 - 코드 블록 오른쪽 위 **복사 버튼**을 누르면 코드 전체가 한 번에 복사돼요. 마우스로 드래그하지 않아요.
 - Code.gs와 Index.html은 **따로** 복사해요.
@@ -133,7 +133,7 @@ sites: [gemini, apps-script, padlet]
 
 ### ✋ 4단계 · 구글 시트에서 Apps Script 열기
 
-![구글 시트 위쪽 메뉴의 ①확장 프로그램 → ②Apps Script — 예시 그림](/images/gemini-apps-script/sheet-menu-marked.svg)
+![구글 시트 위쪽 메뉴의 ①확장 프로그램 → ②Apps Script](/images/gemini-apps-script/sheet-menu-marked.jpg)
 
 1. 구글 드라이브에서 **새로 만들기 → Google 스프레드시트**. 이름은 `우리 반 퀴즈`로 바꿔요.
 2. 시트 위쪽 메뉴에서 **[확장 프로그램]** 을 눌러요.
@@ -141,7 +141,7 @@ sites: [gemini, apps-script, padlet]
 
 ### ✋ 5단계 · Code.gs에 붙여 넣기
 
-![Apps Script 편집기 왼쪽 ①Code.gs와 오른쪽 ②코드 칸 — 예시 그림](/images/gemini-apps-script/editor-paste-marked.svg)
+![Apps Script 편집기 왼쪽 ①Code.gs와 오른쪽 ②코드 칸(제미나이 코드를 붙여 넣은 모습)](/images/gemini-apps-script/editor-paste-marked.jpg)
 
 1. 왼쪽 파일 목록에서 **Code.gs** 를 눌러요.
 2. 원래 들어 있던 `function myFunction() {}` 을 **모두 지워요.** (Ctrl + A → Delete, 맥은 ⌘ + A)
@@ -161,12 +161,14 @@ sites: [gemini, apps-script, padlet]
 
 ### ✋ 7단계 · setup 한 번 실행하고 권한 승인하기
 
-![①함수 목록에서 setup ②▶ 실행 ③실행 로그 확인 — 예시 그림](/images/gemini-apps-script/run-setup-marked.svg)
+![①함수 목록에서 setup 고르기 ②▶ 실행](/images/gemini-apps-script/run-setup-marked.jpg)
 
 1. 위쪽 가운데 **함수 목록**에서 `setup` 을 골라요.
 2. **[▶ 실행]** 을 눌러요.
 3. 처음 실행하면 **권한 승인** 창이 떠요. (아래 그림)
-4. 아래 **실행 로그**에 '실행이 완료됨'이 나오면 성공이에요. 시트로 돌아가면 **설정 · 문제 · 결과 · 요약** 탭이 생겨 있어요.
+4. 아래 **실행 로그**에 '실행이 완료됨'이 나오면 성공이에요. 시트로 돌아가면 setup이 만든 탭(예: 문제 · 기록 · 요약)이 생겨 있어요.
+
+> 💡 함수 이름과 탭 이름은 제미나이가 만든 코드마다 조금씩 달라요. (예: `문제은행`, `제출기록`, `getQuestionsForStudent`) 함수 목록에 **setup** 만 있으면 괜찮아요.
 
 ![권한 승인: ①권한 검토 ②고급 ③(으)로 이동(안전하지 않음) ④허용 — 예시 그림](/images/gemini-apps-script/permission-marked.svg)
 
@@ -179,7 +181,7 @@ sites: [gemini, apps-script, padlet]
 
 ### ✋ 8단계 · 웹 앱으로 배포하기
 
-![새 배포 창: ①유형 선택 톱니 → 웹 앱 ②실행: 나 ③접근: 모든 사용자 ④배포 — 예시 그림](/images/gemini-apps-script/deploy-new-marked.svg)
+![새 배포 창: ①유형 선택 톱니 → 웹 앱 ②실행: 나 ③접근: 모든 사용자 ④배포](/images/gemini-apps-script/deploy-new-marked.jpg)
 
 1. 오른쪽 위 파란 **[배포] → [새 배포]** 를 눌러요.
 2. **유형 선택** 옆 **⚙(톱니)** → **웹 앱** 을 골라요.
