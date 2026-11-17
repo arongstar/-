@@ -148,6 +148,24 @@ button { font: inherit; cursor: pointer; }
 }
 .check { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); }
 
+.tag-chips.folded { max-height: 76px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); }
+.chips-more {
+  align-self: flex-start; margin-top: -4px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--accent-strong); font-size: 14px; font-weight: 700;
+}
+.chips-more:hover { border-color: var(--accent); }
+.pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 28px; }
+.pager-btn {
+  min-width: 44px; height: 44px; padding: 0 14px; border-radius: 999px; border: 0; font-weight: 700; font-size: 16px;
+  color: var(--text); background: var(--clay-bg); box-shadow: var(--clay-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.pager-btn:hover:not(:disabled) { transform: translateY(-2px); }
+.pager-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: var(--clay-shadow-press); }
+.pager-btn.current { background: var(--accent); color: #fff; box-shadow: var(--clay-shadow-press); cursor: default; }
+.pager-btn:disabled:not(.current) { opacity: 0.4; cursor: default; }
+.pager-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.pager-info { width: 100%; text-align: center; color: var(--muted); font-size: 14px; }
 .lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
 .lesson-card {
   display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden; border-radius: var(--radius);
