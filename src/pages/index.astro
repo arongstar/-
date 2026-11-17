@@ -7,7 +7,11 @@ import { url, formatDate } from '../lib/url';
 const lessons = (await getCollection('lessons', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
-const tags = [...new Set(lessons.flatMap((l) => l.data.tags))].sort((a, b) => a.localeCompare(b, 'ko'));
+// 주제는 교안이 많은 순서(같으면 가나다순) — 앞쪽 두 줄만 먼저 보여요
+const tagCount = new Map<string, number>();
+lessons.flatMap((l) => l.data.tags).forEach((t) => tagCount.set(t, (tagCount.get(t) ?? 0) + 1));
+const tags = [...tagCount.keys()].sort((a, b) => tagCount.get(b)! - tagCount.get(a)! || a.localeCompare(b, 'ko'));
+const PER_PAGE = 9;
 const siteCount = (await getCollection('sites')).length;
 ---
 <Base>
@@ -27,10 +31,11 @@ const siteCount = (await getCollection('sites')).length;
   <section id="lessons">
     <div class="filter-bar">
       <input type="search" id="lesson-search" placeholder="교안 검색 (예: 챗GPT, 평가, 이미지)" aria-label="교안 검색" />
-      <div class="chips" role="group" aria-label="주제로 거르기">
+      <div class="chips tag-chips" id="tag-chips" role="group" aria-label="주제로 거르기">
         <button type="button" class="chip-btn active" data-tag="">전체</button>
         {tags.map((t) => <button type="button" class="chip-btn" data-tag={t}>{t}</button>)}
       </div>
+      <button type="button" class="chips-more" id="chips-more" hidden aria-expanded="false">주제 모두 보기 ▾</button>
     </div>
 
     <div class="lesson-grid">
@@ -55,31 +60,105 @@ const siteCount = (await getCollection('sites')).length;
       ))}
     </div>
     <p class="empty" id="lesson-empty" hidden>찾는 교안이 없어요. 다른 낱말로 검색해 보세요.</p>
+    <nav class="pager" id="pager" aria-label="교안 목록 쪽" data-per-page={PER_PAGE} hidden></nav>
   </section>
 
   <script>
     const search = document.getElementById('lesson-search') as HTMLInputElement;
     const cards = [...document.querySelectorAll<HTMLElement>('.lesson-card')];
     const empty = document.getElementById('lesson-empty')!;
-    let tag = '';
+    const pager = document.getElementById('pager')!;
+    const chipsBox = document.getElementById('tag-chips')!;
+    const moreBtn = document.getElementById('chips-more') as HTMLButtonElement;
+    const PER = Number(pager.dataset.perPage) || 9;
+    const params = new URLSearchParams(location.search);
+    let tag = params.get('tag') || '';
+    let page = Math.max(1, Number(params.get('page')) || 1);
+
+    // 주소에 쪽·주제를 남겨 두면, 교안을 보고 '뒤로' 왔을 때 같은 쪽으로 돌아와요
+    function saveUrl() {
+      const p = new URLSearchParams();
+      if (tag) p.set('tag', tag);
+      if (page > 1) p.set('page', String(page));
+      const qs = p.toString();
+      history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+    }
+
+    function btn(label: string, target: number, opts: { current?: boolean; disabled?: boolean; aria?: string } = {}) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pager-btn' + (opts.current ? ' current' : '');
+      b.textContent = label;
+      if (opts.aria) b.setAttribute('aria-label', opts.aria);
+      if (opts.current) b.setAttribute('aria-current', 'page');
+      if (opts.disabled) b.disabled = true;
+      else b.addEventListener('click', () => {
+        page = target;
+        apply();
+        document.getElementById('lessons')!.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      return b;
+    }
+
     function apply() {
       const q = search.value.trim().toLowerCase();
-      let shown = 0;
-      cards.forEach((c) => {
-        const ok = (!tag || c.dataset.tags!.split('|').includes(tag)) && (!q || c.dataset.search!.includes(q));
-        c.hidden = !ok;
-        if (ok) shown++;
-      });
-      empty.hidden = shown > 0;
+      const matched = cards.filter(
+        (c) => (!tag || c.dataset.tags!.split('|').includes(tag)) && (!q || c.dataset.search!.includes(q)),
+      );
+      const pages = Math.max(1, Math.ceil(matched.length / PER));
+      if (page > pages) page = pages;
+      const start = (page - 1) * PER;
+      const visible = new Set(matched.slice(start, start + PER));
+      cards.forEach((c) => (c.hidden = !visible.has(c)));
+      empty.hidden = matched.length > 0;
+
+      pager.replaceChildren();
+      pager.hidden = pages <= 1;
+      if (pages > 1) {
+        pager.append(btn('‹ 이전', page - 1, { disabled: page === 1, aria: '이전 쪽' }));
+        for (let i = 1; i <= pages; i++) pager.append(btn(String(i), i, { current: i === page, aria: `${i}쪽` }));
+        pager.append(btn('다음 ›', page + 1, { disabled: page === pages, aria: '다음 쪽' }));
+        const info = document.createElement('span');
+        info.className = 'pager-info';
+        info.textContent = `${matched.length}개 중 ${start + 1}–${Math.min(start + PER, matched.length)}`;
+        pager.append(info);
+      }
+      saveUrl();
     }
-    search.addEventListener('input', apply);
-    document.querySelectorAll<HTMLButtonElement>('.chip-btn').forEach((b) =>
+
+    search.addEventListener('input', () => { page = 1; apply(); });
+    document.querySelectorAll<HTMLButtonElement>('.chip-btn').forEach((b) => {
+      if ((b.dataset.tag || '') === tag) {
+        document.querySelectorAll('.chip-btn').forEach((x) => x.classList.remove('active'));
+        b.classList.add('active');
+      }
       b.addEventListener('click', () => {
         document.querySelectorAll('.chip-btn').forEach((x) => x.classList.remove('active'));
         b.classList.add('active');
         tag = b.dataset.tag || '';
+        page = 1;
         apply();
-      }),
-    );
+      });
+    });
+
+    // 주제가 두 줄을 넘으면 접어 두고 '주제 모두 보기' 단추를 보여요
+    function fold() {
+      chipsBox.classList.remove('folded');
+      const tooTall = chipsBox.scrollHeight > 96;
+      moreBtn.hidden = !tooTall;
+      if (tooTall && moreBtn.getAttribute('aria-expanded') !== 'true') chipsBox.classList.add('folded');
+    }
+    moreBtn.addEventListener('click', () => {
+      const open = moreBtn.getAttribute('aria-expanded') !== 'true';
+      moreBtn.setAttribute('aria-expanded', String(open));
+      moreBtn.textContent = open ? '주제 접기 ▴' : '주제 모두 보기 ▾';
+      chipsBox.classList.toggle('folded', !open);
+    });
+    // 고른 주제가 접힌 줄에 있으면 펼쳐 둬요
+    const activeChip = chipsBox.querySelector<HTMLElement>('.chip-btn.active');
+    fold();
+    if (activeChip && !moreBtn.hidden && activeChip.getBoundingClientRect().top - chipsBox.getBoundingClientRect().top > 70) moreBtn.click();
+    window.addEventListener('resize', fold);
+    apply();
   </script>
 </Base>
