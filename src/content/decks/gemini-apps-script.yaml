@@ -189,9 +189,8 @@ slides:
   - type: list
     tag: 6단계
     title: Index.html 파일 만들기
-    image: /images/gemini-apps-script/add-html.svg
-    mock: true
-    marks: [{ n: 1, x: 23.5, y: 17.0 }, { n: 2, x: 36.7, y: 32.5 }, { n: 3, x: 26.2, y: 38.7 }]
+    image: /images/gemini-apps-script/add-html.jpg
+    marks: [{ n: 1, x: 68.5, y: 7.3 }, { n: 2, x: 86.7, y: 57.3 }]
     items:
       - { title: "파일 옆 [+]", text: 왼쪽 파일 목록 위 }
       - { title: "[HTML] 고르기", text: 스크립트가 아니라 HTML }
@@ -242,14 +241,16 @@ slides:
       - { title: 메모장에 붙여 두기, text: 다시 찾기 쉽게 }
       - { title: "[완료]", text: 다시 볼 때는 배포 → 배포 관리 }
 
-  - type: steps
+  - type: list
     tag: 9단계
     title: 학생처럼 테스트하기
-    steps:
-      - { title: 시크릿 창으로 열기, text: "Ctrl + Shift + N\n로그인 안 한 학생처럼" }
-      - { title: 번호 고르고 풀기, text: "일부러\n한 문제 틀려 보기" }
-      - { title: "‘결과’ 탭 확인", text: "번호 · 점수가\n쌓였나요?" }
-      - { title: "‘요약’ 탭 확인", text: "문제별\n정답률" }
+    image: /images/gemini-apps-script/real-app-card.jpg
+    caption: 제미나이 코드로 실제 배포한 화면
+    items:
+      - { title: 시크릿 창으로 열기, text: "Ctrl + Shift + N · 로그인 안 한 학생처럼" }
+      - { title: 번호 고르고 풀기, text: 일부러 한 문제 틀려 보기 }
+      - { title: "‘결과’ · ‘요약’ 탭 확인", text: "번호 · 점수 · 문제별 정답률" }
+      - { title: 맨 위 안내 줄은 정상, text: "‘Google Apps Script 사용자가 만들었습니다’" }
     note:
       title: "문제는 시트의 ‘문제’ 탭에서 고치면 바로 바뀌어요"
       text: 문제만 바꿀 때는 다시 배포하지 않아도 돼요

@@ -150,7 +150,7 @@ sites: [gemini, apps-script, padlet]
 
 ### ✋ 6단계 · Index.html 파일 만들기
 
-![①파일 옆 + → ②HTML → ③이름 Index — 예시 그림](/images/gemini-apps-script/add-html-marked.svg)
+![Apps Script 편집기 왼쪽 ①파일 옆 + → ②HTML](/images/gemini-apps-script/add-html-marked.jpg)
 
 1. 왼쪽 **파일** 옆 **[+]** 를 눌러요.
 2. **[HTML]** 을 골라요. (스크립트가 아니라 HTML)
@@ -205,6 +205,10 @@ sites: [gemini, apps-script, padlet]
 2. 번호를 고르고 문제를 풀어요. **일부러 한 문제는 틀려** 보세요.
 3. 시트의 **결과** 탭에 번호 · 점수 · 고른 답이 쌓였는지 봐요.
 4. **요약** 탭에서 문제별 정답률을 확인해요.
+
+![제미나이가 만든 코드를 그대로 배포한 실제 웹앱 첫 화면 — 위쪽에 Apps Script 안내 줄이 보여요](/images/gemini-apps-script/real-app.jpg)
+
+> 📌 맨 위에 **'이 애플리케이션은 Google Apps Script 사용자가 만들었습니다.'** 라는 줄이 보여도 정상이에요. 구글이 Apps Script 웹앱에 붙여 주는 안내예요. 학생에게 "선생님이 만든 앱이라 나오는 줄"이라고 미리 알려 주세요. 화면 모양과 문구는 제미나이가 만든 코드마다 조금씩 달라요.
 
 ![학생 결과 화면: 점수와 문제별 정답·해설](/images/gemini-apps-script/quiz-result.jpg)
 
