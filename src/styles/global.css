@@ -1,10 +1,10 @@
 :root {
-  --bg: #f4f8ee;
+  --bg: #f7f6f2;
   --surface: #ffffff;
-  --surface-2: #eaf2df;
+  --surface-2: #f0efe9;
   --text: #1f2421;
   --muted: #5d655f;
-  --line: #dbe6cc;
+  --line: #e2e0d8;
   --accent: #3e7b3a;
   --accent-strong: #2f5f2c;
   --accent-soft: #e6f1dc;
@@ -12,7 +12,7 @@
   --warn-soft: #fff4dc;
   --student: #2558a8;
   --student-soft: #e6eefb;
-  --prompt-bg: #fafcf6;
+  --prompt-bg: #fbfaf6;
   --radius: 14px;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
   --content-scale: 1;
@@ -327,7 +327,7 @@ button { font: inherit; cursor: pointer; }
 /* ===== 교안 머리 (표지 그림 + 정보) ===== */
 .lesson-hero {
   display: grid; gap: 24px; align-items: center; margin-bottom: 28px; padding: 24px;
-  background: linear-gradient(135deg, var(--accent-soft), var(--surface) 70%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 40%, var(--surface)), var(--surface) 55%);
   border: 1px solid var(--line); border-radius: 24px;
 }
 @media (min-width: 900px) { .lesson-hero.has-cover { grid-template-columns: 1.15fr 1fr; padding: 28px 32px; } }
