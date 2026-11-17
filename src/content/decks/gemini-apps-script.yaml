@@ -159,9 +159,8 @@ slides:
   - type: list
     tag: 3단계
     title: 코드는 복사 버튼으로 통째로
-    image: /images/gemini-apps-script/gemini-chat.svg
-    mock: true
-    marks: [{ n: 1, x: 90.0, y: 33.3 }, { n: 2, x: 90.0, y: 71.3 }]
+    image: /images/gemini-apps-script/gemini-chat.jpg
+    marks: [{ n: 1, x: 93.8, y: 56.5 }]
     items:
       - { title: Code.gs 블록의 복사 버튼, text: 코드 전체가 한 번에 복사돼요 }
       - { title: Index.html 블록도 따로 복사, text: 두 파일을 섞지 않기 }
@@ -170,9 +169,8 @@ slides:
   - type: list
     tag: 4단계
     title: 구글 시트에서 Apps Script 열기
-    image: /images/gemini-apps-script/sheet-menu.svg
-    mock: true
-    marks: [{ n: 1, x: 57.4, y: 14.3 }, { n: 2, x: 72.4, y: 35.0 }]
+    image: /images/gemini-apps-script/sheet-menu.jpg
+    marks: [{ n: 1, x: 61.8, y: 4.6 }, { n: 2, x: 73.9, y: 55.0 }]
     items:
       - { title: 새 스프레드시트 만들기, text: "드라이브 → 새로 만들기 · 이름: 우리 반 퀴즈" }
       - { title: "[확장 프로그램] 메뉴", text: 시트 위쪽 메뉴에서 }
@@ -181,9 +179,8 @@ slides:
   - type: list
     tag: 5단계
     title: Code.gs에 붙여 넣기
-    image: /images/gemini-apps-script/editor-paste.svg
-    mock: true
-    marks: [{ n: 1, x: 24.2, y: 25.3 }, { n: 2, x: 93.8, y: 33.3 }]
+    image: /images/gemini-apps-script/editor-paste.jpg
+    marks: [{ n: 1, x: 21.9, y: 27.9 }, { n: 2, x: 87.5, y: 77.4 }]
     items:
       - { title: Code.gs를 열고 원래 글은 모두 지우기, text: "Ctrl + A → Delete (맥은 ⌘ + A)" }
       - { title: 제미나이 코드 붙여 넣기, text: "Ctrl + V" }
@@ -204,13 +201,12 @@ slides:
   - type: list
     tag: 7단계
     title: setup을 딱 한 번 실행하기
-    image: /images/gemini-apps-script/run-setup.svg
-    mock: true
-    marks: [{ n: 1, x: 72.7, y: 15.7 }, { n: 2, x: 46.7, y: 15.7 }, { n: 3, x: 26.9, y: 71.3 }]
+    image: /images/gemini-apps-script/run-setup.jpg
+    marks: [{ n: 1, x: 70.4, y: 27.1 }, { n: 2, x: 30.6, y: 14.8 }]
     items:
       - { title: 함수 목록에서 setup 고르기, text: 위쪽 가운데 목록 }
       - { title: "[▶ 실행]", text: 처음이면 권한 승인 창이 떠요 → 다음 장 }
-      - { title: "실행 로그 ‘실행이 완료됨’", text: "시트에 설정 · 문제 · 결과 · 요약 탭이 생겨요" }
+      - { title: "실행 로그 ‘실행이 완료됨’", text: "시트에 문제 · 기록 같은 탭이 생겨요 (이름은 코드마다 달라요)" }
 
   - type: list
     tag: 7단계
@@ -227,9 +223,8 @@ slides:
   - type: list
     tag: 8단계
     title: 웹 앱으로 배포하기
-    image: /images/gemini-apps-script/deploy-new.svg
-    mock: true
-    marks: [{ n: 1, x: 27.3, y: 25.0 }, { n: 2, x: 87.3, y: 47.7 }, { n: 3, x: 87.3, y: 63.7 }, { n: 4, x: 86.9, y: 85.0 }]
+    image: /images/gemini-apps-script/deploy-new.jpg
+    marks: [{ n: 1, x: 22.6, y: 5.7 }, { n: 2, x: 90.9, y: 48.3 }, { n: 3, x: 90.9, y: 63.1 }, { n: 4, x: 92.9, y: 89.6 }]
     items:
       - { title: "[배포 → 새 배포] → ⚙ → 웹 앱", text: 오른쪽 위 파란 버튼 }
       - { title: "실행: ‘나’", text: 학생은 시트를 직접 못 봐요 }
