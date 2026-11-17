@@ -17,8 +17,11 @@ const categories = [...new Set(sites.map((s) => s.data.category))].sort((a, b) =
     <p>연수에서 소개한 AI·디지털 도구를 한곳에 모았어요. 이름을 누르면 새 창으로 열립니다.</p>
   </section>
 
-  <div class="filter-bar">
-    <input type="search" id="site-search" placeholder="사이트 검색 (예: 이미지, 퀴즈, 발표)" aria-label="사이트 검색" />
+  <div class="filter-bar sticky-filter" id="site-filter">
+    <div class="filter-row">
+      <input type="search" id="site-search" placeholder="사이트 검색 (예: 이미지, 퀴즈, 발표)" aria-label="사이트 검색" />
+      <label class="check"><input type="checkbox" id="student-only" /> 학생 활동 가능한 것만</label>
+    </div>
     <div class="chips" role="group" aria-label="분류로 거르기">
       <button type="button" class="chip-btn active" data-cat="">전체 ({sites.length})</button>
       {categories.map((c) => (
@@ -27,7 +30,6 @@ const categories = [...new Set(sites.map((s) => s.data.category))].sort((a, b) =
         </button>
       ))}
     </div>
-    <label class="check"><input type="checkbox" id="student-only" /> 학생 활동 가능한 것만</label>
   </div>
 
   {categories.map((c) => (
@@ -73,6 +75,9 @@ const categories = [...new Set(sites.map((s) => s.data.category))].sort((a, b) =
         b.classList.add('active');
         cat = b.dataset.cat || '';
         apply();
+        // 분류를 고르면 목록 맨 위로
+        const top = document.getElementById('site-filter')!.offsetTop - 70;
+        if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
       }),
     );
   </script>

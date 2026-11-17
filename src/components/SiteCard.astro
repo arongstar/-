@@ -17,14 +17,13 @@ const host = new URL(site.url).hostname.replace(/^www\./, '');
   <p>{site.description}</p>
   {site.note && <p class="site-note">⚠ {site.note}</p>}
   {lessons.length > 0 && (
-    <p class="site-lessons">
-      관련 교안:{' '}
-      {lessons.map((l, i) => (
-        <>
-          {i > 0 && ', '}
-          <a href={url(`/lessons/${l.id}`)}>{l.title}</a>
-        </>
-      ))}
-    </p>
+    <details class="site-lessons">
+      <summary>관련 교안 {lessons.length}개</summary>
+      <ul>
+        {lessons.map((l) => (
+          <li><a href={url(`/lessons/${l.id}`)}>{l.title}</a></li>
+        ))}
+      </ul>
+    </details>
   )}
 </article>
